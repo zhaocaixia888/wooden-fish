@@ -3,155 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>敲木鱼 · 电子功德</title>
+<title>敲木鱼 · 禅修</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
   body {
-    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    background: linear-gradient(180deg, #0d0d1a 0%, #1a1025 40%, #0d1a0d 100%);
     min-height: 100vh; min-height: 100dvh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
-    overflow: hidden; position: relative;
+    display: flex; flex-direction: column; align-items: center;
+    font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+    overflow-x: hidden; position: relative;
   }
-  /* Stars background */
-  .stars { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+
+  /* Stars */
+  .stars { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
   .star {
     position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%;
     animation: twinkle var(--d) ease-in-out infinite alternate;
   }
-  @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 1; } }
+  @keyframes twinkle { 0% { opacity: 0.15; } 100% { opacity: 0.8; } }
 
-  .container {
-    display: flex; flex-direction: column; align-items: center; gap: 12px;
-    padding: 20px; position: relative; z-index: 1;
+  .container { position: relative; z-index: 1; width: 100%; max-width: 420px; padding: 16px; display: flex; flex-direction: column; align-items: center; }
+
+  /* ====== Header: Realm ====== */
+  .realm-section { text-align: center; margin-bottom: 8px; }
+  .realm-badge {
+    display: inline-block; padding: 4px 18px; border-radius: 20px;
+    border: 1px solid rgba(255,215,0,0.25); font-size: 12px; letter-spacing: 3px;
+    background: rgba(255,215,0,0.04); color: rgba(255,215,0,0.7);
+    margin-bottom: 2px; font-family: inherit;
+  }
+  .realm-name {
+    font-size: 22px; font-weight: 700; letter-spacing: 6px;
+    background: linear-gradient(135deg, #c9a84c, #ffd700, #c9a84c);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin: 2px 0;
+  }
+  .realm-progress {
+    width: 200px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.06);
+    margin: 6px auto; overflow: hidden;
+  }
+  .realm-progress-bar {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, #c9a84c, #ffd700);
+    transition: width 0.3s ease;
+  }
+  .realm-next { font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 2px; }
+
+  /* ====== Counter ====== */
+  .counter-section { text-align: center; margin: 4px 0 8px; }
+  .counter-label { color: rgba(255,255,255,0.25); font-size: 10px; letter-spacing: 4px; }
+  .counter {
+    font-size: 40px; font-weight: 700; line-height: 1.1;
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    transition: transform 0.1s;
   }
 
-  .title {
-    color: rgba(255,215,0,0.8); font-size: 14px; letter-spacing: 4px;
-    font-weight: 500; margin-bottom: 4px;
+  /* ====== Sutra Display ====== */
+  .sutra-area {
+    width: 100%; min-height: 80px; margin: 8px 0;
+    background: rgba(255,255,255,0.02); border-radius: 12px;
+    border: 1px solid rgba(255,215,0,0.06); padding: 14px 18px;
+    position: relative; overflow: hidden;
   }
-  .subtitle { color: rgba(255,255,255,0.3); font-size: 11px; letter-spacing: 2px; }
+  .sutra-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .sutra-title {
+    font-size: 11px; color: rgba(255,215,0,0.4); letter-spacing: 2px;
+  }
+  .sutra-toggle {
+    font-size: 10px; color: rgba(255,255,255,0.2); cursor: pointer;
+    padding: 2px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);
+    background: transparent; font-family: inherit;
+  }
+  .sutra-toggle:active { background: rgba(255,255,255,0.05); }
+  .sutra-selector {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .sutra-opt {
+    font-size: 10px; padding: 2px 10px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.3);
+    cursor: pointer; background: transparent; font-family: inherit;
+  }
+  .sutra-opt.active { border-color: rgba(255,215,0,0.3); color: rgba(255,215,0,0.6); background: rgba(255,215,0,0.05); }
+  .sutra-opt:active { background: rgba(255,255,255,0.03); }
 
+  .sutra-text {
+    font-size: 16px; line-height: 1.9; color: rgba(255,255,255,0.55);
+    text-align: justify; letter-spacing: 1px;
+    transition: opacity 0.2s; max-height: 200px; overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+  .sutra-text .char { transition: color 0.15s; }
+  .sutra-text .char.read { color: rgba(255,215,0,0.7); }
+  .sutra-text .char.current { color: #ffd700; text-shadow: 0 0 8px rgba(255,215,0,0.3); }
+  .sutra-progress {
+    height: 2px; background: rgba(255,255,255,0.04); border-radius: 1px; margin-top: 6px; overflow: hidden;
+  }
+  .sutra-progress-bar {
+    height: 100%; background: rgba(255,215,0,0.2); border-radius: 1px;
+    transition: width 0.2s;
+  }
+
+  /* ====== Fish ====== */
   .fish-wrapper {
-    position: relative; width: 240px; height: 240px;
+    position: relative; width: 180px; height: 180px; margin: 4px 0;
     cursor: pointer; -webkit-tap-highlight-color: transparent;
   }
-  .fish-wrapper:active .fish { transform: scale(0.92); }
-  .fish-wrapper:active .fish-shadow { transform: scale(0.92) translateY(4px); }
-
+  .fish-wrapper:active .fish { transform: scale(0.93); }
   .fish {
     width: 100%; height: 100%; position: relative; z-index: 2;
-    transition: transform 0.08s ease; will-change: transform;
+    transition: transform 0.06s ease; will-change: transform;
   }
-  .fish svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 8px 24px rgba(255,215,0,0.15)); }
-  .fish-shadow {
-    position: absolute; bottom: -8px; left: 10%; width: 80%; height: 20px;
-    background: radial-gradient(ellipse, rgba(255,215,0,0.08) 0%, transparent 70%);
-    transition: transform 0.08s ease; z-index: 1;
-  }
+  .fish svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 4px 20px rgba(255,215,0,0.08)); }
 
-  /* Tap ripple */
-  .ripple-container { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
-  .ripple {
+  /* Tap effects */
+  .tap-glow {
+    position: absolute; inset: -20px; z-index: 1; pointer-events: none;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,215,0,0.06) 0%, transparent 70%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .tap-glow.active { opacity: 1; transition: opacity 0s; }
+
+  .ripple-el {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 20px; height: 20px; border-radius: 50%;
-    border: 2px solid rgba(255,215,0,0.5); animation: rippleAnim 0.6s ease-out forwards;
+    width: 10px; height: 10px; border-radius: 50%; z-index: 3; pointer-events: none;
+    animation: rippleAnim 0.7s ease-out forwards;
   }
-  @keyframes rippleAnim { to { width: 220px; height: 220px; opacity: 0; border-width: 1px; } }
-
-  /* Floating +1 */
-  .float-text {
+  @keyframes rippleAnim { to { width: 200px; height: 200px; opacity: 0; } }
+  .float-merit {
     position: fixed; pointer-events: none; z-index: 10;
-    font-size: 24px; font-weight: 700; color: #ffd700;
-    text-shadow: 0 0 10px rgba(255,215,0,0.5);
+    font-size: 22px; font-weight: 700; color: #ffd700;
+    text-shadow: 0 0 8px rgba(255,215,0,0.3);
     animation: floatUp 1s ease-out forwards;
   }
   @keyframes floatUp {
     0% { opacity: 1; transform: translateY(0) scale(0.5); }
-    50% { opacity: 1; transform: translateY(-60px) scale(1.2); }
-    100% { opacity: 0; transform: translateY(-120px) scale(0.8); }
+    50% { opacity: 1; transform: translateY(-50px) scale(1.1); }
+    100% { opacity: 0; transform: translateY(-100px) scale(0.7); }
   }
 
-  /* Special combo effects */
-  .combo-text {
+  /* Combo/Realm breakthrough */
+  .realm-msg {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    pointer-events: none; z-index: 20;
-    font-size: 48px; font-weight: 900; color: #ff6b6b;
-    text-shadow: 0 0 20px rgba(255,107,107,0.6), 0 0 40px rgba(255,107,107,0.3);
-    animation: comboPop 0.8s ease-out forwards;
+    z-index: 20; pointer-events: none; text-align: center;
+    animation: realmPop 2s ease-out forwards;
   }
-  @keyframes comboPop {
+  .realm-msg .title { font-size: 36px; font-weight: 900; letter-spacing: 8px; }
+  .realm-msg .sub { font-size: 14px; margin-top: 4px; letter-spacing: 4px; }
+  @keyframes realmPop {
     0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
-    30% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
-    100% { opacity: 0; transform: translate(-50%, -60%) scale(1); }
+    20% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    40% { transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -60%) scale(0.95); }
   }
 
-  .counter-section { text-align: center; margin-top: 8px; }
-  .counter-label { color: rgba(255,255,255,0.4); font-size: 12px; letter-spacing: 3px; margin-bottom: 4px; }
-  .counter {
-    font-size: 52px; font-weight: 800;
-    background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1; transition: transform 0.1s ease;
+  /* ====== Skin / Sound Selector ====== */
+  .sound-row {
+    display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+    margin: 4px 0;
   }
-  .counter.pop { transform: scale(1.1); }
-
-  .stats {
-    display: flex; gap: 24px; margin-top: 8px;
-    color: rgba(255,255,255,0.3); font-size: 11px;
-  }
-  .stats span { display: flex; align-items: center; gap: 4px; }
-
-  .shop-btn {
-    margin-top: 20px; padding: 10px 28px; border-radius: 20px;
-    border: 1px solid rgba(255,215,0,0.3);
-    background: rgba(255,215,0,0.05); color: rgba(255,215,0,0.6);
-    font-size: 13px; cursor: pointer; letter-spacing: 2px;
-    transition: all 0.2s; -webkit-tap-highlight-color: transparent;
-  }
-  .shop-btn:active { background: rgba(255,215,0,0.15); }
-
-  /* Shop modal */
-  .modal-backdrop {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 50;
-    display: none; align-items: center; justify-content: center;
-    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-  }
-  .modal-backdrop.show { display: flex; }
-  .modal {
-    background: linear-gradient(180deg, #1e2a4a, #16213e);
-    border: 1px solid rgba(255,215,0,0.15); border-radius: 20px;
-    padding: 24px; width: 300px; max-width: 90vw; text-align: center;
-  }
-  .modal h2 { color: #ffd700; font-size: 18px; margin-bottom: 16px; letter-spacing: 2px; }
-  .skin-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 16px; }
-  .skin-item {
-    width: 72px; height: 72px; border-radius: 12px;
-    border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03);
+  .sound-btn {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 4px; cursor: pointer; transition: all 0.2s; font-size: 10px; color: rgba(255,255,255,0.5);
-    -webkit-tap-highlight-color: transparent;
+    cursor: pointer; transition: all 0.2s; gap: 1px;
+    font-size: 18px; -webkit-tap-highlight-color: transparent;
   }
-  .skin-item.active { border-color: #ffd700; background: rgba(255,215,0,0.08); }
-  .skin-item:active { transform: scale(0.92); }
-  .skin-item .emoji { font-size: 28px; }
-  .skin-item .price { color: #ffd700; font-size: 9px; }
-  .modal-close {
-    padding: 8px 24px; border-radius: 16px; border: none;
-    background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); font-size: 13px;
-    cursor: pointer; -webkit-tap-highlight-color: transparent;
-  }
+  .sound-btn .label { font-size: 7px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+  .sound-btn.active { border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.06); }
+  .sound-btn.active .label { color: rgba(255,215,0,0.5); }
+  .sound-btn:active { transform: scale(0.9); }
 
-  .hare-brain {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    z-index: 30; pointer-events: none;
-    font-size: 11px; color: rgba(255,255,255,0.15); letter-spacing: 2px;
+  /* Stats */
+  .stats { display: flex; gap: 20px; margin: 4px 0; color: rgba(255,255,255,0.15); font-size: 10px; }
+  .stats span { display: flex; align-items: center; gap: 3px; }
+
+  /* Bottom links */
+  .footer {
+    margin-top: 12px; text-align: center; font-size: 10px; color: rgba(255,255,255,0.08);
+    letter-spacing: 2px;
   }
 
   @media (max-width: 380px) {
-    .fish-wrapper { width: 180px; height: 180px; }
-    .counter { font-size: 40px; }
+    .fish-wrapper { width: 150px; height: 150px; }
+    .counter { font-size: 32px; }
+    .realm-name { font-size: 18px; }
+    .sutra-text { font-size: 14px; }
   }
 </style>
 </head>
@@ -160,283 +201,389 @@
 <div class="stars" id="stars"></div>
 
 <div class="container">
-  <div class="title">⋆ 电 子 功 德 ⋆</div>
-  <div class="subtitle">轻敲积累福德</div>
 
-  <div class="fish-wrapper" id="fishWrapper">
-    <div class="fish" id="fish">
-      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" id="fishSvg">
-        <!-- Main body -->
-        <ellipse cx="120" cy="130" rx="72" ry="58" fill="#c4943a" stroke="#8b6914" stroke-width="2"/>
-        <ellipse cx="120" cy="130" rx="66" ry="52" fill="#d4a84a"/>
-        <!-- Highlight -->
-        <ellipse cx="108" cy="112" rx="36" ry="24" fill="#e0b85a" opacity="0.6"/>
-        <ellipse cx="100" cy="106" rx="20" ry="12" fill="#e8c86a" opacity="0.4"/>
-        <!-- Eye -->
-        <circle cx="155" cy="112" r="12" fill="#fff"/>
-        <circle cx="155" cy="112" r="7" fill="#2c1810"/>
-        <circle cx="158" cy="109" r="3" fill="#fff" opacity="0.8"/>
-        <!-- Mouth -->
-        <ellipse cx="180" cy="135" rx="8" ry="4" fill="#8b6914"/>
-        <!-- Fish scale texture -->
-        <path d="M75 130 Q90 115 105 130" fill="none" stroke="#b88a30" stroke-width="0.8" opacity="0.5"/>
-        <path d="M90 140 Q105 125 120 140" fill="none" stroke="#b88a30" stroke-width="0.8" opacity="0.5"/>
-        <path d="M105 120 Q120 105 135 120" fill="none" stroke="#b88a30" stroke-width="0.8" opacity="0.5"/>
-        <path d="M120 145 Q135 130 150 145" fill="none" stroke="#b88a30" stroke-width="0.8" opacity="0.5"/>
-        <!-- Bottom highlight -->
-        <ellipse cx="120" cy="155" rx="40" ry="10" fill="#b88a30" opacity="0.3"/>
-      </svg>
-    </div>
-    <div class="fish-shadow"></div>
-    <div class="ripple-container" id="rippleContainer"></div>
+  <!-- Realm -->
+  <div class="realm-section">
+    <div class="realm-badge">修 行 境 界</div>
+    <div class="realm-name" id="realmName">凡 人</div>
+    <div class="realm-progress"><div class="realm-progress-bar" id="realmBar" style="width:0%"></div></div>
+    <div class="realm-next" id="realmNext">下一境：练气期 · 100 功德</div>
   </div>
 
+  <!-- Counter -->
   <div class="counter-section">
-    <div class="counter-label">功 德 值</div>
+    <div class="counter-label">累 积 功 德</div>
     <div class="counter" id="counter">0</div>
   </div>
 
+  <!-- Sutra -->
+  <div class="sutra-area" id="sutraArea">
+    <div class="sutra-header">
+      <span class="sutra-title" id="sutraTitle">📖 未诵经</span>
+      <button class="sutra-toggle" id="sutraToggle">开启诵经</button>
+    </div>
+    <div class="sutra-selector" id="sutraSelector" style="display:none">
+      <span class="sutra-opt active" data-sutra="heart">心经</span>
+      <span class="sutra-opt" data-sutra="diamond">金刚经</span>
+      <span class="sutra-opt" data-sutra="om">六字大明咒</span>
+      <span class="sutra-opt" data-sutra="greatcompassion">大悲咒</span>
+    </div>
+    <div class="sutra-text" id="sutraText">轻敲木鱼，随缘诵经</div>
+    <div class="sutra-progress"><div class="sutra-progress-bar" id="sutraBar" style="width:0%"></div></div>
+  </div>
+
+  <!-- Fish -->
+  <div class="fish-wrapper" id="fishWrapper">
+    <div class="tap-glow" id="tapGlow"></div>
+    <div class="fish" id="fish">
+      <svg viewBox="0 0 240 240" id="fishSvg">
+        <ellipse cx="120" cy="130" rx="72" ry="58" fill="#8B7355" stroke="#6B5B3E" stroke-width="2"/>
+        <ellipse cx="120" cy="130" rx="66" ry="52" fill="#9B8365"/>
+        <ellipse cx="108" cy="112" rx="36" ry="24" fill="#B09878" opacity="0.5"/>
+        <ellipse cx="100" cy="106" rx="20" ry="12" fill="#C8B088" opacity="0.3"/>
+        <circle cx="155" cy="112" r="12" fill="#fff"/>
+        <circle cx="155" cy="112" r="7" fill="#2c1810"/>
+        <circle cx="158" cy="109" r="3" fill="#fff" opacity="0.8"/>
+        <path d="M70 128 Q85 114 100 128" fill="none" stroke="#7B6345" stroke-width="0.6" opacity="0.4"/>
+        <path d="M85 138 Q100 124 115 138" fill="none" stroke="#7B6345" stroke-width="0.6" opacity="0.4"/>
+        <path d="M100 118 Q115 104 130 118" fill="none" stroke="#7B6345" stroke-width="0.6" opacity="0.4"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Sound Selector -->
+  <div class="sound-row" id="soundRow"></div>
+
+  <!-- Stats -->
   <div class="stats">
-    <span>⚡ <span id="comboDisplay">0</span></span>
-    <span>🏆 <span id="totalDisplay">0</span></span>
+    <span>⛩️ <span id="totalDisplay">0</span></span>
+    <span>⏳ <span id="sessionDisplay">0</span></span>
+    <span>📖 <span id="sutraPct">0%</span></span>
   </div>
 
-  <button class="shop-btn" id="shopBtn">🎨 功德皮肤</button>
+  <div class="footer">一 切 有 为 法 · 如 梦 幻 泡 影</div>
 </div>
-
-<!-- Shop Modal -->
-<div class="modal-backdrop" id="shopModal">
-  <div class="modal">
-    <h2>🎨 功德皮肤</h2>
-    <div class="skin-grid" id="skinGrid"></div>
-    <button class="modal-close" id="closeShop">关闭</button>
-  </div>
-</div>
-
-<div class="hare-brain">❤️ 心中有佛，敲啥都是功德</div>
 
 <script>
-// ====== Audio Engine ======
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
+// ====== SUTRAS ======
+const SUTRAS = {
+  heart: {
+    name: '般若波罗蜜多心经',
+    text: '观自在菩萨，行深般若波罗蜜多时，照见五蕴皆空，度一切苦厄。舍利子，色不异空，空不异色，色即是空，空即是色，受想行识，亦复如是。舍利子，是诸法空相，不生不灭，不垢不净，不增不减。是故空中无色，无受想行识，无眼耳鼻舌身意，无色声香味触法，无眼界，乃至无意识界。无无明，亦无无明尽，乃至无老死，亦无老死尽。无苦集灭道，无智亦无得。以无所得故，菩提萨埵，依般若波罗蜜多故，心无挂碍；无挂碍故，无有恐怖，远离颠倒梦想，究竟涅槃。三世诸佛，依般若波罗蜜多故，得阿耨多罗三藐三菩提。故知般若波罗蜜多，是大神咒，是大明咒，是无上咒，是无等等咒，能除一切苦，真实不虚。故说般若波罗蜜多咒，即说咒曰：揭谛揭谛，波罗揭谛，波罗僧揭谛，菩提萨婆诃。'
+  },
+  diamond: {
+    name: '金刚般若波罗蜜经（节选）',
+    text: '如是我闻。一时，佛在舍卫国祇树给孤独园，与大比丘众千二百五十人俱。尔时，世尊食时，著衣持钵，入舍卫大城乞食。于其城中，次第乞已，还至本处。饭食讫，收衣钵，洗足已，敷座而坐。时，长老须菩提在大众中即从座起，偏袒右肩，右膝着地，合掌恭敬而白佛言：希有！世尊！如来善护念诸菩萨，善付嘱诸菩萨。世尊！善男子、善女人，发阿耨多罗三藐三菩提心，应云何住？云何降伏其心？佛言：善哉，善哉！须菩提！如汝所说，如来善护念诸菩萨，善付嘱诸菩萨。汝今谛听，当为汝说。善男子、善女人，发阿耨多罗三藐三菩提心，应如是住，如是降伏其心。唯然，世尊！愿乐欲闻。佛告须菩提：诸菩萨摩诃萨应如是降伏其心。所有一切众生之类，若卵生、若胎生、若湿生、若化生，若有色、若无色，若有想、若无想，若非有想非无想，我皆令入无余涅槃而灭度之。如是灭度无量无数无边众生，实无众生得灭度者。何以故？须菩提！若菩萨有我相、人相、众生相、寿者相，即非菩萨。'
+  },
+  om: {
+    name: '六字大明咒',
+    text: '嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽 嗡 嘛 呢 叭 咪 吽'
+  },
+  greatcompassion: {
+    name: '千手千眼观世音菩萨广大圆满无碍大悲心陀罗尼（节选）',
+    text: '南无喝啰怛那哆啰夜耶，南无阿唎耶，婆卢羯帝烁钵啰耶，菩提萨埵婆耶，摩诃萨埵婆耶，摩诃迦卢尼迦耶。唵，萨皤啰罚曳，数怛那怛写。南无悉吉栗埵伊蒙阿唎耶，婆卢吉帝室佛啰愣驮婆。南无那啰谨墀，醯利摩诃皤哆沙咩。萨婆阿他豆输朋，阿逝孕。萨婆萨哆那摩婆萨多，那摩婆伽，摩罚特豆。怛姪他：唵，阿婆卢醯，卢迦帝，迦罗帝，夷醯唎。摩诃菩提萨埵，萨婆萨婆，摩啰摩啰，摩醯摩醯唎驮孕。俱卢俱卢羯蒙，度卢度卢罚阇耶帝，摩诃罚阇耶帝。陀啰陀啰，地唎尼，室佛啰耶。遮啰遮啰，摩摩罚摩啰，穆帝隶。伊醯移醯，室那室那，阿啰参佛啰舍利。罚沙罚参，佛啰舍耶。呼嚧呼嚧摩啰，呼嚧呼嚧醯利。娑啰娑啰，悉唎悉唎，苏嚧苏嚧。菩提夜菩提夜，菩驮夜菩驮夜。弥帝唎夜，那啰谨墀，地利瑟尼那。波夜摩那，娑婆诃。悉陀夜，娑婆诃。摩诃悉陀夜，娑婆诃。悉陀喻艺，室皤啰耶，娑婆诃。那啰谨墀，娑婆诃。摩啰那啰，娑婆诃。悉啰僧阿穆佉耶，娑婆诃。娑婆摩诃阿悉陀夜，娑婆诃。者吉啰阿悉陀夜，娑婆诃。波陀摩羯悉陀夜，娑婆诃。那啰谨墀皤伽啰耶，娑婆诃。摩婆利胜羯啰夜，娑婆诃。南无喝啰怛那哆啰夜耶，南无阿唎耶，婆嚧吉帝，烁皤啰夜，娑婆诃。唵，悉殿都，漫多啰，跋陀耶，娑婆诃。'
+  }
+};
 
-function playSound(pitch = 400) {
-  try {
-    if (!audioCtx) audioCtx = new AudioCtx();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    const now = audioCtx.currentTime;
-    // Main tone
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(pitch, now);
-    gain.gain.setValueAtTime(0.3, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(now); osc.stop(now + 0.15);
-
-    // Sub tone
-    const osc2 = audioCtx.createOscillator();
-    const gain2 = audioCtx.createGain();
-    osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(pitch * 0.5, now);
-    gain2.gain.setValueAtTime(0.15, now);
-    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-    osc2.connect(gain2); gain2.connect(audioCtx.destination);
-    osc2.start(now); osc2.stop(now + 0.2);
-
-    // Click
-    const clickGain = audioCtx.createGain();
-    clickGain.gain.setValueAtTime(0.08, now);
-    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
-    const clickOsc = audioCtx.createOscillator();
-    clickOsc.type = 'square';
-    clickOsc.frequency.setValueAtTime(2000, now);
-    clickOsc.connect(clickGain); clickGain.connect(audioCtx.destination);
-    clickOsc.start(now); clickOsc.stop(now + 0.02);
-
-    // Delay (echo)
-    const delay = audioCtx.createDelay(0.3);
-    delay.delayTime.setValueAtTime(0.08, now);
-    const delayGain = audioCtx.createGain();
-    delayGain.gain.setValueAtTime(0.08, now);
-    delayGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-    osc.connect(delay); delay.connect(delayGain); delayGain.connect(audioCtx.destination);
-  } catch(e) { /* silent fallback */ }
-}
-
-// ====== Game State ======
-const SKINS = [
-  { id: 'default', emoji: '🪵', name: '原木', pitch: 400, unlocked: true },
-  { id: 'gold', emoji: '🥇', name: '金木鱼', pitch: 520, price: '❤️ 赞赏' },
-  { id: 'jade', emoji: '💎', name: '玉木鱼', pitch: 640, price: '❤️ 赞赏' },
-  { id: 'crystal', emoji: '🔮', name: '水晶鱼', pitch: 780, price: '❤️ 赞赏' },
-  { id: 'fire', emoji: '🔥', name: '火焰鱼', pitch: 300, price: '❤️ 赞赏' },
+// ====== REALMS ======
+const REALMS = [
+  { name: '凡人',       need: 0,      color: '#888888', desc: '凡尘俗世，尚未入道' },
+  { name: '练气期',     need: 100,    color: '#4a90d9', desc: '初窥门径，气感初生' },
+  { name: '筑基期',     need: 1000,   color: '#5b9fe0', desc: '根基已固，道心初成' },
+  { name: '金丹期',     need: 10000,  color: '#ffd700', desc: '金丹大成，脱胎换骨' },
+  { name: '元婴期',     need: 50000,  color: '#ff6b6b', desc: '元婴出窍，神游太虚' },
+  { name: '化神期',     need: 200000, color: '#9b59b6', desc: '化神合道，天地共鸣' },
+  { name: '合体期',     need: 500000, color: '#e056a0', desc: '天人合一，万法归宗' },
+  { name: '渡劫期',     need: 1000000,color: '#ff4444', desc: '天劫将至，九死一生' },
+  { name: '大乘期',     need: 5000000,color: '#00d4ff', desc: '功参造化，超凡入圣' },
+  { name: '飞升境',     need: 10000000,color:'#ffffff', desc: '功德圆满，飞升仙界' },
+  { name: '金仙境',     need: 50000000,color:'#ffd700', desc: '金仙不朽，与天同寿' },
+  { name: '圣人',       need: 100000000,color:'#fff5cc', desc: '混元大罗金仙，万劫不灭' },
 ];
 
-let state = {
-  merit: parseInt(localStorage.getItem('mf_merit') || '0'),
-  total: parseInt(localStorage.getItem('mf_total') || '0'),
-  combo: 0,
-  maxCombo: parseInt(localStorage.getItem('mf_maxCombo') || '0'),
-  skin: localStorage.getItem('mf_skin') || 'default',
-  unlocked: JSON.parse(localStorage.getItem('mf_unlocked') || '["default"]'),
-};
-let lastTap = 0;
+// ====== SOUNDS ======
+const SOUNDS = [
+  {
+    id: 'muyu', emoji: '🪵', label: '木鱼',
+    play: (ctx, t) => {
+      const o = ctx.createOscillator(); const g = ctx.createGain();
+      o.type = 'triangle'; o.frequency.setValueAtTime(420, t);
+      g.gain.setValueAtTime(0.25, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.18);
+      o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t+0.18);
+      const o2 = ctx.createOscillator(); const g2 = ctx.createGain();
+      o2.type = 'sine'; o2.frequency.setValueAtTime(210, t);
+      g2.gain.setValueAtTime(0.12, t); g2.gain.exponentialRampToValueAtTime(0.001, t+0.25);
+      o2.connect(g2); g2.connect(ctx.destination); o2.start(t); o2.stop(t+0.25);
+    }
+  },
+  {
+    id: 'bell', emoji: '🔔', label: '磬声',
+    play: (ctx, t) => {
+      const o = ctx.createOscillator(); const g = ctx.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(880, t);
+      g.gain.setValueAtTime(0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t+2);
+      o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t+2);
+      const d = ctx.createDelay(0.5); const dg = ctx.createGain();
+      d.delayTime.setValueAtTime(0.3, t); dg.gain.setValueAtTime(0.08, t);
+      dg.gain.exponentialRampToValueAtTime(0.001, t+2);
+      o.connect(d); d.connect(dg); dg.connect(ctx.destination);
+    }
+  },
+  {
+    id: 'bowl', emoji: '🥣', label: '颂钵',
+    play: (ctx, t) => {
+      [528, 660, 792].forEach((f, i) => {
+        const o = ctx.createOscillator(); const g = ctx.createGain();
+        o.type = 'sine'; o.frequency.setValueAtTime(f, t+i*0.03);
+        g.gain.setValueAtTime(0.06, t+i*0.03);
+        g.gain.exponentialRampToValueAtTime(0.001, t+3);
+        o.connect(g); g.connect(ctx.destination); o.start(t+i*0.03); o.stop(t+3);
+      });
+    }
+  },
+  {
+    id: 'water', emoji: '💧', label: '水滴',
+    play: (ctx, t) => {
+      const bf = ctx.createBiquadFilter(); bf.type = 'bandpass'; bf.frequency.setValueAtTime(2000, t); bf.Q.setValueAtTime(5, t);
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.2, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.3);
+      const buf = ctx.createBuffer(1, ctx.sampleRate*0.05, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i=0; i<d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(ctx.sampleRate*0.01));
+      const src = ctx.createBufferSource(); src.buffer = buf;
+      src.connect(bf); bf.connect(g); g.connect(ctx.destination); src.start(t);
+    }
+  },
+  {
+    id: 'wind', emoji: '🎐', label: '风铃',
+    play: (ctx, t) => {
+      [1200, 1500, 1800, 2100, 2400].forEach((f, i) => {
+        const o = ctx.createOscillator(); const g = ctx.createGain();
+        o.type = 'sine'; o.frequency.setValueAtTime(f, t+i*0.02);
+        g.gain.setValueAtTime(0.04, t+i*0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, t+1.5);
+        o.connect(g); g.connect(ctx.destination); o.start(t+i*0.02); o.stop(t+1.5);
+      });
+    }
+  },
+];
 
-// ====== Stars ======
+// ====== State ======
+const LS = k => { try { return localStorage.getItem('mf_'+k); } catch { return null; } };
+const LSS = (k,v) => { try { localStorage.setItem('mf_'+k, v); } catch {} };
+let state = {
+  merit: parseInt(LS('merit') || '0'),
+  total: parseInt(LS('total') || '0'),
+  session: 0,
+  combo: 0,
+  soundIdx: parseInt(LS('sound') || '0'),
+  sutraOn: LS('sutraOn') === '1',
+  sutraIdx: LS('sutraKey') || 'heart',
+  sutraPos: parseInt(LS('sutraPos') || '0'),
+};
+let lastTap = 0; let ac;
+
+function getRealm(merit) {
+  let r = REALMS[0];
+  for (const realm of REALMS) { if (merit >= realm.need) r = realm; }
+  return r;
+}
+function getNextRealm(merit) {
+  for (const realm of REALMS) { if (merit < realm.need) return realm; }
+  return null;
+}
+
+function playSound() {
+  try {
+    if (!ac) ac = new (window.AudioContext||window.webkitAudioContext)();
+    if (ac.state === 'suspended') ac.resume();
+    const t = ac.currentTime;
+    SOUNDS[state.soundIdx].play(ac, t);
+  } catch(e) {}
+}
+
+function updateUI() {
+  const realm = getRealm(state.merit);
+  const next = getNextRealm(state.merit);
+  document.getElementById('realmName').textContent = realm.name;
+  document.getElementById('realmName').style.background = `linear-gradient(135deg, ${realm.color}, #ffd700, ${realm.color})`;
+  document.getElementById('realmName').style.webkitBackgroundClip = 'text';
+  document.getElementById('counter').textContent = state.merit.toLocaleString();
+  document.getElementById('totalDisplay').textContent = state.total.toLocaleString();
+  document.getElementById('sessionDisplay').textContent = state.session.toLocaleString();
+
+  if (next) {
+    const p = Math.min((state.merit - realm.need) / (next.need - realm.need) * 100, 100);
+    document.getElementById('realmBar').style.width = p + '%';
+    document.getElementById('realmNext').textContent = `下一境：${next.name} · ${next.need.toLocaleString()} 功德`;
+  } else {
+    document.getElementById('realmBar').style.width = '100%';
+    document.getElementById('realmNext').textContent = '已达至高境界';
+  }
+
+  // Sound buttons
+  const row = document.getElementById('soundRow');
+  row.innerHTML = '';
+  SOUNDS.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.className = 'sound-btn' + (i === state.soundIdx ? ' active' : '');
+    b.innerHTML = `<span>${s.emoji}</span><span class="label">${s.label}</span>`;
+    b.onclick = () => { state.soundIdx = i; LSS('sound', i); updateUI(); playSound(); };
+    row.appendChild(b);
+  });
+
+  LSS('merit', state.merit);
+  LSS('total', state.total);
+  LSS('sutraPos', state.sutraPos);
+}
+
+// ====== Sutra ======
+const sutraText = document.getElementById('sutraText');
+const sutraBar = document.getElementById('sutraBar');
+const sutraTitle = document.getElementById('sutraTitle');
+const sutraToggle = document.getElementById('sutraToggle');
+const sutraSelector = document.getElementById('sutraSelector');
+
+sutraToggle.onclick = () => {
+  state.sutraOn = !state.sutraOn;
+  LSS('sutraOn', state.sutraOn ? '1' : '0');
+  sutraSelector.style.display = state.sutraOn ? 'flex' : 'none';
+  sutraToggle.textContent = state.sutraOn ? '关闭诵经' : '开启诵经';
+  if (state.sutraOn) renderSutra(); else sutraText.textContent = '轻敲木鱼，随缘诵经';
+};
+
+function renderSutra() {
+  const s = SUTRAS[state.sutraIdx];
+  if (!s) return;
+  sutraTitle.textContent = `📖 ${s.name}`;
+  const chars = s.text.split('');
+  let html = '';
+  chars.forEach((c, i) => {
+    const cls = i < state.sutraPos ? 'char read' : (i === state.sutraPos ? 'char current' : 'char');
+    html += `<span class="${cls}" data-idx="${i}">${c === ' ' ? '&nbsp;' : c}</span>`;
+  });
+  sutraText.innerHTML = html;
+  const pct = chars.length > 0 ? (state.sutraPos / chars.length * 100) : 0;
+  sutraBar.style.width = pct + '%';
+  document.getElementById('sutraPct').textContent = Math.round(pct) + '%';
+
+  // Auto-scroll
+  const el = sutraText.querySelector('.current');
+  if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function advanceSutra() {
+  if (!state.sutraOn) return;
+  const s = SUTRAS[state.sutraIdx];
+  if (!s) return;
+  state.sutraPos++;
+  if (state.sutraPos >= s.text.length) state.sutraPos = 0;
+  LSS('sutraPos', state.sutraPos);
+  renderSutra();
+}
+
+// Sutra selector
+document.querySelectorAll('.sutra-opt').forEach(el => {
+  el.onclick = () => {
+    document.querySelectorAll('.sutra-opt').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+    state.sutraIdx = el.dataset.sutra;
+    state.sutraPos = 0;
+    LSS('sutraKey', state.sutraIdx);
+    LSS('sutraPos', 0);
+    renderSutra();
+  };
+});
+
+// ====== Tap ======
+const fw = document.getElementById('fishWrapper');
+const glow = document.getElementById('tapGlow');
+
+function tap() {
+  const now = Date.now();
+  if (now - lastTap < 80) return;
+  lastTap = now;
+
+  state.merit += 1;
+  state.total += 1;
+  state.session += 1;
+  state.combo += 1;
+
+  playSound();
+  advanceSutra();
+
+  // Check realm breakthrough
+  const prevRealm = getRealm(state.merit - 1);
+  const newRealm = getRealm(state.merit);
+  if (prevRealm.name !== newRealm.name) {
+    showRealmMsg(newRealm);
+  }
+
+  // Counter animation
+  const c = document.getElementById('counter');
+  c.style.transform = 'scale(1.08)';
+  setTimeout(() => c.style.transform = '', 100);
+
+  // Glow
+  glow.classList.remove('active');
+  void glow.offsetWidth;
+  glow.classList.add('active');
+  setTimeout(() => glow.classList.remove('active'), 100);
+
+  // Floating merit
+  const float = document.createElement('div');
+  float.className = 'float-merit';
+  float.textContent = '+1';
+  const rect = fw.getBoundingClientRect();
+  float.style.left = (rect.left + rect.width/2 - 12 + (Math.random()-0.5)*40) + 'px';
+  float.style.top = (rect.top - 10) + 'px';
+  document.body.appendChild(float);
+  setTimeout(() => float.remove(), 1000);
+
+  // Ripple
+  const ri = document.createElement('div');
+  ri.className = 'ripple-el';
+  const skin = SOUNDS[state.soundIdx];
+  const colors = ['rgba(255,215,0,0.15)','rgba(255,255,255,0.1)','rgba(200,200,255,0.1)'];
+  ri.style.border = '1px solid ' + colors[state.soundIdx % colors.length];
+  fw.appendChild(ri);
+  setTimeout(() => ri.remove(), 700);
+
+  updateUI();
+}
+
+function showRealmMsg(realm) {
+  const el = document.createElement('div');
+  el.className = 'realm-msg';
+  el.innerHTML = `<div class="title" style="color:${realm.color}">${realm.name}</div><div class="sub" style="color:${realm.color}">${realm.desc}</div>`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+}
+
+// ====== Events ======
+fw.addEventListener('pointerdown', e => { e.preventDefault(); tap(); });
+document.addEventListener('keydown', e => { if (e.key===' '||e.key==='Enter') { e.preventDefault(); tap(); } });
+document.addEventListener('touchstart', e => { if (e.target.closest('.fish-wrapper')) e.preventDefault(); }, { passive: false });
+
+// ====== Init ======
 (function initStars() {
   const c = document.getElementById('stars');
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 60; i++) {
     const s = document.createElement('div'); s.className = 'star';
-    s.style.left = Math.random() * 100 + '%';
-    s.style.top = Math.random() * 100 + '%';
-    s.style.setProperty('--d', (1 + Math.random() * 3) + 's');
-    s.style.animationDelay = Math.random() * 3 + 's';
-    s.style.width = s.style.height = (1 + Math.random() * 2) + 'px';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.setProperty('--d', (1+Math.random()*3)+'s');
+    s.style.animationDelay = Math.random()*3+'s';
     c.appendChild(s);
   }
 })();
 
-// ====== Core ======
-const fishEl = document.getElementById('fish');
-const fishWrapper = document.getElementById('fishWrapper');
-const counterEl = document.getElementById('counter');
-const comboEl = document.getElementById('comboDisplay');
-const totalEl = document.getElementById('totalDisplay');
-
-function updateUI() {
-  counterEl.textContent = state.merit.toLocaleString();
-  totalEl.textContent = state.total.toLocaleString();
-  comboEl.textContent = state.combo;
-  localStorage.setItem('mf_merit', state.merit);
-  localStorage.setItem('mf_total', state.total);
-  localStorage.setItem('mf_skin', state.skin);
-  localStorage.setItem('mf_maxCombo', Math.max(state.maxCombo, state.combo));
-}
-
-function tap() {
-  const now = Date.now();
-  if (now - lastTap < 100) return; // Debounce
-  lastTap = now;
-
-  const s = SKINS.find(x => x.id === state.skin) || SKINS[0];
-  playSound(s.pitch);
-
-  // Merit
-  const comboBonus = Math.min(Math.floor(state.combo / 10) + 1, 5);
-  state.merit += comboBonus;
-  state.total += 1;
-  state.combo += 1;
-  updateUI();
-
-  // Animation: counter pop
-  counterEl.classList.remove('pop');
-  void counterEl.offsetWidth;
-  counterEl.classList.add('pop');
-
-  // Floating +1 (or +N)
-  const floatText = document.createElement('div');
-  floatText.className = 'float-text';
-  floatText.textContent = comboBonus > 1 ? `+${comboBonus}` : '+1';
-  const rect = fishWrapper.getBoundingClientRect();
-  floatText.style.left = (rect.left + rect.width / 2 - 15) + 'px';
-  floatText.style.top = (rect.top - 10) + 'px';
-  floatText.style.color = comboBonus > 1 ? '#ff6b6b' : '#ffd700';
-  document.body.appendChild(floatText);
-  setTimeout(() => floatText.remove(), 1000);
-
-  // Ripple
-  const ripple = document.createElement('div');
-  ripple.className = 'ripple';
-  document.getElementById('rippleContainer').appendChild(ripple);
-  setTimeout(() => ripple.remove(), 600);
-
-  // Combo effects
-  if (state.combo === 10) showComboText('🔥 十连击！', '#ff6b6b');
-  if (state.combo === 20) showComboText('💥 二十连击！', '#ff4500');
-  if (state.combo === 50) showComboText('⚡ 五十连击！大师！', '#ffd700');
-  if (state.combo === 100) showComboText('🏆 百连击！功德无量！', '#ff0000');
-
-  // Haptic feedback
-  if (navigator.vibrate) navigator.vibrate(15);
-}
-
-function showComboText(text, color) {
-  const el = document.createElement('div');
-  el.className = 'combo-text';
-  el.textContent = text;
-  el.style.color = color;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 800);
-}
-
-// Reset combo on idle
-let comboTimeout;
-function resetCombo() {
-  clearTimeout(comboTimeout);
-  comboTimeout = setTimeout(() => {
-    state.combo = 0;
-    updateUI();
-  }, 2000);
-}
-
-// ====== Events ======
-fishWrapper.addEventListener('pointerdown', (e) => {
-  e.preventDefault();
-  tap();
-  resetCombo();
+// Initial UI state
+sutraToggle.textContent = state.sutraOn ? '关闭诵经' : '开启诵经';
+sutraSelector.style.display = state.sutraOn ? 'flex' : 'none';
+document.querySelectorAll('.sutra-opt').forEach(el => {
+  el.classList.toggle('active', el.dataset.sutra === state.sutraIdx);
 });
-
-// Keyboard
-document.addEventListener('keydown', (e) => {
-  if (e.key === ' ' || e.key === 'Enter') {
-    e.preventDefault();
-    tap();
-    resetCombo();
-  }
-});
-
-// ====== Skins ======
-const skinGrid = document.getElementById('skinGrid');
-
-function renderSkins() {
-  skinGrid.innerHTML = '';
-  SKINS.forEach(s => {
-    const el = document.createElement('div');
-    el.className = 'skin-item' + (state.skin === s.id ? ' active' : '');
-    el.innerHTML = `<span class="emoji">${s.emoji}</span><span>${s.name}</span>${!s.unlocked && !state.unlocked.includes(s.id) ? `<span class="price">${s.price}</span>` : ''}`;
-    el.addEventListener('click', () => {
-      if (state.unlocked.includes(s.id) || s.unlocked) {
-        state.skin = s.id;
-        localStorage.setItem('mf_skin', s.id);
-        renderSkins();
-      }
-    });
-    skinGrid.appendChild(el);
-  });
-}
-renderSkins();
-
-// Shop
-document.getElementById('shopBtn').addEventListener('click', () => {
-  document.getElementById('shopModal').classList.add('show');
-});
-document.getElementById('closeShop').addEventListener('click', () => {
-  document.getElementById('shopModal').classList.remove('show');
-});
-document.getElementById('shopModal').addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) document.getElementById('shopModal').classList.remove('show');
-});
-
-// ====== Prevent scroll/zoom on long press ======
-document.addEventListener('touchstart', (e) => {
-  if (e.target.closest('.fish-wrapper')) e.preventDefault();
-}, { passive: false });
-
-// Init
 updateUI();
+if (state.sutraOn) renderSutra();
 </script>
 </body>
 </html>
