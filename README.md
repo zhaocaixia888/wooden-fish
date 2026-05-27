@@ -1,2 +1,5 @@
-# wooden-fish
-敲木鱼 · 电子功德 · 解压小游戏
+# 清敲 - 正念减压互动
+
+轻敲一下，静下心来。缓解焦虑、专注当下。
+
+👉 https://zhaocaixia888.github.io/wooden-fish/
