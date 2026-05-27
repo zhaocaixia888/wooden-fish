@@ -6,680 +6,368 @@
 <title>清敲 - 敲木鱼</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-html,body{width:100%;height:100%;overflow:hidden}
-body{font-family:'Noto Serif SC','STSong','SimSun','Songti SC',serif;display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at center,#1a0a00,#0a0500);color:#c8b088;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a0a2e,#16213e,#0f3460);min-height:100vh;color:#eee;overflow-x:hidden}
+.container{max-width:420px;margin:0 auto;padding:16px;position:relative}
 
-/* ===== MAIN SCREEN ===== */
-.screen{width:100%;max-width:420px;height:100vh;max-height:800px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative}
+/* Header */
+.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 12px}
+.header h1{font-size:22px;font-weight:700;background:linear-gradient(135deg,#e2d5f0,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header .stats{display:flex;gap:12px;font-size:13px}
+.header .stats span{background:rgba(255,255,255,.08);padding:4px 10px;border-radius:12px;display:flex;align-items:center;gap:4px}
 
-/* ===== TEMPLE ATMOSPHERE ===== */
-/* Subtle incense smoke particles */
-.smoke{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
-.smoke span{position:absolute;bottom:-20px;width:2px;height:20px;background:linear-gradient(to top,rgba(200,176,136,.04),rgba(200,176,136,.01),transparent);border-radius:50%;animation:smokeRise 8s infinite linear}
-@keyframes smokeRise{0%{transform:translateY(0) scaleX(1);opacity:0}10%{opacity:.6}90%{opacity:.3}100%{transform:translateY(-110vh) scaleX(3);opacity:0}}
-.smoke span:nth-child(1){left:20%;width:1px;animation-duration:11s;animation-delay:0s}
-.smoke span:nth-child(2){left:50%;width:3px;animation-duration:9s;animation-delay:2s}
-.smoke span:nth-child(3){left:75%;width:2px;animation-duration:13s;animation-delay:5s}
-.smoke span:nth-child(4){left:35%;width:1.5px;animation-duration:10s;animation-delay:7s}
+/* Sutra */
+.sutra-box{min-height:48px;display:flex;align-items:center;justify-content:center;margin:4px 0 10px;background:rgba(255,255,255,.04);border-radius:10px;padding:8px 12px}
+.sutra-text{font-size:14px;color:rgba(255,255,255,.55);text-align:center;line-height:1.6;transition:opacity .15s;letter-spacing:.5px}
+.sutra-text .hl{color:#a78bfa}
 
-/* ===== TITLE AREA ===== */
-.title-area{text-align:center;z-index:1;margin-bottom:8px}
-.title-area h1{font-size:28px;color:#d4a574;letter-spacing:8px;font-weight:400;text-shadow:0 0 30px rgba(212,165,116,.1)}
-.title-area .sub{font-size:11px;color:rgba(200,176,136,.25);letter-spacing:6px;margin-top:2px}
+/* Tap Circle */
+.tap-area{text-align:center;padding:16px 0 8px}
+.circle-wrap{position:relative;display:inline-block;cursor:pointer}
+.circle{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#7c3aed,#4f46e5,#1e1b4b);box-shadow:0 0 60px rgba(124,58,237,.3),0 0 120px rgba(79,70,229,.15),inset 0 -20px 60px rgba(0,0,0,.4);transition:transform .06s;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:pulse 4s ease-in-out infinite}
+.circle:active{transform:scale(.92)}
+@keyframes pulse{0%,100%{box-shadow:0 0 60px rgba(124,58,237,.3)}50%{box-shadow:0 0 80px rgba(124,58,237,.4)}}
+.circle .emoji{font-size:56px;line-height:1;margin-bottom:4px}
+.circle .label{font-size:13px;color:rgba(255,255,255,.5);letter-spacing:4px}
 
-/* ===== SUTRA ===== */
-.sutra-box{position:relative;width:100%;max-width:360px;min-height:56px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;z-index:1;
-  background:rgba(30,18,8,.4);border-radius:4px;border:1px solid rgba(200,176,136,.06);padding:10px 16px}
-.sutra-text{font-size:14px;color:rgba(200,176,136,.6);text-align:center;line-height:1.8;letter-spacing:1px;transition:opacity .15s;font-family:'Noto Serif SC','STSong',serif}
-.sutra-text .hl{color:#c8a878}
-.sutra-name{position:absolute;bottom:2px;right:8px;font-size:9px;color:rgba(200,176,136,.15)}
+/* Vibration on hit */
+@keyframes shake{0%{transform:scale(.92) translate(0,0)}20%{transform:scale(.92) translate(-3px,0)}40%{transform:scale(.92) translate(3px,0)}60%{transform:scale(.92) translate(-2px,0)}80%{transform:scale(.92) translate(2px,0)}100%{transform:scale(.92) translate(0,0)}}
+.circle.hit{animation:shake .12s ease-out}
 
-/* ===== WOODEN FISH ===== */
-.fish-container{z-index:1;position:relative;margin-bottom:10px}
+/* Merit */
+.score-area{text-align:center;margin:4px 0 2px}
+.score-num{font-size:44px;font-weight:800;background:linear-gradient(180deg,#e2d5f0,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.score-lbl{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:6px;margin-bottom:4px}
+.realm{font-size:11px;color:rgba(167,139,250,.5);padding:2px 14px;border:1px solid rgba(167,139,250,.15);border-radius:10px;display:inline-block;letter-spacing:2px}
 
-/* Outer glow ring */
-.fish-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:280px;height:280px;border-radius:50%;
-  background:radial-gradient(circle,rgba(212,165,116,.04) 0%,transparent 70%);pointer-events:none;animation:glowPulse 4s ease-in-out infinite}
-@keyframes glowPulse{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}}
+/* Combo */
+.combo-text{text-align:center;font-size:15px;color:#fbbf24;display:none;min-height:20px;margin-bottom:2px}
+.combo-text.show{display:block;animation:fadeUp .2s}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(5px)}100%{opacity:1;transform:translateY(0)}}
 
-/* The actual wooden fish */
-.wooden-fish{position:relative;width:190px;height:190px;border-radius:50%;cursor:pointer;transition:transform .06s;
-  /* Wood grain base */
-  background:
-    /* Scaled wood grain lines */
-    repeating-linear-gradient(0deg,
-      rgba(100,60,30,.03) 0px, rgba(100,60,30,.01) 1px, transparent 1px, transparent 4px),
-    repeating-linear-gradient(45deg,
-      rgba(100,60,30,.02) 0px, transparent 2px, transparent 5px),
-    /* Main body - dark wood */
-    radial-gradient(ellipse at 38% 35%, #8B6B3D 0%, #6B4C28 30%, #3D2814 60%, #1A0F08 100%);
-  box-shadow:
-    0 10px 60px rgba(0,0,0,.7),
-    0 0 80px rgba(212,165,116,.05),
-    inset 0 -15px 30px rgba(0,0,0,.5),
-    inset 0 8px 20px rgba(200,160,100,.08);
-  border:1px solid rgba(160,120,80,.15);
-  display:flex;flex-direction:column;align-items:center;justify-content:center}
-.wooden-fish:active{transform:scale(.94)}
+/* Sound Row */
+.sound-row{display:flex;gap:5px;margin:8px 0;overflow-x:auto;padding:2px 0;justify-content:center;flex-wrap:wrap}
+.snd-btn{padding:5px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);color:rgba(255,255,255,.4);font-size:12px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.snd-btn.active{background:rgba(124,58,237,.3);border-color:#7c3aed;color:#c084fc}
 
-/* Fish scale pattern overlay */
-.wooden-fish::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;
-  background:radial-gradient(circle at 50% 45%, transparent 25%, rgba(200,160,100,.03) 26%, transparent 27%);
-  background-size:22px 22px;opacity:.4}
+/* Tab Bar */
+.tab-bar{display:flex;gap:6px;margin:8px 0;padding:4px;background:rgba(255,255,255,.06);border-radius:12px}
+.tab{flex:1;text-align:center;padding:8px 0;border-radius:8px;font-size:13px;color:rgba(255,255,255,.4);cursor:pointer;transition:all .2s}
+.tab.active{background:rgba(124,58,237,.3);color:#fff}
 
-/* Carved line around edge */
-.wooden-fish::after{content:'';position:absolute;top:5px;left:5px;right:5px;bottom:5px;border-radius:50%;
-  border:1px solid rgba(200,160,100,.06)}
+/* Panels */
+.panel{display:none;animation:fadeIn .25s}
+.panel.active{display:block}
+@keyframes fadeIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
 
-/* The fish design on top - a simplified fish shape */
-.fish-design{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;pointer-events:none}
-.fish-design svg{width:80px;height:80px;opacity:.08;filter:drop-shadow(0 0 5px rgba(200,176,136,.05))}
+/* Card */
+.card{background:rgba(255,255,255,.04);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,.06)}
+.card h3{font-size:14px;margin-bottom:10px;color:#c084fc;display:flex;align-items:center;gap:6px}
 
-/* Center text */
-.fish-center-text{position:relative;z-index:2;text-align:center;pointer-events:none}
-.fish-char{font-size:42px;color:rgba(200,176,136,.2);letter-spacing:0;font-weight:300;font-family:'Noto Serif SC',serif;text-shadow:0 0 15px rgba(200,176,136,.05)}
-.fish-label{font-size:11px;color:rgba(200,176,136,.15);letter-spacing:4px;margin-top:0}
+/* Achievements */
+.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ach-item{background:rgba(255,255,255,.04);border-radius:10px;padding:10px 6px;text-align:center;border:1px solid rgba(255,255,255,.04);opacity:.35;transition:all .2s}
+.ach-item.unlocked{opacity:1;border-color:rgba(124,58,237,.2);background:rgba(124,58,237,.06)}
+.ach-item .icon{font-size:24px;margin-bottom:3px}
+.ach-item .name{font-size:10px;color:rgba(255,255,255,.6)}
+.ach-item .desc{font-size:8px;color:rgba(255,255,255,.25)}
 
-/* Vibration effect on hit */
-@keyframes vibrate{0%{transform:translate(0,0) scale(.94)}10%{transform:translate(-2px,-1px) scale(.94)}20%{transform:translate(2px,1px) scale(.94)}30%{transform:translate(-1px,2px) scale(.94)}40%{transform:translate(1px,-1px) scale(.94)}50%{transform:translate(-1px,-1px) scale(.94)}60%{transform:translate(1px,1px) scale(.94)}70%{transform:translate(2px,0) scale(.94)}80%{transform:translate(-2px,1px) scale(.94)}90%{transform:translate(1px,-1px) scale(.94)}100%{transform:translate(0,0) scale(.94)}}
-.wooden-fish.hit{animation:vibrate .15s ease-out}
+/* Skins */
+.skin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.skin-item{background:rgba(255,255,255,.04);border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,.04)}
+.skin-item .preview{width:48px;height:48px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:22px;background:radial-gradient(circle at 35% 35%,#7c3aed,transparent)}
+.skin-item .sname{font-size:12px;color:#ddd;margin-bottom:1px}
+.skin-item .sdesc{font-size:9px;color:rgba(255,255,255,.3);margin-bottom:6px}
+.skin-item .btn-s{width:100%;padding:6px 0;border:0;border-radius:6px;font-size:11px;cursor:pointer}
+.skin-item .btn-s.eq{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+.skin-item .btn-s.own{background:rgba(124,58,237,.15);color:#c084fc;border:1px solid rgba(124,58,237,.2)}
+.skin-item .btn-s.buy{background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(79,70,229,.15));color:#c084fc;border:1px solid rgba(124,58,237,.1)}
+.skin-item .btn-s:disabled{opacity:.3;cursor:default}
 
-/* ===== MERIT ===== */
-.merit-area{z-index:1;text-align:center;margin-bottom:6px}
-.merit-num{font-size:40px;color:#c8a878;line-height:1;font-weight:300;letter-spacing:2px;text-shadow:0 0 20px rgba(200,176,136,.03)}
-.merit-lbl{font-size:10px;color:rgba(200,176,136,.2);letter-spacing:8px;margin-top:1px}
-.realm{font-size:11px;color:rgba(200,176,136,.3);letter-spacing:3px;margin-top:2px;padding:2px 12px;border:1px solid rgba(200,176,136,.06);border-radius:10px;display:inline-block}
+/* Week */
+.week-row{display:flex;gap:3px;justify-content:center;margin-bottom:10px}
+.day-box{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.2)}
+.day-box.done{background:rgba(124,58,237,.2);color:#c084fc;border:1px solid rgba(124,58,237,.15)}
+.day-box.today{background:rgba(124,58,237,.08);color:#a78bfa;border:1px solid rgba(124,58,237,.2)}
+.btn-c{width:100%;padding:9px;border:0;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:14px;cursor:pointer}
+.btn-c:disabled{background:#333;color:#666;cursor:default}
 
-/* ===== COMBO ===== */
-.combo-text{z-index:1;font-size:15px;color:#c8a878;display:none;min-height:20px;margin-bottom:2px;letter-spacing:2px}
-.combo-text.show{display:block;animation:fadeIn .2s}
-@keyframes fadeIn{0%{opacity:0;transform:translateY(5px)}100%{opacity:1;transform:translateY(0)}}
+/* Share row */
+.share-row{display:flex;gap:8px;margin-top:8px}
+.btn-share{flex:1;padding:9px;border:0;border-radius:8px;font-size:13px;cursor:pointer}
+.btn-share.p{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff}
+.btn-share.s{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.08)}
 
-/* ===== HIT PARTICLES ===== */
-@keyframes partFloat{0%{opacity:1;transform:translateY(0) scale(1) rotate(0deg)}100%{opacity:0;transform:translateY(-100px) scale(0) rotate(360deg)}}
-.hit-particle{position:fixed;pointer-events:none;z-index:10;font-size:18px;animation:partFloat 1s ease-out forwards}
-@keyframes merFloat{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(.3)}}
-.merit-float{position:fixed;pointer-events:none;z-index:11;font-size:18px;color:#c8a878;font-family:serif;animation:merFloat .9s ease-out forwards}
+/* Stat rows */
+.st-row{display:flex;justify-content:space-between;background:rgba(255,255,255,.03);padding:10px 12px;border-radius:8px;margin-bottom:4px}
+.st-row .sl{font-size:12px;color:rgba(255,255,255,.35)}
+.st-row .sv{font-size:13px;color:#a78bfa}
 
-/* ===== SOUND SELECT ===== */
-.sound-row{z-index:1;display:flex;gap:4px;margin-bottom:8px;padding:3px;background:rgba(30,18,8,.3);border-radius:6px;border:1px solid rgba(200,176,136,.04)}
-.snd-btn{padding:4px 12px;border-radius:4px;border:0;background:transparent;color:rgba(200,176,136,.2);font-size:11px;cursor:pointer;font-family:serif;transition:all .2s;letter-spacing:1px}
-.snd-btn.active{background:rgba(200,176,136,.06);color:rgba(200,176,136,.5)}
-
-/* ===== BOTTOM MENU ===== */
-.menu{z-index:1;display:flex;gap:6px;margin-top:6px;padding:4px;background:rgba(30,18,8,.3);border-radius:6px;border:1px solid rgba(200,176,136,.04)}
-.menu-item{flex:1;text-align:center;padding:5px 0;border-radius:4px;font-size:10px;color:rgba(200,176,136,.2);cursor:pointer;transition:all .2s;letter-spacing:1px;font-family:serif}
-.menu-item.active{background:rgba(200,176,136,.06);color:rgba(200,176,136,.4)}
-
-/* ===== PANELS ===== */
-.panel-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(8,4,0,.85);z-index:50;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.panel-overlay.show{display:flex}
-.panel-box{width:90%;max-width:380px;max-height:80vh;overflow-y:auto;padding:20px;background:rgba(20,12,4,.95);border:1px solid rgba(200,176,136,.08);border-radius:8px}
-.panel-box::-webkit-scrollbar{width:2px}
-.panel-box::-webkit-scrollbar-thumb{background:rgba(200,176,136,.1);border-radius:1px}
-.panel-title{font-size:16px;color:#c8a878;letter-spacing:4px;margin-bottom:14px;text-align:center;font-weight:400}
-.panel-close{position:absolute;top:12px;right:16px;font-size:18px;color:rgba(200,176,136,.2);cursor:pointer;z-index:51}
-
-/* Panel items */
-.pi{background:rgba(200,176,136,.02);border-radius:4px;padding:10px 12px;margin-bottom:6px;border:1px solid rgba(200,176,136,.03);cursor:pointer;transition:all .15s}
-.pi:active{background:rgba(200,176,136,.05)}
-.pi .pi-name{font-size:12px;color:rgba(200,176,136,.6);letter-spacing:1px}
-.pi .pi-desc{font-size:10px;color:rgba(200,176,136,.2);margin-top:2px}
-.pi .pi-status{float:right;font-size:10px;padding:2px 6px;border-radius:3px}
-.pi .pi-status.owned{border:1px solid rgba(200,176,136,.1);color:rgba(200,176,136,.3)}
-.pi .pi-status.equipped{background:rgba(200,176,136,.06);color:rgba(200,176,136,.4)}
-.pi .pi-status.locked{color:rgba(200,176,136,.1)}
-.pi .pi-status.buy{color:rgba(200,176,136,.3)}
-.pi-share-btn{text-align:center;padding:10px;background:rgba(200,176,136,.04);border-radius:4px;margin-top:10px;cursor:pointer;border:1px solid rgba(200,176,136,.06);color:rgba(200,176,136,.3);font-size:12px;font-family:serif;letter-spacing:2px}
-.pi-share-btn:active{background:rgba(200,176,136,.08)}
-
-/* Stats in panel */
-.st-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(200,176,136,.02)}
-.st-row:last-child{border:0}
-.st-row .sl{font-size:11px;color:rgba(200,176,136,.3);letter-spacing:1px}
-.st-row .sv{font-size:12px;color:rgba(200,176,136,.5)}
-
-/* Week check-in */
-.wk{display:flex;gap:2px;justify-content:center;margin-bottom:10px}
-.wk-d{width:32px;height:32px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;background:rgba(200,176,136,.02);color:rgba(200,176,136,.1)}
-.wk-d.done{background:rgba(200,176,136,.06);color:rgba(200,176,136,.3)}
-.wk-d.today{background:rgba(200,176,136,.04);color:rgba(200,176,136,.4);border:1px solid rgba(200,176,136,.1)}
-.btn-ci{width:100%;padding:8px;border:0;border-radius:4px;background:rgba(200,176,136,.06);color:rgba(200,176,136,.4);font-size:12px;cursor:pointer;font-family:serif;letter-spacing:2px;border:1px solid rgba(200,176,136,.04)}
-.btn-ci:disabled{opacity:.3;cursor:default}
+/* Float */
+.floating{position:fixed;pointer-events:none;font-size:20px;font-weight:700;color:#a78bfa;z-index:100;animation:flUp .9s ease-out forwards}
+@keyframes flUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(.3)}}
 
 /* Toast */
-.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9);background:rgba(10,6,2,.95);color:#c8a878;padding:14px 24px;border-radius:6px;font-size:13px;z-index:100;pointer-events:none;text-align:center;border:1px solid rgba(200,176,136,.08);font-family:serif;opacity:0;transition:all .25s;letter-spacing:1px}
-.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.88);color:#fff;padding:14px 24px;border-radius:12px;font-size:14px;z-index:200;opacity:0;transition:opacity .25s;pointer-events:none;text-align:center;backdrop-filter:blur(8px)}
+.toast.show{opacity:1}
 
-/* Achievement notification */
-.ach-popup{position:fixed;top:20%;left:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(10,6,2,.95);color:#c8a878;padding:20px 28px;border-radius:8px;z-index:90;text-align:center;border:1px solid rgba(200,176,136,.1);opacity:0;transition:all .4s;pointer-events:none}
-.ach-popup.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.ach-popup .big{font-size:36px;margin-bottom:6px}
-.ach-popup .t{font-size:14px;letter-spacing:2px}
-.ach-popup .d{font-size:10px;color:rgba(200,176,136,.3);margin-top:4px;letter-spacing:1px}
+/* Ach popup */
+.ach-pop{position:fixed;top:25%;left:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(0,0,0,.9);color:#fff;padding:20px 28px;border-radius:14px;z-index:150;text-align:center;border:1px solid rgba(124,58,237,.2);opacity:0;transition:all .35s;pointer-events:none;backdrop-filter:blur(8px)}
+.ach-pop.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.ach-pop .big{font-size:36px;margin-bottom:6px}
+.ach-pop .t{font-size:16px;color:#c084fc}
+.ach-pop .d{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
+
+@media(max-width:360px){.circle{width:170px;height:170px}.circle .emoji{font-size:46px}.score-num{font-size:36px}}
 </style>
 </head>
 <body>
-<div class="smoke"><span></span><span></span><span></span><span></span></div>
-
-<div class="screen">
-  <div class="title-area">
-    <h1>敲</h1>
-    <div class="sub">— 木 鱼 —</div>
-  </div>
-
-  <div class="sutra-box">
-    <div class="sutra-text" id="sutraText">轻敲木鱼 · 静心诵经</div>
-    <div class="sutra-name" id="sutraName">—</div>
-  </div>
-
-  <div class="fish-container">
-    <div class="fish-glow"></div>
-    <div class="wooden-fish" id="woodenFish">
-      <div class="fish-design">
-        <svg viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="30" fill="none" stroke="#c8a878" stroke-width=".5" opacity=".3"/>
-          <path d="M30,50 Q40,35 50,50 Q60,65 70,50" fill="none" stroke="#c8a878" stroke-width=".3" opacity=".2"/>
-        </svg>
-      </div>
-      <div class="fish-center-text">
-        <div class="fish-char" id="fishChar">佛</div>
-        <div class="fish-label">— 敲 —</div>
-      </div>
+<div class="container">
+  <div class="header">
+    <h1>🪷 清敲</h1>
+    <div class="stats">
+      <span>✦ <span id="hScore">0</span></span>
+      <span>🔥 <span id="hStreak">未签到</span></span>
     </div>
   </div>
 
-  <div class="merit-area">
-    <div class="merit-num" id="meritNum">0</div>
-    <div class="merit-lbl">功 德</div>
-    <div class="realm" id="realmLabel">凡 人</div>
+  <div class="sutra-box">
+    <div class="sutra-text" id="sutraText">轻敲 · 静心 · 诵经</div>
   </div>
-
-  <div class="combo-text" id="comboText">×3 连击</div>
 
   <div class="sound-row">
-    <button class="snd-btn active" data-s="0">木鱼</button>
-    <button class="snd-btn" data-s="1">磬</button>
-    <button class="snd-btn" data-s="2">铃</button>
-    <button class="snd-btn" data-s="3">风铃</button>
-    <button class="snd-btn" data-s="4">雨声</button>
+    <div class="snd-btn active" data-s="0">🥁 木鱼</div>
+    <div class="snd-btn" data-s="1">🔔 磬</div>
+    <div class="snd-btn" data-s="2">🛎️ 铃</div>
+    <div class="snd-btn" data-s="3">🎐 风铃</div>
+    <div class="snd-btn" data-s="4">🌧️ 雨声</div>
   </div>
 
-  <div class="menu">
-    <div class="menu-item" data-panel="achieve">成就</div>
-    <div class="menu-item" data-panel="skins">法相</div>
-    <div class="menu-item" data-panel="checkin">签到</div>
-    <div class="menu-item" data-panel="share">分享</div>
-    <div class="menu-item" data-panel="stats">道果</div>
+  <div class="tap-area">
+    <div class="circle-wrap" id="circleWrap">
+      <div class="circle" id="mainCircle">
+        <div class="emoji" id="skinEmoji">🪷</div>
+        <div class="label">敲 木 鱼</div>
+      </div>
+    </div>
+    <div class="combo-text" id="comboText">🔥 连击 ×5</div>
+    <div class="score-area">
+      <div class="score-num" id="scoreNum">0</div>
+      <div class="score-lbl">功 德</div>
+      <div class="realm" id="realmLabel">凡 人</div>
+    </div>
   </div>
+
+  <div class="tab-bar">
+    <div class="tab active" data-tab="tabMain">🪷 修行</div>
+    <div class="tab" data-tab="tabAch">🏆 成就</div>
+    <div class="tab" data-tab="tabShop">🎨 法相</div>
+    <div class="tab" data-tab="tabCheck">📅 签到</div>
+    <div class="tab" data-tab="tabShare">📤 分享</div>
+    <div class="tab" data-tab="tabStats">📊 道果</div>
+  </div>
+
+  <div class="panel active" id="tabMain">
+    <div class="card" style="text-align:center;color:rgba(255,255,255,.35);font-size:13px;line-height:1.8">👆 轻触敲木鱼<br>每敲一次积累功德<br>快速连击获额外加成</div>
+  </div>
+  <div class="panel" id="tabAch"><div id="achContent" class="card"><h3>🏆 修行成就</h3><div class="ach-grid" id="achGrid"></div></div></div>
+  <div class="panel" id="tabShop"><div id="shopContent" class="card"><h3>🎨 法相 · 木鱼皮肤</h3><div class="skin-grid" id="skinGrid"></div></div></div>
+  <div class="panel" id="tabCheck"><div class="card"><h3>📅 每日签到</h3><div class="week-row" id="weekRow"></div><button class="btn-c" id="btnCheck">📌 签到 · +50 功德</button></div></div>
+  <div class="panel" id="tabShare"><div class="card"><h3>📤 法布施</h3><p style="font-size:12px;color:rgba(255,255,255,.35);margin-bottom:8px">分享给好友，双方皆获功德</p>
+    <div class="share-row"><button class="btn-share p" id="btnShare">📲 分享</button><button class="btn-share s" id="btnCopy">🔗 复制</button></div>
+    <div class="st-row" style="margin-top:10px"><span class="sl">今日</span><span class="sv" id="stToday">0</span></div>
+    <div class="st-row"><span class="sl">累计</span><span class="sv" id="stTotal">0</span></div>
+    <div class="st-row"><span class="sl">接引</span><span class="sv" id="stInvite">0</span></div>
+  </div></div>
+  <div class="panel" id="tabStats"><div class="card"><h3>📊 修行道果</h3>
+    <div class="st-row"><span class="sl">总敲击</span><span class="sv" id="sTap">0</span></div>
+    <div class="st-row"><span class="sl">总功德</span><span class="sv" id="sMer">0</span></div>
+    <div class="st-row"><span class="sl">境界</span><span class="sv" id="sRea">凡人</span></div>
+    <div class="st-row"><span class="sl">连续签到</span><span class="sv" id="sStr">0 天</span></div>
+    <div class="st-row"><span class="sl">最高连击</span><span class="sv" id="sCom">0</span></div>
+    <div class="st-row"><span class="sl">法相</span><span class="sv" id="sSki">0/0</span></div>
+    <div class="st-row"><span class="sl">成就</span><span class="sv" id="sAch">0/0</span></div>
+  </div></div>
 </div>
 
-<!-- Panels -->
-<div class="panel-overlay" id="panelAchieve"><div class="panel-box" id="achieveContent"><div class="panel-title">— 修行成就 —</div></div></div>
-<div class="panel-overlay" id="panelSkins"><div class="panel-box" id="skinsContent"><div class="panel-title">— 法 相 —</div></div></div>
-<div class="panel-overlay" id="panelCheckin"><div class="panel-box" id="checkinContent"><div class="panel-title">— 每日签到 —</div></div></div>
-<div class="panel-overlay" id="panelShare"><div class="panel-box" id="shareContent"><div class="panel-title">— 法布施 · 分享 —</div></div></div>
-<div class="panel-overlay" id="panelStats"><div class="panel-box" id="statsContent"><div class="panel-title">— 修行道果 —</div></div></div>
-
 <div class="toast" id="toast"></div>
-<div class="ach-popup" id="achPopup"><div class="big">🏆</div><div class="t">成就</div><div class="d">描述</div></div>
+<div class="ach-pop" id="achPop"><div class="big">🏆</div><div class="t">成就</div><div class="d">描述</div></div>
 
 <script>
 // ============ STATE ============
-const K = 'qq_v3';
-function def(){return {
-  merit:0, taps:0, combo:0, maxCombo:0, skin:0, owned:[0], soundIdx:0,
-  checkins:[], streak:0, ach:{}, lastTap:0, shareToday:0, shareTotal:0,
-  inviteCount:0, shareSkin:false, inviteSkin:false, firstShare:'', lastVisit:''
-}}
+const K='qq_v4';
+function def(){return{merit:0,taps:0,combo:0,maxCombo:0,skin:0,owned:[0],sndIdx:0,checkins:[],streak:0,ach:{},lastTap:0,shareToday:0,shareTotal:0,invCnt:0,shareSkin:false,invSkin:false,firstShare:'',lastVisit:''}}
 const ld=()=>{try{const d=localStorage.getItem(K);return d?JSON.parse(d):def()}catch(e){return def()}}
-const sv=()=>localStorage.setItem(K,JSON.stringify(s))
-let s=ld()
+const sv=()=>localStorage.setItem(K,JSON.stringify(s));let s=ld();
 
-// ============ CONSTANTS ============
-const SUTRA=[
-  {n:'心经',l:['观自在菩萨 · 行深般若波罗蜜多时','照见五蕴皆空 · 度一切苦厄','色不异空 · 空不异色','色即是空 · 空即是色','受想行识 · 亦复如是','是诸法空相 · 不生不灭','不垢不净 · 不增不减','无眼耳鼻舌身意','无色声香味触法','无无明 · 亦无无明尽','无苦集灭道 · 无智亦无得','心无挂碍 · 无有恐怖','远离颠倒梦想 · 究竟涅槃','三世诸佛 · 得阿耨多罗三藐三菩提','是大神咒 · 是大明咒 · 是无上咒','能除一切苦 · 真实不虚','揭谛揭谛 · 波罗揭谛','波罗僧揭谛 · 菩提萨婆诃']},
-  {n:'金刚经',l:['凡所有相 · 皆是虚妄','若见诸相非相 · 即见如来','一切有为法 · 如梦幻泡影','如露亦如电 · 应作如是观','应无所住 · 而生其心','过去心不可得 · 现在心不可得','未来心不可得','若以色见我 · 以音声求我','是人行邪道 · 不能见如来','法尚应舍 · 何况非法']},
-  {n:'六字大明咒',l:['嗡嘛呢叭咪吽','嗡 · 嘛 · 呢 · 叭 · 咪 · 吽','ཨོཾ་མ་ཎི་པ་དྨེ་ཧཱུྃ']},
-  {n:'大悲咒',l:['南无喝啰怛那 · 哆啰夜耶','南无阿唎耶 · 婆卢羯帝','烁钵啰耶 · 菩提萨埵婆耶','唵 · 萨皤啰罚曳 · 数怛那怛写','婆卢吉帝 · 室佛啰愣驮婆','摩诃菩提萨埵']},
-  {n:'道德经',l:['道可道 · 非常道','名可名 · 非常名','无名天地之始 · 有名万物之母','玄之又玄 · 众妙之门','上善若水 · 水善利万物而不争','处众人之所恶 · 故几于道']},
-  {n:'清静经',l:['大道无形 · 生育天地','大道无情 · 运行日月','大道无名 · 长养万物','人能常清静 · 天地悉皆归','常能遣其欲 · 而心自静','澄其心 · 而神自清']},
-  {n:'法华经',l:['诸法从本来 · 常自寂灭相','是法住法位 · 世间相常住','诸法实相 · 如是相 · 如是性','开方便门 · 示真实相','佛种从缘起 · 是故说一乘']}
-]
-const REALMS=[
+// ============ SUTRA ============
+const SUT=[
+  {n:'心经',l:['观自在菩萨 · 行深般若波罗蜜多时','照见五蕴皆空 · 度一切苦厄','色不异空 · 空不异色','色即是空 · 空即是色','受想行识 · 亦复如是','是诸法空相 · 不生不灭','不垢不净 · 不增不减','无眼耳鼻舌身意','无色声香味触法','无无明 · 亦无无明尽','心无挂碍 · 无有恐怖','远离颠倒梦想 · 究竟涅槃','三世诸佛 · 得阿耨多罗三藐三菩提','是大神咒 · 是大明咒','能除一切苦 · 真实不虚','揭谛揭谛 · 波罗揭谛','波罗僧揭谛 · 菩提萨婆诃']},
+  {n:'金刚经',l:['凡所有相 · 皆是虚妄','若见诸相非相 · 即见如来','一切有为法 · 如梦幻泡影','如露亦如电 · 应作如是观','应无所住 · 而生其心','过去心不可得 · 现在心不可得','未来心不可得']},
+  {n:'六字大明咒',l:['嗡嘛呢叭咪吽','嗡·嘛·呢·叭·咪·吽']},
+  {n:'大悲咒',l:['南无喝啰怛那 · 哆啰夜耶','南无阿唎耶 · 婆卢羯帝','烁钵啰耶 · 菩提萨埵婆耶','唵 · 萨皤啰罚曳','婆卢吉帝 · 室佛啰愣驮婆','摩诃菩提萨埵']},
+  {n:'道德经',l:['道可道 · 非常道','名可名 · 非常名','无名天地之始 · 有名万物之母','玄之又玄 · 众妙之门','上善若水 · 水善利万物而不争']},
+  {n:'清静经',l:['大道无形 · 生育天地','大道无情 · 运行日月','大道无名 · 长养万物','人能常清静 · 天地悉皆归']},
+  {n:'法华经',l:['诸法从本来 · 常自寂灭相','是法住法位 · 世间相常住','诸法实相 · 如是相 · 如是性','开方便门 · 示真实相']}
+];
+const REALM=[
   {n:'凡人',m:0},{n:'初学',m:100},{n:'修行者',m:300},{n:'入定',m:600},
   {n:'禅定',m:1200},{n:'明心',m:2500},{n:'见性',m:5000},{n:'开悟',m:10000},
   {n:'大觉',m:20000},{n:'菩提',m:40000},{n:'金刚',m:80000},{n:'涅槃',m:150000}
-]
-const SKINS=[
-  {id:0,n:'原木本色',e:'佛',d:'原始木鱼 · 质朴本真'},
-  {id:1,n:'紫檀沉香',e:'禅',d:'紫檀木制 · 沉静淡雅',p:300},
-  {id:2,n:'金线菩提',e:'悟',d:'金丝镶纹 · 庄严殊胜',p:800},
-  {id:3,n:'白玉莲台',e:'净',d:'白玉雕琢 · 清净无染',p:1500},
-  {id:4,n:'鎏金法光',e:'觉',d:'鎏金溢彩 · 法光普照',p:3000},
-  {id:5,n:'分享之心',e:'善',d:'分享即有 · 善缘广结',share:true},
-  {id:6,n:'友谊之莲',e:'缘',d:'接引有缘 · 莲开并蒂',invite:true},
-]
+];
+const SKIN=[
+  {id:0,n:'清净本心',e:'🪷',d:'初始法相'},
+  {id:1,n:'紫檀木鱼',e:'🪵',d:'紫檀木制',p:200},
+  {id:2,n:'青铜磬',e:'🔔',d:'古铜铸就',p:500},
+  {id:3,n:'白玉莲台',e:'💎',d:'白玉雕琢',p:1000},
+  {id:4,n:'金钵',e:'🏆',d:'鎏金法钵',p:2000},
+  {id:5,n:'分享之心',e:'💝',d:'分享即得',share:true},
+  {id:6,n:'友谊之莲',e:'🤝',d:'接引有缘',invite:true}
+];
 const ACH=[
   {id:'1',n:'初叩',i:'👶',d:'第一次敲击',c:()=>s.taps>=1},
-  {id:'2',n:'百敲',i:'🙏',d:'敲击100次',c:()=>s.taps>=100},
-  {id:'3',n:'千锤',i:'⚔️',d:'敲击1000次',c:()=>s.taps>=1000},
-  {id:'4',n:'万法',i:'☸️',d:'敲击10000次',c:()=>s.taps>=10000},
-  {id:'5',n:'五日禅',i:'📅',d:'连续签到5天',c:()=>s.streak>=5},
-  {id:'6',n:'半月修',i:'🗓️',d:'连续签到15天',c:()=>s.streak>=15},
-  {id:'7',n:'一月圆',i:'🌕',d:'连续签到30天',c:()=>s.streak>=30},
+  {id:'2',n:'百敲',i:'🙏',d:'100次',c:()=>s.taps>=100},
+  {id:'3',n:'千锤',i:'⚔️',d:'1000次',c:()=>s.taps>=1000},
+  {id:'4',n:'万法',i:'☸️',d:'10000次',c:()=>s.taps>=10000},
+  {id:'5',n:'五日禅',i:'📅',d:'签到5天',c:()=>s.streak>=5},
+  {id:'6',n:'半月修',i:'🗓️',d:'签到15天',c:()=>s.streak>=15},
+  {id:'7',n:'一月圆',i:'🌕',d:'签到30天',c:()=>s.streak>=30},
   {id:'8',n:'五连',i:'⚡',d:'5连击',c:()=>s.maxCombo>=5},
   {id:'9',n:'二十连',i:'🔥',d:'20连击',c:()=>s.maxCombo>=20},
   {id:'10',n:'五十连',i:'💫',d:'50连击',c:()=>s.maxCombo>=50},
   {id:'11',n:'百连',i:'👑',d:'100连击',c:()=>s.maxCombo>=100},
-  {id:'12',n:'法相庄严',i:'🎨',d:'6款法相',c:()=>s.owned.length>=6},
-  {id:'13',n:'法布施',i:'📤',d:'分享10次',c:()=>s.shareTotal>=10},
+  {id:'12',n:'庄严',i:'🎨',d:'6法相',c:()=>s.owned.length>=6},
+  {id:'13',n:'布施',i:'📤',d:'分享10次',c:()=>s.shareTotal>=10},
   {id:'14',n:'大布施',i:'🌟',d:'分享50次',c:()=>s.shareTotal>=50},
-  {id:'15',n:'接引',i:'👥',d:'接引3人',c:()=>s.inviteCount>=3},
-]
+  {id:'15',n:'接引',i:'👥',d:'3人',c:()=>s.invCnt>=3}
+];
 
-// ============ AUDIO - High Quality Physical Model ============
-let actx=null;
-function getCtx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx}
+// ============ AUDIO - Physical Model ============
+let ctx=null;
+function ac(){if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();return ctx}
 
-// REAL Wooden Fish - Physical Model
-// A wooden fish is a hollow resonant cavity. When struck, it produces
-// a complex set of modal resonances. These frequencies depend on size/shape/material.
-// For a typical medium wooden fish:
-//   Fundamental ~320-350Hz (size dependent)
-//   Overtones at non-harmonic ratios (characteristic of a shaped wooden cavity)
 function playMuyu(){
-  const ctx=getCtx(), t=ctx.currentTime;
-  
-  // === Modal frequencies of a real wooden fish ===
-  // These are the characteristic resonance modes:
-  const modes = [
-    {f:330, a:1.0, d:0.45},   // fundamental body mode
-    {f:495, a:0.6, d:0.38},   // 1.5x - strong overtone
-    {f:660, a:0.35, d:0.30},  // 2x
-    {f:825, a:0.20, d:0.25},  // 2.5x
-    {f:990, a:0.12, d:0.20},  // 3x
-    {f:1155, a:0.08, d:0.16},
-    {f:1320, a:0.05, d:0.12},
-    {f:380, a:0.25, d:0.20},  // secondary body mode
-    {f:560, a:0.15, d:0.18},  // cross-mode
+  const c=ac(),t=c.currentTime;
+  const modes=[
+    {f:330,a:1.0,d:.45},{f:495,a:.6,d:.38},{f:660,a:.35,d:.30},
+    {f:825,a:.2,d:.25},{f:990,a:.12,d:.20},{f:1155,a:.08,d:.16},
+    {f:380,a:.25,d:.20},{f:560,a:.15,d:.18}
   ];
-  
   modes.forEach(m=>{
-    const osc=ctx.createOscillator();
-    const gain=ctx.createGain();
-    osc.type='sine';
-    osc.frequency.value=m.f;
-    // Each mode has its own decay time
-    gain.gain.setValueAtTime(m.a*0.6, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t+m.d);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(t);
-    osc.stop(t+m.d+0.05);
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sine';o.frequency.value=m.f;
+    g.gain.setValueAtTime(m.a*.55,t);g.gain.exponentialRampToValueAtTime(.001,t+m.d);
+    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+m.d+.05);
   });
-  
-  // === Strike impact noise (the "thwack" of the mallet) ===
-  const bufSize=Math.floor(ctx.sampleRate*0.04);
-  const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
-  const data=buf.getChannelData(0);
-  for(let i=0;i<bufSize;i++){
-    data[i]=(Math.random()*2-1)*Math.exp(-i/(bufSize*0.12));
-  }
-  const src=ctx.createBufferSource();
-  src.buffer=buf;
-  const bp=ctx.createBiquadFilter();
-  bp.type='bandpass';
-  bp.frequency.value=1200;
-  bp.Q.value=3;
-  const ng=ctx.createGain();
-  ng.gain.setValueAtTime(0.35, t);
-  ng.gain.exponentialRampToValueAtTime(0.001, t+0.08);
-  src.connect(bp);
-  bp.connect(ng);
-  ng.connect(ctx.destination);
-  src.start(t);
-  src.stop(t+0.1);
-  
-  // === Subtle reverb tail (simulated with delayed copies) ===
-  [0.03, 0.06, 0.1].forEach((delay, di)=>{
-    const td=t+delay;
-    const osc=ctx.createOscillator();
-    const g=ctx.createGain();
-    osc.type='sine';
-    osc.frequency.value=330+delay*800;
-    g.gain.setValueAtTime(0.06-di*0.02, td);
-    g.gain.exponentialRampToValueAtTime(0.001, td+0.25+di*0.1);
-    osc.connect(g);
-    g.connect(ctx.destination);
-    osc.start(td);
-    osc.stop(td+0.4);
+  // Strike noise
+  const ns=Math.floor(c.sampleRate*.035);
+  const b=c.createBuffer(1,ns,c.sampleRate),d=b.getChannelData(0);
+  for(let i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(ns*.10));
+  const src=c.createBufferSource();src.buffer=b;
+  const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1200;bp.Q.value=3;
+  const ng=c.createGain();ng.gain.setValueAtTime(.3,t);ng.gain.exponentialRampToValueAtTime(.001,t+.07);
+  src.connect(bp);bp.connect(ng);ng.connect(c.destination);src.start(t);src.stop(t+.09);
+  // Reverb tail
+  [.03,.07,.12].forEach((dl,i)=>{
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sine';o.frequency.value=330+dl*700;
+    g.gain.setValueAtTime(.05-i*.015,t+dl);g.gain.exponentialRampToValueAtTime(.001,t+dl+.25+i*.08);
+    o.connect(g);g.connect(c.destination);o.start(t+dl);o.stop(t+dl+.35);
   });
 }
-
-function playQing(){
-  const ctx=getCtx(),t=ctx.currentTime;
-  [440,660,880,1100,1320].forEach((f,i)=>{
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.type='sine';o.frequency.value=f;
-    const v=0.25-i*0.04;
-    g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+2+i*0.08);
-    o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+2.5);
-  });
-}
-function playLing(){
-  const ctx=getCtx(),t=ctx.currentTime;
-  [1200,1600,2000,2400].forEach((f,i)=>{
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.type='sine';o.frequency.value=f;
-    g.gain.setValueAtTime(.15-i*.03,t);g.gain.exponentialRampToValueAtTime(.001,t+1.2+i*.1);
-    o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+1.8);
-  });
-}
-function playWind(){
-  const ctx=getCtx(),t=ctx.currentTime;
-  for(let i=0;i<6;i++){
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.type='sine';o.frequency.value=700+i*250+Math.random()*30;
-    g.gain.setValueAtTime(.08,t+i*.08);g.gain.linearRampToValueAtTime(0,t+i*.08+.35);
-    o.connect(g);g.connect(ctx.destination);o.start(t+i*.08);o.stop(t+i*.08+.4);
-  }
-}
-function playRain(){
-  const ctx=getCtx(),t=ctx.currentTime;
-  const ns=ctx.sampleRate*0.6;
-  const b=ctx.createBuffer(1,ns,ctx.sampleRate);
-  const d=b.getChannelData(0);
-  for(let i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/ns*6)*0.15;
-  const src=ctx.createBufferSource();src.buffer=b;
-  const g=ctx.createGain();g.gain.setValueAtTime(.2,t);g.gain.exponentialRampToValueAtTime(.001,t+.4);
-  src.connect(g);g.connect(ctx.destination);src.start(t);src.stop(t+.5);
-}
-function playSnd(i){
-  if(i==0)playMuyu();else if(i==1)playQing();else if(i==2)playLing();else if(i==3)playWind();else playRain();
-}
+function playQing(){const c=ac(),t=c.currentTime;[440,660,880,1100].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.22-i*.04,t);g.gain.exponentialRampToValueAtTime(.001,t+1.8+i*.08);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+2.2)})}
+function playLing(){const c=ac(),t=c.currentTime;[1200,1600,2000].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.14-i*.03,t);g.gain.exponentialRampToValueAtTime(.001,t+1.0+i*.1);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+1.5)})}
+function playWind(){const c=ac(),t=c.currentTime;for(let i=0;i<5;i++){const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=700+i*260;g.gain.setValueAtTime(.07,t+i*.08);g.gain.linearRampToValueAtTime(0,t+i*.08+.3);o.connect(g);g.connect(c.destination);o.start(t+i*.08);o.stop(t+i*.08+.35)}}
+function playRain(){const c=ac(),t=c.currentTime;const ns=c.sampleRate*.5;const b=c.createBuffer(1,ns,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/ns*5)*.14;const src=c.createBufferSource();src.buffer=b;const g=c.createGain();g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);src.connect(g);g.connect(c.destination);src.start(t);src.stop(t+.4)}
+function playS(i){if(i==0)playMuyu();else if(i==1)playQing();else if(i==2)playLing();else if(i==3)playWind();else playRain()}
 
 // ============ SUTRA ============
 let si=0,li=0;
-function nextS(){
-  const b=SUTRA[si];const ln=b.l[li];
+function nxtS(){
+  const b=SUT[si];const ln=b.l[li];
   const el=document.getElementById('sutraText');
-  el.style.opacity='0';
-  setTimeout(()=>{el.innerHTML=`<span class="hl">${ln}</span>`;el.style.opacity='1'},40);
-  document.getElementById('sutraName').textContent=b.n;
-  li++;if(li>=b.l.length){li=0;si=(si+1)%SUTRA.length}
-}
-
-// ============ PARTICLES ============
-function spawnChars(x,y){
-  const chars=['卍','☸','✦','·','~','°'];
-  for(let i=0;i<3;i++){
-    const el=document.createElement('div');el.className='hit-particle';
-    el.textContent=chars[Math.floor(Math.random()*chars.length)];
-    el.style.left=(x+Math.random()*40-20)+'px';el.style.top=(y+Math.random()*30-15)+'px';
-    el.style.animationDelay=(i*0.06)+'s';
-    document.body.appendChild(el);setTimeout(()=>el.remove(),1100);
-  }
+  el.style.opacity='0';setTimeout(()=>{el.innerHTML=`<span class="hl">${ln}</span>`;el.style.opacity='1'},40);
+  li++;if(li>=b.l.length){li=0;si=(si+1)%SUT.length}
 }
 
 // ============ TAP ============
 function tap(e){
-  const now=Date.now();
-  const diff=now-s.lastTap;s.lastTap=now;
+  const now=Date.now();const diff=now-s.lastTap;s.lastTap=now;
   if(diff<700){s.combo++}else{s.combo=1}
   if(s.combo>s.maxCombo)s.maxCombo=s.combo;
-  const bonus=Math.min(s.combo,20);
-  const pts=1+Math.floor(bonus/5);
+  const pts=1+Math.floor(Math.min(s.combo,20)/5);
   s.merit+=pts;s.taps++;
+  playS(s.sndIdx);nxtS();
   
-  // Play sound
-  playSnd(s.soundIdx);
-  nextS();
+  const ci=document.getElementById('mainCircle');
+  ci.classList.remove('hit');void ci.offsetWidth;ci.classList.add('hit');
+  setTimeout(()=>ci.classList.remove('hit'),120);
   
-  // Vibration animation
-  const f=document.getElementById('woodenFish');
-  f.classList.remove('hit');void f.offsetWidth;f.classList.add('hit');
-  setTimeout(()=>f.classList.remove('hit'),150);
-  
-  // Combo
   const ct=document.getElementById('comboText');
-  if(s.combo>=3){
-    ct.textContent=s.combo>=10?`×${s.combo}`:`×${s.combo}`;
-    ct.className='combo-text show';
-    clearTimeout(ct._t);ct._t=setTimeout(()=>ct.className='combo-text',500);
-  }
+  if(s.combo>=3){ct.textContent=`🔥 ×${s.combo}`;ct.className='combo-text show';clearTimeout(ct._t);ct._t=setTimeout(()=>ct.className='combo-text',500)}
   
-  // Floating merit
-  const rect=f.getBoundingClientRect();
-  const cx=e.clientX||rect.left+rect.width/2;
-  const cy=e.clientY||rect.top+rect.height/2;
-  const fl=document.createElement('div');fl.className='merit-float';
-  fl.textContent=`+${pts}`;fl.style.left=cx+'px';fl.style.top=(cy-10)+'px';
+  const rect=ci.getBoundingClientRect();const cx=e.clientX||rect.left+rect.width/2,cy=e.clientY||rect.top+rect.height;
+  const fl=document.createElement('div');fl.className='floating';fl.textContent=`+${pts}`;fl.style.left=cx+'px';fl.style.top=cy+'px';
   document.body.appendChild(fl);setTimeout(()=>fl.remove(),900);
   
-  spawnChars(cx,cy);
-  chkAch();upd();sv();
+  chkA();upd();sv();
 }
 
 // ============ ACH ============
-function chkAch(){
-  ACH.forEach(a=>{if(!s.ach[a.id]&&a.c()){
-    s.ach[a.id]=true;
-    const pop=document.getElementById('achPopup');
-    pop.querySelector('.big').textContent=a.i;
-    pop.querySelector('.t').textContent=a.n;
-    pop.querySelector('.d').textContent=a.d;
-    pop.classList.add('show');
-    setTimeout(()=>pop.classList.remove('show'),2500);
-  }});
-}
+function chkA(){ACH.forEach(a=>{if(!s.ach[a.id]&&a.c()){s.ach[a.id]=true;const p=document.getElementById('achPop');p.querySelector('.big').textContent=a.i;p.querySelector('.t').textContent=a.n;p.querySelector('.d').textContent=a.d;p.classList.add('show');setTimeout(()=>p.classList.remove('show'),2500)}})}
 
 // ============ SHARE ============
-function shre(){
+function share(){
   const url=window.location.href;
-  if(!s.shareSkin){s.shareSkin=true;if(!s.owned.includes(5))s.owned.push(5);toast('💝 获得法相「分享之心」')}
+  if(!s.shareSkin){s.shareSkin=true;if(!s.owned.includes(5))s.owned.push(5);toast('💝 获得「分享之心」法相')}
   const td=new Date().toISOString().slice(0,10);
-  if(s.firstShare!==td){s.merit+=50;s.firstShare=td;toast('✨ 每日首次分享 +50 功德')}
-  s.shareToday++;s.shareTotal++;
-  chkAch();upd();sv();
-  const txt='🪷 我在「清敲」敲木鱼诵经，来感受一下静心的力量。';
-  if(navigator.share){navigator.share({title:'清敲',text:txt,url}).catch(()=>{})}
-  else{navigator.clipboard.writeText(txt+' '+url).then(()=>toast('✅ 已复制分享链接')).catch(()=>toast(url))}
+  if(s.firstShare!==td){s.merit+=50;s.firstShare=td;toast('✨ 每日分享 +50')}
+  s.shareToday++;s.shareTotal++;chkA();upd();sv();
+  if(navigator.share)navigator.share({title:'清敲',text:'🪷 我在敲木鱼诵经静心，来试试～',url}).catch(()=>{});
+  else navigator.clipboard.writeText('🪷 我在「清敲」敲木鱼诵经，来感受静心的力量。 '+url).then(()=>toast('✅ 已复制')).catch(()=>{});
 }
-function invSim(){
-  s.merit+=30;s.inviteCount++;
-  if(!s.inviteSkin){s.inviteSkin=true;if(!s.owned.includes(6))s.owned.push(6);toast('🤝 获得法相「友谊之莲」')}
-  chkAch();upd();sv();
-}
+function invSim(){s.merit+=30;s.invCnt++;if(!s.invSkin){s.invSkin=true;if(!s.owned.includes(6))s.owned.push(6);toast('🤝 获得「友谊之莲」')}chkA();upd();sv()}
 
 // ============ UI ============
 function upd(){
-  document.getElementById('meritNum').textContent=s.merit;
-  const r=REALMS.filter(x=>s.merit>=x.m).pop()||REALMS[0];
+  const td=new Date().toISOString().slice(0,10);
+  document.getElementById('hScore').textContent=s.merit;
+  document.getElementById('scoreNum').textContent=s.merit;
+  const r=REALM.filter(x=>s.merit>=x.m).pop()||REALM[0];
   document.getElementById('realmLabel').textContent=r.n;
-  
-  // Skin emoji
-  const sk=SKINS.find(x=>x.id===s.skin)||SKINS[0];
-  document.getElementById('fishChar').textContent=sk.e;
-  
-  // Sound select
-  document.querySelectorAll('.snd-btn').forEach(el=>el.classList.toggle('active',parseInt(el.dataset.s)===s.soundIdx));
+  document.getElementById('hStreak').textContent=s.streak>0?`第${s.streak}天`:'未签到';
+  const sk=SKIN.find(x=>x.id===s.skin)||SKIN[0];
+  document.getElementById('skinEmoji').textContent=sk.e;
+  document.querySelectorAll('.snd-btn').forEach(el=>el.classList.toggle('active',parseInt(el.dataset.s)===s.sndIdx));
+  // Week
+  const rw=document.getElementById('weekRow');const n=new Date();const wd=n.getDay();const st=new Date(n);st.setDate(n.getDate()-wd);
+  const nm=['日','一','二','三','四','五','六'];rw.innerHTML='';
+  for(let i=0;i<7;i++){const d=new Date(st);d.setDate(st.getDate()+i);const str=d.toISOString().slice(0,10);const div=document.createElement('div');div.className='day-box';if(s.checkins.includes(str))div.className+=' done';else if(str===td)div.className+=' today';div.textContent=nm[i];rw.appendChild(div)}
+  const ck=s.checkins.includes(td);const btn=document.getElementById('btnCheck');btn.textContent=ck?'✅ 已签到':'📌 签到 · +50';btn.disabled=ck;
+  document.getElementById('stToday').textContent=s.shareToday;document.getElementById('stTotal').textContent=s.shareTotal;document.getElementById('stInvite').textContent=s.invCnt;
+  // ACH grid
+  const ag=document.getElementById('achGrid');ag.innerHTML='';ACH.forEach(a=>{const u=!!s.ach[a.id];const d=document.createElement('div');d.className=`ach-item${u?' unlocked':''}`;d.innerHTML=`<div class="icon">${a.i}</div><div class="name">${a.n}</div><div class="desc">${a.d}</div>`;ag.appendChild(d)});
+  // Shop
+  const sg=document.getElementById('skinGrid');sg.innerHTML='';SKIN.forEach(sk=>{const owned=s.owned.includes(sk.id),eq=s.skin===sk.id;const div=document.createElement('div');div.className='skin-item';div.innerHTML=`<div class="preview" style="background:radial-gradient(circle at 35%35%,${sk.id===0?'#7c3aed':sk.id===1?'#8B4513':sk.id===2?'#B8860B':sk.id===3?'#E0E0FF':sk.id===4?'#DAA520':sk.id===5?'#FF69B4':'#F4A460'},transparent)">${sk.e}</div><div class="sname">${sk.n}</div><div class="sdesc">${sk.d||''}</div>`;const btn=document.createElement('button');btn.className='btn-s';if(eq){btn.textContent='✅ 已装备';btn.className='btn-s eq'}else if(owned){btn.textContent='👔 装备';btn.className='btn-s own';btn.onclick=()=>{s.skin=sk.id;upd();sv();upd()}}else if(sk.share&&!s.shareSkin){btn.textContent='📤 分享';btn.className='btn-s buy';btn.onclick=()=>toast('分享给好友即可解锁')}else if(sk.invite&&!s.invSkin){btn.textContent='👥 邀请';btn.className='btn-s buy';btn.onclick=()=>toast('邀请好友解锁')}else if(sk.p>0){btn.textContent=`✦${sk.p}`;btn.className='btn-s buy';btn.onclick=()=>{if(s.merit>=sk.p){s.merit-=sk.p;s.owned.push(sk.id);toast(`✅ 获得「${sk.n}」`);sv();upd()}else toast(`✦不足，还需${sk.p-s.merit}`)}}div.appendChild(btn);sg.appendChild(div)});
+  // Stats
+  document.getElementById('sTap').textContent=s.taps;document.getElementById('sMer').textContent=s.merit;document.getElementById('sRea').textContent=r.n;document.getElementById('sStr').textContent=s.streak+'天';document.getElementById('sCom').textContent=s.maxCombo+'连';document.getElementById('sSki').textContent=s.owned.length+'/'+SKIN.length;document.getElementById('sAch').textContent=Object.keys(s.ach).length+'/'+ACH.length;
 }
-function toast(msg,d=1500){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),d);
-}
+function toast(m,d=1500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d)}
 
-// ============ PANELS ============
-function closePanels(){
-  document.querySelectorAll('.panel-overlay').forEach(p=>p.classList.remove('show'));
-}
-
-// Achievements panel
-function showAchieve(){
-  closePanels();
-  const c=document.getElementById('achieveContent');
-  c.innerHTML='<div class="panel-title">— 修行成就 —</div>';
-  ACH.forEach(a=>{
-    const u=!!s.ach[a.id];
-    c.innerHTML+=`<div class="pi"><div class="pi-name">${a.i} ${a.n}</div><div class="pi-desc">${a.d}</div><span class="pi-status ${u?'equipped':'locked'}">${u?'已证':'未证'}</span></div>`;
-  });
-  document.getElementById('panelAchieve').classList.add('show');
-}
-
-// Skins panel
-function showSkins(){
-  closePanels();
-  const c=document.getElementById('skinsContent');
-  c.innerHTML='<div class="panel-title">— 法 相 —</div>';
-  SKINS.forEach(sk=>{
-    const owned=s.owned.includes(sk.id),eq=s.skin===sk.id;
-    let status='',action='';
-    if(eq){status='equipped';action='已装备'}
-    else if(owned){status='owned';action='点击装备'}
-    else if(sk.share&&!s.shareSkin){status='locked';action='分享解锁'}
-    else if(sk.invite&&!s.inviteSkin){status='locked';action='邀请解锁'}
-    else{status='buy';action=`✦${sk.p}`}
-    
-    c.innerHTML+=`<div class="pi" data-id="${sk.id}" data-action="${action}">
-      <div class="pi-name">${sk.e} ${sk.n}</div>
-      <div class="pi-desc">${sk.d||''}</div>
-      <span class="pi-status ${status}">${action}</span></div>`;
-  });
-  document.getElementById('panelSkins').classList.add('show');
-  
-  // Click handlers
-  c.querySelectorAll('.pi').forEach(el=>{
-    el.addEventListener('click',function(){
-      const id=parseInt(this.dataset.id),act=this.dataset.action;
-      if(act==='点击装备'){s.skin=id;upd();sv();showSkins();return}
-      if(act==='分享解锁'){closePanels();toast('📤 分享即可解锁「分享之心」');return}
-      if(act==='邀请解锁'){closePanels();toast('👥 邀请好友即可解锁「友谊之莲」');return}
-      if(act.startsWith('✦')){
-        const p=parseInt(act.replace('✦',''));
-        if(s.merit>=p){s.merit-=p;s.owned.push(id);sv();showSkins();toast(`✅ 获得「${SKINS.find(x=>x.id===id).n}」`)}else{toast(`✦ 功德不足，还需 ${p-s.merit}`)}
-      }
-    });
-  });
-}
-
-// Check-in panel
-function showCheckin(){
-  closePanels();
-  const c=document.getElementById('checkinContent');
-  const td=new Date(),ts=td.toISOString().slice(0,10);
-  const wd=td.getDay(),st=new Date(td);st.setDate(td.getDate()-wd);
-  const names=['日','一','二','三','四','五','六'];
-  let wk='<div class="wk">';
-  for(let i=0;i<7;i++){
-    const d=new Date(st);d.setDate(st.getDate()+i);
-    const str=d.toISOString().slice(0,10);
-    let cls='wk-d';
-    if(s.checkins.includes(str))cls+=' done';
-    else if(str===ts)cls+=' today';
-    wk+=`<div class="${cls}">${names[i]}</div>`;
-  }
-  wk+='</div>';
-  const cked=s.checkins.includes(ts);
-  const btnTxt=cked?'今日已签到':'📌 签到 · +50 功德';
-  c.innerHTML=`<div class="panel-title">— 每日签到 —</div>${wk}<button class="btn-ci" id="ciBtn" ${cked?'disabled':''}>${btnTxt}</button>
-    <div class="st-row" style="margin-top:12px"><span class="sl">连续签到</span><span class="sv">${s.streak} 天</span></div>`;
-  document.getElementById('panelCheckin').classList.add('show');
-  document.getElementById('ciBtn')?.addEventListener('click',()=>{
-    if(s.checkins.includes(ts))return;
-    s.checkins.push(ts);s.merit+=50;
-    let streak=0;const d=new Date();
-    while(true){const str=d.toISOString().slice(0,10);if(s.checkins.includes(str)){streak++;d.setDate(d.getDate()-1)}else break}
-    s.streak=streak;if(s.streak>s.maxStreak)s.maxStreak=s.streak;
-    sv();chkAch();showCheckin();toast(`📌 签到成功！连续 ${streak} 天`);
-  });
-}
-
-// Share panel
-function showShare(){
-  closePanels();
-  const c=document.getElementById('shareContent');
-  c.innerHTML=`<div class="panel-title">— 法布施 —</div>
-    <p style="font-size:11px;color:rgba(200,176,136,.25);text-align:center;margin-bottom:12px;letter-spacing:1px">分享清敲 · 广结善缘</p>
-    <div class="st-row"><span class="sl">今日分享</span><span class="sv">${s.shareToday} 次</span></div>
-    <div class="st-row"><span class="sl">累计分享</span><span class="sv">${s.shareTotal} 次</span></div>
-    <div class="st-row"><span class="sl">成功接引</span><span class="sv">${s.inviteCount} 人</span></div>
-    <div class="pi-share-btn" id="shareBtn">📤 分享给好友</div>
-    <div class="pi-share-btn" id="copyBtn">🔗 复制链接</div>
-    <div style="font-size:9px;color:rgba(200,176,136,.12);text-align:center;margin-top:10px">首次分享得「分享之心」· 每日首次 +50</div>`;
-  document.getElementById('panelShare').classList.add('show');
-  document.getElementById('shareBtn').onclick=shre;
-  document.getElementById('copyBtn').onclick=()=>{
-    navigator.clipboard.writeText('🪷 我在「清敲」敲木鱼诵经，来感受一下静心的力量。 '+window.location.href)
-      .then(()=>toast('✅ 已复制')).catch(()=>toast('复制失败'));
-  };
-}
-
-// Stats panel
-function showStats(){
-  closePanels();
-  const c=document.getElementById('statsContent');
-  const r=REALMS.filter(x=>s.merit>=x.m).pop()||REALMS[0];
-  c.innerHTML=`<div class="panel-title">— 修行道果 —</div>
-    <div class="st-row"><span class="sl">总敲击</span><span class="sv">${s.taps} 次</span></div>
-    <div class="st-row"><span class="sl">总功德</span><span class="sv">${s.merit}</span></div>
-    <div class="st-row"><span class="sl">当前境界</span><span class="sv">${r.n}</span></div>
-    <div class="st-row"><span class="sl">连续签到</span><span class="sv">${s.streak} 天</span></div>
-    <div class="st-row"><span class="sl">已得法相</span><span class="sv">${s.owned.length}/${SKINS.length}</span></div>
-    <div class="st-row"><span class="sl">已证成就</span><span class="sv">${Object.keys(s.ach).length}/${ACH.length}</span></div>
-    <div class="st-row"><span class="sl">最高连击</span><span class="sv">${s.maxCombo} 连</span></div>`;
-  document.getElementById('panelStats').classList.add('show');
-}
+// ============ TABS ============
+document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));this.classList.add('active');const p=document.getElementById(this.dataset.tab);if(p)p.classList.add('active')})});
 
 // ============ INIT ============
 document.addEventListener('DOMContentLoaded',()=>{
-  // Set initial sutra
-  nextS();
-  upd();
-  s.lastVisit=new Date().toISOString();sv();
-  
-  // Tap on wooden fish
-  document.getElementById('woodenFish').addEventListener('click',function(e){
-    const rect=this.getBoundingClientRect();
-    tap({clientX:e.clientX||rect.left+rect.width/2,clientY:e.clientY||rect.top+rect.height/2});
-  });
-  
-  // Sound select
-  document.querySelectorAll('.snd-btn').forEach(el=>{
-    el.addEventListener('click',function(){
-      s.soundIdx=parseInt(this.dataset.s);
-      playSnd(s.soundIdx);
-      upd();sv();
-    });
-  });
-  
-  // Menu items
-  document.querySelectorAll('.menu-item').forEach(el=>{
-    el.addEventListener('click',function(){
-      const panel=this.dataset.panel;
-      if(panel==='achieve')showAchieve();
-      else if(panel==='skins')showSkins();
-      else if(panel==='checkin')showCheckin();
-      else if(panel==='share')showShare();
-      else if(panel==='stats')showStats();
-    });
-  });
-  
-  // Close panels by clicking overlay
-  document.querySelectorAll('.panel-overlay').forEach(p=>{
-    p.addEventListener('click',function(e){if(e.target===this)this.classList.remove('show')});
-  });
-  
-  // Offline merit
-  if(s.lastVisit){
-    const hrs=(Date.now()-new Date(s.lastVisit).getTime())/(3600000);
-    if(hrs>=1){
-      const earn=Math.floor(Math.min(hrs,48)*120);
-      if(earn>5){s.merit+=earn;setTimeout(()=>toast(`🌙 离线修行 +${earn} 功德`),800)}
-    }
-  }
+  nxtS();upd();s.lastVisit=new Date().toISOString();sv();
+  document.getElementById('circleWrap').addEventListener('click',function(e){const r=this.getBoundingClientRect();tap({clientX:e.clientX||r.left+r.width/2,clientY:e.clientY||r.top+r.height})});
+  document.querySelectorAll('.snd-btn').forEach(el=>{el.addEventListener('click',function(){s.sndIdx=parseInt(this.dataset.s);playS(s.sndIdx);upd();sv()})});
+  document.getElementById('btnCheck').addEventListener('click',()=>{const td=new Date().toISOString().slice(0,10);if(s.checkins.includes(td))return;s.checkins.push(td);s.merit+=50;let streak=0;const d=new Date();while(true){const str=d.toISOString().slice(0,10);if(s.checkins.includes(str)){streak++;d.setDate(d.getDate()-1)}else break}s.streak=streak;if(s.streak>s.maxStreak)s.maxStreak=s.streak;sv();chkA();upd();toast(`📌 签到成功！连续${streak}天`)});
+  document.getElementById('btnShare').addEventListener('click',share);
+  document.getElementById('btnCopy').addEventListener('click',()=>{navigator.clipboard.writeText('🪷 我在「清敲」敲木鱼诵经，来试试～ '+window.location.href).then(()=>toast('✅ 已复制'))});
+  // Offline
+  if(s.lastVisit){const hrs=(Date.now()-new Date(s.lastVisit).getTime())/3600000;if(hrs>=1){const earn=Math.floor(Math.min(hrs,48)*120);if(earn>5){s.merit+=earn;setTimeout(()=>toast(`🌙 离线 +${earn} 功德`),800)}}}
+  // Double-tap invite sim
+  let dc=0;document.getElementById('circleWrap').addEventListener('dblclick',()=>{dc++;if(dc>=2){dc=0;invSim();toast('👥 模拟接引')}});
 });
 </script>
 </body>
