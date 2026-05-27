@@ -3,383 +3,314 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>清敲 - 敲木鱼</title>
+<title>清敲 - 清心鼓</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a0a2e,#16213e,#0f3460);min-height:100vh;color:#eee;overflow-x:hidden}
-.container{max-width:420px;margin:0 auto;padding:16px;position:relative}
+body{font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;background:linear-gradient(160deg,#0d0715,#16112e,#0d0d1a);min-height:100vh;color:#c8c0d8;overflow-x:hidden}
+.container{max-width:400px;margin:0 auto;padding:12px 14px;position:relative}
 
 /* Header */
-.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 12px}
-.header h1{font-size:22px;font-weight:700;background:linear-gradient(135deg,#e2d5f0,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.header .stats{display:flex;gap:12px;font-size:13px}
-.header .stats span{background:rgba(255,255,255,.08);padding:4px 10px;border-radius:12px;display:flex;align-items:center;gap:4px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:4px 0 6px}
+.header h1{font-size:19px;font-weight:700;color:#b8a8e0;letter-spacing:2px}
+.header .stats{display:flex;gap:8px;font-size:11px}
+.header .stats span{background:rgba(160,140,200,.08);padding:3px 10px;border-radius:8px;color:#a898c8;display:flex;align-items:center;gap:3px}
 
-/* Sutra */
-.sutra-box{min-height:48px;display:flex;align-items:center;justify-content:center;margin:4px 0 10px;background:rgba(255,255,255,.04);border-radius:10px;padding:8px 12px}
-.sutra-text{font-size:14px;color:rgba(255,255,255,.55);text-align:center;line-height:1.6;transition:opacity .15s;letter-spacing:.5px}
-.sutra-text .hl{color:#a78bfa}
+/* Sutra Selector */
+.sutra-bar{display:flex;align-items:center;gap:6px;margin:4px 0 8px;padding:6px 10px;background:rgba(160,140,200,.04);border-radius:8px;border:1px solid rgba(160,140,200,.06);min-height:36px}
+.sutra-bar .label{font-size:10px;color:rgba(160,140,200,.3);letter-spacing:1px;white-space:nowrap}
+.sutra-bar .current{flex:1;font-size:12px;color:#b8a8e0;text-align:center;letter-spacing:2px;cursor:pointer}
+.sutra-bar .nav-btn{font-size:14px;color:rgba(160,140,200,.25);cursor:pointer;padding:2px 8px;transition:all .2s}
+.sutra-bar .nav-btn:active{color:#b8a8e0}
+
+/* Sutra text */
+.sutra-box{min-height:44px;display:flex;align-items:center;justify-content:center;margin:0 0 8px;background:rgba(0,0,0,.2);border-radius:6px;border:1px solid rgba(160,140,200,.04)}
+.sutra-text{font-size:13px;color:rgba(200,192,216,.45);text-align:center;line-height:1.6;padding:8px 12px;transition:opacity .15s;letter-spacing:.5px;font-family:'Noto Serif SC','STSong',serif}
+.sutra-text .hl{color:#a898c8}
+
+/* Sound Select */
+.sound-row{display:flex;gap:4px;margin:6px 0 8px;padding:3px;background:rgba(160,140,200,.04);border-radius:8px;border:1px solid rgba(160,140,200,.04);justify-content:center}
+.snd-btn{padding:4px 12px;border-radius:5px;border:0;background:transparent;color:rgba(160,140,200,.3);font-size:11px;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.snd-btn.active{background:rgba(160,140,200,.08);color:#b8a8e0}
 
 /* Tap Circle */
-.tap-area{text-align:center;padding:16px 0 8px}
+.tap-area{text-align:center;padding:8px 0 4px}
 .circle-wrap{position:relative;display:inline-block;cursor:pointer;touch-action:manipulation}
-.circle{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#7c3aed,#4f46e5,#1e1b4b);box-shadow:0 0 60px rgba(124,58,237,.3),0 0 120px rgba(79,70,229,.15),inset 0 -20px 60px rgba(0,0,0,.4);transition:transform .06s;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:pulse 4s ease-in-out infinite}
-.circle:active{transform:scale(.92)}
-@keyframes pulse{0%,100%{box-shadow:0 0 60px rgba(124,58,237,.3)}50%{box-shadow:0 0 80px rgba(124,58,237,.4)}}
-.circle .emoji{font-size:56px;line-height:1;margin-bottom:4px}
-.circle .label{font-size:13px;color:rgba(255,255,255,.5);letter-spacing:4px}
+.circle{width:186px;height:186px;border-radius:50%;cursor:pointer;touch-action:manipulation;position:relative;transition:transform .05s;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;animation:glowPulse 4s ease-in-out infinite}
+.circle:active{transform:scale(.93)}
+.circle svg{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 40px rgba(160,120,80,.08)}50%{box-shadow:0 0 60px rgba(160,120,80,.12)}}
+.circle .emoji{position:relative;z-index:2;font-size:36px;line-height:1;margin-top:6px;opacity:.7}
+.circle .label{position:relative;z-index:2;font-size:11px;color:rgba(220,200,170,.4);letter-spacing:3px;margin-top:2px}
+@keyframes shake{0%{transform:scale(.93) translate(0,0)}20%{transform:scale(.93) translate(-2px,0)}40%{transform:scale(.93) translate(2px,0)}60%{transform:scale(.93) translate(-1px,0)}80%{transform:scale(.93) translate(1px,0)}100%{transform:scale(.93) translate(0,0)}}
+.circle.hit{animation:shake .1s ease-out}
 
-/* Vibration on hit */
-@keyframes shake{0%{transform:scale(.92) translate(0,0)}20%{transform:scale(.92) translate(-3px,0)}40%{transform:scale(.92) translate(3px,0)}60%{transform:scale(.92) translate(-2px,0)}80%{transform:scale(.92) translate(2px,0)}100%{transform:scale(.92) translate(0,0)}}
-.circle.hit{animation:shake .12s ease-out}
-
-/* Merit */
-.score-area{text-align:center;margin:4px 0 2px}
-.score-num{font-size:44px;font-weight:800;background:linear-gradient(180deg,#e2d5f0,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-.score-lbl{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:6px;margin-bottom:4px}
-.realm{font-size:11px;color:rgba(167,139,250,.5);padding:2px 14px;border:1px solid rgba(167,139,250,.15);border-radius:10px;display:inline-block;letter-spacing:2px}
+/* Score */
+.score-area{text-align:center;margin:2px 0 0}
+.score-num{font-size:40px;font-weight:700;color:#b8a8e0;line-height:1;letter-spacing:1px}
+.score-lbl{font-size:11px;color:rgba(160,140,200,.3);letter-spacing:4px;margin-bottom:2px}
+.realm-badge{font-size:10px;color:rgba(160,140,200,.35);padding:2px 12px;border:1px solid rgba(160,140,200,.08);border-radius:8px;display:inline-block;letter-spacing:2px}
 
 /* Combo */
-.combo-text{text-align:center;font-size:15px;color:#fbbf24;display:none;min-height:20px;margin-bottom:2px}
+.combo-text{text-align:center;font-size:13px;color:#e6c840;display:none;min-height:18px;margin:0}
 .combo-text.show{display:block;animation:fadeUp .2s}
-@keyframes fadeUp{0%{opacity:0;transform:translateY(5px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(4px)}100%{opacity:1;transform:translateY(0)}}
 
-/* Sound Row */
-.sound-row{display:flex;gap:5px;margin:8px 0;overflow-x:auto;padding:2px 0;justify-content:center;flex-wrap:wrap}
-.snd-btn{padding:5px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);color:rgba(255,255,255,.4);font-size:12px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
-.snd-btn.active{background:rgba(124,58,237,.3);border-color:#7c3aed;color:#c084fc}
-
-/* Tab Bar */
-.tab-bar{display:flex;gap:6px;margin:8px 0;padding:4px;background:rgba(255,255,255,.06);border-radius:12px}
-.tab{flex:1;text-align:center;padding:8px 0;border-radius:8px;font-size:13px;color:rgba(255,255,255,.4);cursor:pointer;transition:all .2s}
-.tab.active{background:rgba(124,58,237,.3);color:#fff}
+/* Tab bar */
+.tab-bar{display:flex;gap:3px;margin:6px 0;padding:3px;background:rgba(160,140,200,.03);border-radius:8px;border:1px solid rgba(160,140,200,.03)}
+.tab{flex:1;text-align:center;padding:6px 0;border-radius:5px;font-size:10px;color:rgba(160,140,200,.3);cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.tab.active{background:rgba(160,140,200,.07);color:#b8a8e0}
 
 /* Panels */
-.panel{display:none;animation:fadeIn .25s}
+.panel{display:none;animation:fadeIn .2s}
 .panel.active{display:block}
-@keyframes fadeIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
 
 /* Card */
-.card{background:rgba(255,255,255,.04);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,.06)}
-.card h3{font-size:14px;margin-bottom:10px;color:#c084fc;display:flex;align-items:center;gap:6px}
+.card{background:rgba(160,140,200,.02);border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid rgba(160,140,200,.04)}
+.card h3{font-size:12px;margin-bottom:8px;color:#b8a8e0;display:flex;align-items:center;gap:5px;letter-spacing:1px}
 
 /* Achievements */
-.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.ach-item{background:rgba(255,255,255,.04);border-radius:10px;padding:10px 6px;text-align:center;border:1px solid rgba(255,255,255,.04);opacity:.35;transition:all .2s}
-.ach-item.unlocked{opacity:1;border-color:rgba(124,58,237,.2);background:rgba(124,58,237,.06)}
-.ach-item .icon{font-size:24px;margin-bottom:3px}
-.ach-item .name{font-size:10px;color:rgba(255,255,255,.6)}
-.ach-item .desc{font-size:8px;color:rgba(255,255,255,.25)}
+.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.ach-item{background:rgba(160,140,200,.02);border-radius:8px;padding:8px 4px;text-align:center;border:1px solid rgba(160,140,200,.03);opacity:.3;transition:all .2s}
+.ach-item.unlocked{opacity:1;border-color:rgba(160,140,200,.1);background:rgba(160,140,200,.04)}
+.ach-item .icon{font-size:20px;margin-bottom:2px}
+.ach-item .name{font-size:9px;color:rgba(200,192,216,.5)}
+.ach-item .desc{font-size:7px;color:rgba(160,140,200,.2);margin-top:1px}
 
-/* Skins */
-.skin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.skin-item{background:rgba(255,255,255,.04);border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,.04)}
-.skin-item .preview{width:48px;height:48px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:22px;background:radial-gradient(circle at 35% 35%,#7c3aed,transparent)}
-.skin-item .sname{font-size:12px;color:#ddd;margin-bottom:1px}
-.skin-item .sdesc{font-size:9px;color:rgba(255,255,255,.3);margin-bottom:6px}
-.skin-item .btn-s{width:100%;padding:6px 0;border:0;border-radius:6px;font-size:11px;cursor:pointer}
-.skin-item .btn-s.eq{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
-.skin-item .btn-s.own{background:rgba(124,58,237,.15);color:#c084fc;border:1px solid rgba(124,58,237,.2)}
-.skin-item .btn-s.buy{background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(79,70,229,.15));color:#c084fc;border:1px solid rgba(124,58,237,.1)}
-.skin-item .btn-s:disabled{opacity:.3;cursor:default}
+/* Shop */
+.skin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.skin-item{background:rgba(160,140,200,.02);border-radius:10px;padding:10px;text-align:center;border:1px solid rgba(160,140,200,.03)}
+.skin-item .preview{width:42px;height:42px;border-radius:50%;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-size:20px;background:radial-gradient(circle at 35% 35%,rgba(109,77,168,.3),transparent)}
+.skin-item .sname{font-size:11px;color:#c8c0d8;margin-bottom:1px}
+.skin-item .sdesc{font-size:8px;color:rgba(160,140,200,.2);margin-bottom:5px}
+.skin-item .btn-s{width:100%;padding:5px 0;border:0;border-radius:5px;font-size:10px;cursor:pointer}
+.skin-item .btn-s.eq{background:rgba(100,180,120,.12);color:#6cb87a;border:1px solid rgba(100,180,120,.15)}
+.skin-item .btn-s.own{background:rgba(160,140,200,.08);color:#b8a8e0;border:1px solid rgba(160,140,200,.1)}
+.skin-item .btn-s.buy{background:linear-gradient(135deg,rgba(109,77,168,.15),rgba(74,45,138,.08));color:#b8a8e0;border:1px solid rgba(160,140,200,.06)}
+.skin-item .btn-s:disabled{opacity:.2;cursor:default}
 
 /* Week */
-.week-row{display:flex;gap:3px;justify-content:center;margin-bottom:10px}
-.day-box{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.2)}
-.day-box.done{background:rgba(124,58,237,.2);color:#c084fc;border:1px solid rgba(124,58,237,.15)}
-.day-box.today{background:rgba(124,58,237,.08);color:#a78bfa;border:1px solid rgba(124,58,237,.2)}
-.btn-c{width:100%;padding:9px;border:0;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:14px;cursor:pointer}
-.btn-c:disabled{background:#333;color:#666;cursor:default}
+.week-row{display:flex;gap:2px;justify-content:center;margin-bottom:8px}
+.day-box{width:32px;height:32px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;background:rgba(160,140,200,.02);color:rgba(160,140,200,.15)}
+.day-box.done{background:rgba(160,140,200,.1);color:#b8a8e0;border:1px solid rgba(160,140,200,.08)}
+.day-box.today{background:rgba(160,140,200,.05);color:#9080b8;border:1px solid rgba(160,140,200,.12)}
+.btn-c{width:100%;padding:8px;border:0;border-radius:6px;background:linear-gradient(135deg,rgba(109,77,168,.12),rgba(74,45,138,.08));color:#b8a8e0;font-size:12px;cursor:pointer;letter-spacing:1px;border:1px solid rgba(160,140,200,.06)}
+.btn-c:disabled{opacity:.3;cursor:default}
 
-/* Share row */
-.share-row{display:flex;gap:8px;margin-top:8px}
-.btn-share{flex:1;padding:9px;border:0;border-radius:8px;font-size:13px;cursor:pointer}
-.btn-share.p{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff}
-.btn-share.s{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.08)}
+/* Share */
+.share-row{display:flex;gap:6px;margin-top:6px}
+.btn-share{flex:1;padding:8px;border:0;border-radius:6px;font-size:11px;cursor:pointer}
+.btn-share.p{background:linear-gradient(135deg,rgba(109,77,168,.12),rgba(74,45,138,.08));color:#b8a8e0;border:1px solid rgba(160,140,200,.06)}
+.btn-share.s{background:rgba(160,140,200,.02);color:rgba(160,140,200,.3);border:1px solid rgba(160,140,200,.04)}
 
-/* Stat rows */
-.st-row{display:flex;justify-content:space-between;background:rgba(255,255,255,.03);padding:10px 12px;border-radius:8px;margin-bottom:4px}
-.st-row .sl{font-size:12px;color:rgba(255,255,255,.35)}
-.st-row .sv{font-size:13px;color:#a78bfa}
+/* Stats */
+.st-row{display:flex;justify-content:space-between;background:rgba(160,140,200,.02);padding:7px 10px;border-radius:6px;margin-bottom:3px}
+.st-row .sl{font-size:11px;color:rgba(160,140,200,.25)}
+.st-row .sv{font-size:12px;color:#a898c8}
 
 /* Float */
-.floating{position:fixed;pointer-events:none;font-size:20px;font-weight:700;color:#a78bfa;z-index:100;animation:flUp .9s ease-out forwards}
-@keyframes flUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(.3)}}
+.floating{position:fixed;pointer-events:none;font-size:18px;font-weight:600;color:#b8a8e0;z-index:100;animation:flUp .8s ease-out forwards}
+@keyframes flUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50px) scale(.3)}}
 
 /* Toast */
-.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.88);color:#fff;padding:14px 24px;border-radius:12px;font-size:14px;z-index:200;opacity:0;transition:opacity .25s;pointer-events:none;text-align:center;backdrop-filter:blur(8px)}
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(10,8,20,.9);color:#c8c0d8;padding:12px 22px;border-radius:8px;font-size:12px;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;text-align:center;border:1px solid rgba(160,140,200,.06)}
 .toast.show{opacity:1}
 
 /* Ach popup */
-.ach-pop{position:fixed;top:25%;left:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(0,0,0,.9);color:#fff;padding:20px 28px;border-radius:14px;z-index:150;text-align:center;border:1px solid rgba(124,58,237,.2);opacity:0;transition:all .35s;pointer-events:none;backdrop-filter:blur(8px)}
+.ach-pop{position:fixed;top:25%;left:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(10,8,20,.92);color:#c8c0d8;padding:18px 24px;border-radius:10px;z-index:150;text-align:center;border:1px solid rgba(160,140,200,.1);opacity:0;transition:all .3s;pointer-events:none}
 .ach-pop.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.ach-pop .big{font-size:36px;margin-bottom:6px}
-.ach-pop .t{font-size:16px;color:#c084fc}
-.ach-pop .d{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
+.ach-pop .big{font-size:30px;margin-bottom:4px}
+.ach-pop .t{font-size:14px;color:#b8a8e0}
+.ach-pop .d{font-size:10px;color:rgba(160,140,200,.3);margin-top:3px}
 
-@media(max-width:360px){.circle{width:170px;height:170px}.circle .emoji{font-size:46px}.score-num{font-size:36px}}
+@media(max-width:360px){.circle{width:160px;height:160px}.circle .emoji{font-size:40px}.score-num{font-size:34px}}
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <h1>🪷 清敲</h1>
-    <div class="stats">
-      <span>✦ <span id="hScore">0</span></span>
-      <span>🔥 <span id="hStreak">未签到</span></span>
-    </div>
+  <div class="header"><h1>✦ 清敲</h1><div class="stats"><span>✦ <span id="hScore">0</span></span><span>🔥 <span id="hStreak">未签到</span></span></div></div>
+  <!-- Sutra selector -->
+  <div class="sutra-bar">
+    <span class="label">心语</span>
+    <span class="nav-btn" id="sutraPrev">◀</span>
+    <span class="current" id="sutraName">静心</span>
+    <span class="nav-btn" id="sutraNext">▶</span>
   </div>
-
-  <div class="sutra-box">
-    <div class="sutra-text" id="sutraText">轻敲 · 静心 · 诵经</div>
-  </div>
-
-  <div class="sound-row">
-    <div class="snd-btn active" data-s="0">🥁 木鱼</div>
-    <div class="snd-btn" data-s="1">🔔 磬</div>
-    <div class="snd-btn" data-s="2">🛎️ 铃</div>
-    <div class="snd-btn" data-s="3">🎐 风铃</div>
-    <div class="snd-btn" data-s="4">🌧️ 雨声</div>
-  </div>
-
-  <div class="tap-area">
-    <div class="circle-wrap" id="circleWrap">
-      <div class="circle" id="mainCircle">
-        <div class="emoji" id="skinEmoji">🪷</div>
-        <div class="label">敲 木 鱼</div>
-      </div>
-    </div>
-    <div class="combo-text" id="comboText">🔥 连击 ×5</div>
-    <div class="score-area">
-      <div class="score-num" id="scoreNum">0</div>
-      <div class="score-lbl">功 德</div>
-      <div class="realm" id="realmLabel">凡 人</div>
-    </div>
-  </div>
-
-  <div class="tab-bar">
-    <div class="tab active" data-tab="tabMain">🪷 修行</div>
-    <div class="tab" data-tab="tabAch">🏆 成就</div>
-    <div class="tab" data-tab="tabShop">🎨 法相</div>
-    <div class="tab" data-tab="tabCheck">📅 签到</div>
-    <div class="tab" data-tab="tabShare">📤 分享</div>
-    <div class="tab" data-tab="tabStats">📊 道果</div>
-  </div>
-
-  <div class="panel active" id="tabMain">
-    <div class="card" style="text-align:center;color:rgba(255,255,255,.35);font-size:13px;line-height:1.8">👆 轻触敲木鱼<br>每敲一次积累功德<br>快速连击获额外加成</div>
-  </div>
-  <div class="panel" id="tabAch"><div id="achContent" class="card"><h3>🏆 修行成就</h3><div class="ach-grid" id="achGrid"></div></div></div>
-  <div class="panel" id="tabShop"><div id="shopContent" class="card"><h3>🎨 法相 · 木鱼皮肤</h3><div class="skin-grid" id="skinGrid"></div></div></div>
-  <div class="panel" id="tabCheck"><div class="card"><h3>📅 每日签到</h3><div class="week-row" id="weekRow"></div><button class="btn-c" id="btnCheck">📌 签到 · +50 功德</button></div></div>
-  <div class="panel" id="tabShare"><div class="card"><h3>📤 法布施</h3><p style="font-size:12px;color:rgba(255,255,255,.35);margin-bottom:8px">分享给好友，双方皆获功德</p>
-    <div class="share-row"><button class="btn-share p" id="btnShare">📲 分享</button><button class="btn-share s" id="btnCopy">🔗 复制</button></div>
-    <div class="st-row" style="margin-top:10px"><span class="sl">今日</span><span class="sv" id="stToday">0</span></div>
-    <div class="st-row"><span class="sl">累计</span><span class="sv" id="stTotal">0</span></div>
-    <div class="st-row"><span class="sl">接引</span><span class="sv" id="stInvite">0</span></div>
-  </div></div>
-  <div class="panel" id="tabStats"><div class="card"><h3>📊 修行道果</h3>
-    <div class="st-row"><span class="sl">总敲击</span><span class="sv" id="sTap">0</span></div>
-    <div class="st-row"><span class="sl">总功德</span><span class="sv" id="sMer">0</span></div>
-    <div class="st-row"><span class="sl">境界</span><span class="sv" id="sRea">凡人</span></div>
-    <div class="st-row"><span class="sl">连续签到</span><span class="sv" id="sStr">0 天</span></div>
-    <div class="st-row"><span class="sl">最高连击</span><span class="sv" id="sCom">0</span></div>
-    <div class="st-row"><span class="sl">法相</span><span class="sv" id="sSki">0/0</span></div>
-    <div class="st-row"><span class="sl">成就</span><span class="sv" id="sAch">0/0</span></div>
-  </div></div>
+  <div class="sutra-box"><div class="sutra-text" id="sutraText">轻敲清心鼓 · 静心养神</div></div>
+  <div class="sound-row"><div class="snd-btn active" data-s="0">木鱼</div><div class="snd-btn" data-s="1">磬</div><div class="snd-btn" data-s="2">铃</div><div class="snd-btn" data-s="3">风铃</div><div class="snd-btn" data-s="4">雨声</div></div>
+  <div class="tap-area"><div class="circle-wrap" id="tapCircle"><div class="circle" id="mainCircle">
+  <svg viewBox="0 0 200 200">
+    <!-- Wooden body - dark wood gradient -->
+    <defs>
+      <radialGradient id="wood" cx="40%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="#9B7B4B"/>
+        <stop offset="30%" stop-color="#7A5C32"/>
+        <stop offset="60%" stop-color="#4D3116"/>
+        <stop offset="100%" stop-color="#241508"/>
+      </radialGradient>
+      <radialGradient id="shine" cx="35%" cy="30%" r="30%">
+        <stop offset="0%" stop-color="rgba(220,200,170,.15)"/>
+        <stop offset="100%" stop-color="rgba(220,200,170,0)"/>
+      </radialGradient>
+    </defs>
+    <!-- Body -->
+    <circle cx="100" cy="100" r="92" fill="url(#wood)" stroke="rgba(160,120,80,.15)" stroke-width="1"/>
+    <!-- Wood grain rings -->
+    <circle cx="100" cy="100" r="75" fill="none" stroke="rgba(100,60,30,.06)" stroke-width=".5"/>
+    <circle cx="100" cy="100" r="55" fill="none" stroke="rgba(100,60,30,.04)" stroke-width=".5"/>
+    <circle cx="100" cy="100" r="35" fill="none" stroke="rgba(100,60,30,.03)" stroke-width=".5"/>
+    <!-- Scale pattern (fish scales on the body) -->
+    <g opacity=".06" fill="none" stroke="#c8a878" stroke-width=".4">
+      <path d="M60,70 Q70,60 80,70 Q70,80 60,70Z"/><path d="M80,70 Q90,60 100,70 Q90,80 80,70Z"/><path d="M100,70 Q110,60 120,70 Q110,80 100,70Z"/>
+      <path d="M70,85 Q80,75 90,85 Q80,95 70,85Z"/><path d="M90,85 Q100,75 110,85 Q100,95 90,85Z"/><path d="M110,85 Q120,75 130,85 Q120,95 110,85Z"/>
+      <path d="M80,100 Q90,90 100,100 Q90,110 80,100Z"/><path d="M100,100 Q110,90 120,100 Q110,110 100,100Z"/>
+      <path d="M70,115 Q80,105 90,115 Q80,125 70,115Z"/><path d="M90,115 Q100,105 110,115 Q100,125 90,115Z"/><path d="M110,115 Q120,105 130,115 Q120,125 110,115Z"/>
+      <path d="M60,130 Q70,120 80,130 Q70,140 60,130Z"/><path d="M80,130 Q90,120 100,130 Q90,140 80,130Z"/><path d="M100,130 Q110,120 120,130 Q110,140 100,130Z"/>
+    </g>
+    <!-- Carved fish design on the surface -->
+    <g transform="translate(100,95)" fill="none" stroke="rgba(200,176,136,.12)" stroke-width="1.2">
+      <!-- Fish body outline -->
+      <ellipse cx="0" cy="0" rx="28" ry="14" stroke-width="1"/>
+      <!-- Fish tail -->
+      <path d="M24,0 L34,-8 L34,8 Z" stroke-linejoin="round"/>
+      <!-- Fish dorsal fin -->
+      <path d="M-5,-13 Q5,-24 15,-12" stroke-width=".8"/>
+      <!-- Fish eye -->
+      <circle cx="-12" cy="-3" r="2.5" fill="rgba(200,176,136,.1)" stroke="none"/>
+      <!-- Fish mouth -->
+      <path d="M-27,0 Q-30,-2 -30,2" stroke-width=".8"/>
+      <!-- Gill line -->
+      <path d="M-10,-8 Q-8,0 -10,8" stroke-width=".6"/>
+    </g>
+    <!-- Highlight/shine -->
+    <circle cx="100" cy="100" r="92" fill="url(#shine)"/>
+  </svg>
+  <!-- emoji removed -->
+  <!-- "悟 道" removed -->
+</div></div><div class="combo-text" id="comboText">🔥 连击 ×5</div><div class="score-area"><div class="score-num" id="scoreNum">0</div><div class="score-lbl">积 分</div><div class="realm-badge" id="realmLabel">初学者</div></div></div>
+  <div class="tab-bar"><div class="tab active" data-tab="tabMain">修心</div><div class="tab" data-tab="tabAch">历练</div><div class="tab" data-tab="tabShop">皮肤</div><div class="tab" data-tab="tabCheck">签到</div><div class="tab" data-tab="tabShare">分享</div><div class="tab" data-tab="tabStats">统计</div></div>
+  <div class="panel active" id="tabMain"><div class="card" style="text-align:center;color:rgba(160,140,200,.25);font-size:12px;line-height:1.6">👆 轻叩静心<br>每敲一次增加积分<br>连击可获额外加成</div></div>
+  <div class="panel" id="tabAch"><div class="card"><h3>🏆 历练成就</h3><div class="ach-grid" id="achGrid"></div></div></div>
+  <div class="panel" id="tabShop"><div class="card"><h3>🎨 装饰 · 木鱼皮肤</h3><div class="skin-grid" id="skinGrid"></div></div></div>
+  <div class="panel" id="tabCheck"><div class="card"><h3>📅 每日签到</h3><div class="week-row" id="weekRow"></div><button class="btn-c" id="btnCheck">签到 · +50 积分</button></div></div>
+  <div class="panel" id="tabShare"><div class="card"><h3>📤 分享</h3><p style="font-size:11px;color:rgba(160,140,200,.2);margin-bottom:6px">分享给朋友，一起放松心情</p><div class="share-row"><button class="btn-share p" id="btnShare">分享</button><button class="btn-share s" id="btnCopy">复制链接</button></div><div class="st-row" style="margin-top:8px"><span class="sl">今日分享</span><span class="sv" id="stToday">0</span></div><div class="st-row"><span class="sl">累计分享</span><span class="sv" id="stTotal">0</span></div><div class="st-row"><span class="sl">邀请好友</span><span class="sv" id="stInvite">0</span></div></div></div>
+  <div class="panel" id="tabStats"><div class="card"><h3>📊 统计</h3><div class="st-row"><span class="sl">总轻叩</span><span class="sv" id="sTap">0</span></div><div class="st-row"><span class="sl">总积分</span><span class="sv" id="sMer">0</span></div><div class="st-row"><span class="sl">等级</span><span class="sv" id="sRea">初学者</span></div><div class="st-row"><span class="sl">连续签到</span><span class="sv" id="sStr">0 天</span></div><div class="st-row"><span class="sl">最高连击</span><span class="sv" id="sCom">0</span></div><div class="st-row"><span class="sl">皮肤</span><span class="sv" id="sSki">0/0</span></div><div class="st-row"><span class="sl">成就</span><span class="sv" id="sAch">0/0</span></div></div></div>
 </div>
-
 <div class="toast" id="toast"></div>
-<div class="ach-pop" id="achPop"><div class="big">🏆</div><div class="t">成就</div><div class="d">描述</div></div>
-
+<div class="ach-pop" id="achPop"><div class="big">🏆</div><div class="t">历练</div><div class="d">描述</div></div>
 <script>
-// ============ STATE ============
-const K='qq_v4';
-function def(){return{merit:0,taps:0,combo:0,maxCombo:0,skin:0,owned:[0],sndIdx:0,checkins:[],streak:0,ach:{},lastTap:0,shareToday:0,shareTotal:0,invCnt:0,shareSkin:false,invSkin:false,firstShare:'',lastVisit:''}}
-const ld=()=>{try{const d=localStorage.getItem(K);return d?JSON.parse(d):def()}catch(e){return def()}}
-const sv=()=>localStorage.setItem(K,JSON.stringify(s));let s=ld();
+var K='qq_v7';
+function def(){return{merit:0,taps:0,combo:0,maxCombo:0,skin:0,owned:[0],sndIdx:0,checkins:[],streak:0,ach:{},lastTap:0,shareToday:0,shareTotal:0,invCnt:0,shareSkin:false,invSkin:false,firstShare:'',lastVisit:'',sutraIdx:0}}
+var s=JSON.parse(localStorage.getItem(K))||def();
+function sv(){localStorage.setItem(K,JSON.stringify(s))}
+var SUT=[
+  {n:'静心',l:['深呼吸 · 放慢脚步','此刻即美好 · 心安即是归处','一呼一吸 · 皆是当下','不念过往 · 不畏将来','宁静致远 · 淡泊明志']},
+  {n:'放松',l:['心若止水 · 波澜不惊','放下执念 · 轻装前行','一切都会过去','温柔以待 · 善待自己']},
+  {n:'专注',l:['此时此刻 · 全神贯注','一心一意 · 万事可成','慢下来 · 感受当下','专注即力量']},
+  {n:'感恩',l:['心存感激 · 所遇皆温柔','知足常乐 · 感恩拥有','珍惜眼前 · 活在当下','今天也是美好的一天']},
+  {n:'平和',l:['心平气和 · 万事顺遂','保持微笑 · 好运自来','顺其自然 · 随遇而安','一切都是最好的安排']},
+  {n:'力量',l:['相信自己 · 你可以的','每天进步一点点','坚持就是胜利','加油 · 明天会更好']},
+  {n:'温暖',l:['愿你被世界温柔以待','心怀善意 · 温暖他人','做一个温暖的人','世界因你而美好']}
+];
+var REALM=[{n:'初学者',m:0},{n:'入门者',m:100},{n:'坚持者',m:300},{n:'专注者',m:600},{n:'静心者',m:1200},{n:'明悟者',m:2500},{n:'沉淀者',m:5000},{n:'通达者',m:10000},{n:'澄明者',m:20000},{n:'清朗者',m:40000},{n:'圆融者',m:80000},{n:'自在者',m:150000}];
+var SKIN=[{id:0,n:'原始木鱼',e:'🪵',d:'初始装饰'},{id:1,n:'紫檀木',e:'🪵',d:'檀木所制',p:200},{id:2,n:'青铜古磬',e:'🔔',d:'古铜铸成',p:500},{id:3,n:'白玉',e:'💎',d:'白玉雕琢',p:1000},{id:4,n:'鎏金宝钵',e:'🏆',d:'鎏金工艺',p:2000},{id:5,n:'分享之心',e:'💝',d:'分享可得',share:true},{id:6,n:'好友之谊',e:'🤝',d:'邀请可得',invite:true}];
+var ACH=[{id:'1',n:'初次轻叩',i:'👶',d:'第一次轻叩',c:function(){return s.taps>=1}},{id:'2',n:'百次轻叩',i:'🙏',d:'100次',c:function(){return s.taps>=100}},{id:'3',n:'千次静心',i:'⚔️',d:'1000次',c:function(){return s.taps>=1000}},{id:'4',n:'万次沉淀',i:'☸️',d:'10000次',c:function(){return s.taps>=10000}},{id:'5',n:'连续五日',i:'📅',d:'连签5天',c:function(){return s.streak>=5}},{id:'6',n:'半月坚持',i:'🗓️',d:'连签15天',c:function(){return s.streak>=15}},{id:'7',n:'一月之功',i:'🌕',d:'连签30天',c:function(){return s.streak>=30}},{id:'8',n:'五连击',i:'⚡',d:'5连击',c:function(){return s.maxCombo>=5}},{id:'9',n:'二十连击',i:'🔥',d:'20连击',c:function(){return s.maxCombo>=20}},{id:'10',n:'五十连击',i:'💫',d:'50连击',c:function(){return s.maxCombo>=50}},{id:'11',n:'百连达人',i:'👑',d:'100连击',c:function(){return s.maxCombo>=100}},{id:'12',n:'收藏家',i:'🎨',d:'6件皮肤',c:function(){return s.owned.length>=6}},{id:'13',n:'分享达人',i:'📤',d:'分享10次',c:function(){return s.shareTotal>=10}},{id:'14',n:'分享大使',i:'🌟',d:'分享50次',c:function(){return s.shareTotal>=50}},{id:'15',n:'人气之星',i:'👥',d:'邀请3人',c:function(){return s.invCnt>=3}}];
 
-// ============ SUTRA ============
-const SUT=[
-  {n:'心经',l:['观自在菩萨 · 行深般若波罗蜜多时','照见五蕴皆空 · 度一切苦厄','色不异空 · 空不异色','色即是空 · 空即是色','受想行识 · 亦复如是','是诸法空相 · 不生不灭','不垢不净 · 不增不减','无眼耳鼻舌身意','无色声香味触法','无无明 · 亦无无明尽','心无挂碍 · 无有恐怖','远离颠倒梦想 · 究竟涅槃','三世诸佛 · 得阿耨多罗三藐三菩提','是大神咒 · 是大明咒','能除一切苦 · 真实不虚','揭谛揭谛 · 波罗揭谛','波罗僧揭谛 · 菩提萨婆诃']},
-  {n:'金刚经',l:['凡所有相 · 皆是虚妄','若见诸相非相 · 即见如来','一切有为法 · 如梦幻泡影','如露亦如电 · 应作如是观','应无所住 · 而生其心','过去心不可得 · 现在心不可得','未来心不可得']},
-  {n:'六字大明咒',l:['嗡嘛呢叭咪吽','嗡·嘛·呢·叭·咪·吽']},
-  {n:'大悲咒',l:['南无喝啰怛那 · 哆啰夜耶','南无阿唎耶 · 婆卢羯帝','烁钵啰耶 · 菩提萨埵婆耶','唵 · 萨皤啰罚曳','婆卢吉帝 · 室佛啰愣驮婆','摩诃菩提萨埵']},
-  {n:'道德经',l:['道可道 · 非常道','名可名 · 非常名','无名天地之始 · 有名万物之母','玄之又玄 · 众妙之门','上善若水 · 水善利万物而不争']},
-  {n:'清静经',l:['大道无形 · 生育天地','大道无情 · 运行日月','大道无名 · 长养万物','人能常清静 · 天地悉皆归']},
-  {n:'法华经',l:['诸法从本来 · 常自寂灭相','是法住法位 · 世间相常住','诸法实相 · 如是相 · 如是性','开方便门 · 示真实相']}
-];
-const REALM=[
-  {n:'凡人',m:0},{n:'初学',m:100},{n:'修行者',m:300},{n:'入定',m:600},
-  {n:'禅定',m:1200},{n:'明心',m:2500},{n:'见性',m:5000},{n:'开悟',m:10000},
-  {n:'大觉',m:20000},{n:'菩提',m:40000},{n:'金刚',m:80000},{n:'涅槃',m:150000}
-];
-const SKIN=[
-  {id:0,n:'清净本心',e:'🪷',d:'初始法相'},
-  {id:1,n:'紫檀木鱼',e:'🪵',d:'紫檀木制',p:200},
-  {id:2,n:'青铜磬',e:'🔔',d:'古铜铸就',p:500},
-  {id:3,n:'白玉莲台',e:'💎',d:'白玉雕琢',p:1000},
-  {id:4,n:'金钵',e:'🏆',d:'鎏金法钵',p:2000},
-  {id:5,n:'分享之心',e:'💝',d:'分享即得',share:true},
-  {id:6,n:'友谊之莲',e:'🤝',d:'接引有缘',invite:true}
-];
-const ACH=[
-  {id:'1',n:'初叩',i:'👶',d:'第一次敲击',c:()=>s.taps>=1},
-  {id:'2',n:'百敲',i:'🙏',d:'100次',c:()=>s.taps>=100},
-  {id:'3',n:'千锤',i:'⚔️',d:'1000次',c:()=>s.taps>=1000},
-  {id:'4',n:'万法',i:'☸️',d:'10000次',c:()=>s.taps>=10000},
-  {id:'5',n:'五日禅',i:'📅',d:'签到5天',c:()=>s.streak>=5},
-  {id:'6',n:'半月修',i:'🗓️',d:'签到15天',c:()=>s.streak>=15},
-  {id:'7',n:'一月圆',i:'🌕',d:'签到30天',c:()=>s.streak>=30},
-  {id:'8',n:'五连',i:'⚡',d:'5连击',c:()=>s.maxCombo>=5},
-  {id:'9',n:'二十连',i:'🔥',d:'20连击',c:()=>s.maxCombo>=20},
-  {id:'10',n:'五十连',i:'💫',d:'50连击',c:()=>s.maxCombo>=50},
-  {id:'11',n:'百连',i:'👑',d:'100连击',c:()=>s.maxCombo>=100},
-  {id:'12',n:'庄严',i:'🎨',d:'6法相',c:()=>s.owned.length>=6},
-  {id:'13',n:'布施',i:'📤',d:'分享10次',c:()=>s.shareTotal>=10},
-  {id:'14',n:'大布施',i:'🌟',d:'分享50次',c:()=>s.shareTotal>=50},
-  {id:'15',n:'接引',i:'👥',d:'3人',c:()=>s.invCnt>=3}
-];
-
-// ============ AUDIO - Physical Model (Mobile-friendly) ============
-let ctx=null;
+/* Audio */
+var actx=null;
 function initAudio(){
-  try{
-    ctx=new(window.AudioContext||window.webkitAudioContext)();
-    if(ctx.state==='suspended') ctx.resume();
-  }catch(e){}
+  if(actx) return;
+  try{actx=new(window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume()}catch(e){}
 }
-function ac(){
-  if(!ctx) initAudio();
-  if(ctx && ctx.state==='suspended') ctx.resume();
-  return ctx;
-}
-
 function playMuyu(){
-  const c=ac(),t=c.currentTime;
-  const modes=[
-    {f:330,a:1.0,d:.45},{f:495,a:.6,d:.38},{f:660,a:.35,d:.30},
-    {f:825,a:.2,d:.25},{f:990,a:.12,d:.20},{f:1155,a:.08,d:.16},
-    {f:380,a:.25,d:.20},{f:560,a:.15,d:.18}
-  ];
-  modes.forEach(m=>{
-    const o=c.createOscillator(),g=c.createGain();
-    o.type='sine';o.frequency.value=m.f;
-    g.gain.setValueAtTime(m.a*.55,t);g.gain.exponentialRampToValueAtTime(.001,t+m.d);
-    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+m.d+.05);
-  });
-  // Strike noise
-  const ns=Math.floor(c.sampleRate*.035);
-  const b=c.createBuffer(1,ns,c.sampleRate),d=b.getChannelData(0);
-  for(let i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(ns*.10));
-  const src=c.createBufferSource();src.buffer=b;
-  const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1200;bp.Q.value=3;
-  const ng=c.createGain();ng.gain.setValueAtTime(.3,t);ng.gain.exponentialRampToValueAtTime(.001,t+.07);
-  src.connect(bp);bp.connect(ng);ng.connect(c.destination);src.start(t);src.stop(t+.09);
-  // Reverb tail
-  [.03,.07,.12].forEach((dl,i)=>{
-    const o=c.createOscillator(),g=c.createGain();
-    o.type='sine';o.frequency.value=330+dl*700;
-    g.gain.setValueAtTime(.05-i*.015,t+dl);g.gain.exponentialRampToValueAtTime(.001,t+dl+.25+i*.08);
-    o.connect(g);g.connect(c.destination);o.start(t+dl);o.stop(t+dl+.35);
-  });
+  var c=actx,t=c.currentTime;
+  var ns=Math.floor(c.sampleRate*0.04),b=c.createBuffer(1,ns,c.sampleRate),d=b.getChannelData(0);
+  for(var i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(ns*0.12));
+  var src=c.createBufferSource();src.buffer=b;
+  var bp=c.createBiquadFilter();bp.type='lowpass';bp.frequency.value=1800;bp.Q.value=0.7;
+  var ng=c.createGain();ng.gain.setValueAtTime(0.35,t);ng.gain.exponentialRampToValueAtTime(0.001,t+0.04);
+  src.connect(bp);bp.connect(ng);ng.connect(c.destination);src.start(t);src.stop(t+0.05);
+  var modes=[{f:320,a:0.8,d:0.45},{f:470,a:0.4,d:0.38},{f:630,a:0.25,d:0.30},{f:790,a:0.15,d:0.22},{f:950,a:0.10,d:0.18},{f:1180,a:0.06,d:0.12}];
+  modes.forEach(function(m){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=m.f;g.gain.setValueAtTime(m.a*0.55,t);g.gain.exponentialRampToValueAtTime(0.001,t+m.d);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+m.d+0.05)});
+  var nt=Math.floor(c.sampleRate*0.08),b2=c.createBuffer(1,nt,c.sampleRate),d2=b2.getChannelData(0);
+  for(var i=0;i<nt;i++)d2[i]=(Math.random()*2-1)*Math.exp(-i/(nt*0.2));
+  var src2=c.createBufferSource();src2.buffer=b2;
+  var bp2=c.createBiquadFilter();bp2.type='bandpass';bp2.frequency.value=800;bp2.Q.value=2;
+  var ng2=c.createGain();ng2.gain.setValueAtTime(0.12,t+0.02);ng2.gain.exponentialRampToValueAtTime(0.001,t+0.2);
+  src2.connect(bp2);bp2.connect(ng2);ng2.connect(c.destination);src2.start(t+0.02);src2.stop(t+0.22);
 }
-function playQing(){const c=ac(),t=c.currentTime;[440,660,880,1100].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.22-i*.04,t);g.gain.exponentialRampToValueAtTime(.001,t+1.8+i*.08);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+2.2)})}
-function playLing(){const c=ac(),t=c.currentTime;[1200,1600,2000].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.14-i*.03,t);g.gain.exponentialRampToValueAtTime(.001,t+1.0+i*.1);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+1.5)})}
-function playWind(){const c=ac(),t=c.currentTime;for(let i=0;i<5;i++){const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=700+i*260;g.gain.setValueAtTime(.07,t+i*.08);g.gain.linearRampToValueAtTime(0,t+i*.08+.3);o.connect(g);g.connect(c.destination);o.start(t+i*.08);o.stop(t+i*.08+.35)}}
-function playRain(){const c=ac(),t=c.currentTime;const ns=c.sampleRate*.5;const b=c.createBuffer(1,ns,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/ns*5)*.14;const src=c.createBufferSource();src.buffer=b;const g=c.createGain();g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);src.connect(g);g.connect(c.destination);src.start(t);src.stop(t+.4)}
-function playS(i){if(i==0)playMuyu();else if(i==1)playQing();else if(i==2)playLing();else if(i==3)playWind();else playRain()}
+function playQing(){var c=actx,t=c.currentTime;[440,660,880,1100].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime((.22-i*.04)*.5,t);g.gain.exponentialRampToValueAtTime(.001,t+1.5+i*.08);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+2)})}
+function playLing(){var c=actx,t=c.currentTime;[1200,1600,2000].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime((.14-i*.03)*.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.8+i*.1);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+1.2)})}
+function playWind(){var c=actx,t=c.currentTime;for(var i=0;i<5;i++){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=700+i*260;g.gain.setValueAtTime(.07*.7,t+i*.08);g.gain.linearRampToValueAtTime(0,t+i*.08+.3);o.connect(g);g.connect(c.destination);o.start(t+i*.08);o.stop(t+i*.08+.35)}}
+function playRain(){var c=actx,t=c.currentTime;var ns=Math.floor(c.sampleRate*.5),b=c.createBuffer(1,ns,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/ns*5)*.12;var src=c.createBufferSource();src.buffer=b;var g=c.createGain();g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);src.connect(g);g.connect(c.destination);src.start(t);src.stop(t+.35)}
+function playS(i){try{if(!actx)initAudio();if(actx&&actx.state==='suspended')actx.resume();if(i==0)playMuyu();else if(i==1)playQing();else if(i==2)playLing();else if(i==3)playWind();else playRain()}catch(e){}}
 
-// ============ SUTRA ============
-let si=0,li=0;
-function nxtS(){
-  const b=SUT[si];const ln=b.l[li];
-  const el=document.getElementById('sutraText');
-  el.style.opacity='0';setTimeout(()=>{el.innerHTML=`<span class="hl">${ln}</span>`;el.style.opacity='1'},40);
-  li++;if(li>=b.l.length){li=0;si=(si+1)%SUT.length}
-}
+/* Sutra */
+var si=s.sutraIdx||0,li=0;
+function showSutraName(){document.getElementById('sutraName').textContent=SUT[si].n}
+function nxtS(){var b=SUT[si];var ln=b.l[li];var el=document.getElementById('sutraText');el.style.opacity='0';setTimeout(function(){el.innerHTML='<span class="hl">'+ln+'</span>';el.style.opacity='1'},40);li++;if(li>=b.l.length){li=0;si=(si+1)%SUT.length;s.sutraIdx=si;sv()}}
 
-// ============ TAP ============
 function tap(e){
-  const now=Date.now();const diff=now-s.lastTap;s.lastTap=now;
+  var now=Date.now();var diff=now-s.lastTap;s.lastTap=now;
   if(diff<700){s.combo++}else{s.combo=1}
   if(s.combo>s.maxCombo)s.maxCombo=s.combo;
-  const pts=1+Math.floor(Math.min(s.combo,20)/5);
-  s.merit+=pts;s.taps++;
-  playS(s.sndIdx);nxtS();
-  
-  const ci=document.getElementById('mainCircle');
-  ci.classList.remove('hit');void ci.offsetWidth;ci.classList.add('hit');
-  setTimeout(()=>ci.classList.remove('hit'),120);
-  
-  const ct=document.getElementById('comboText');
-  if(s.combo>=3){ct.textContent=`🔥 ×${s.combo}`;ct.className='combo-text show';clearTimeout(ct._t);ct._t=setTimeout(()=>ct.className='combo-text',500)}
-  
-  const rect=ci.getBoundingClientRect();const cx=e.clientX||rect.left+rect.width/2,cy=e.clientY||rect.top+rect.height;
-  const fl=document.createElement('div');fl.className='floating';fl.textContent=`+${pts}`;fl.style.left=cx+'px';fl.style.top=cy+'px';
-  document.body.appendChild(fl);setTimeout(()=>fl.remove(),900);
-  
+  var pts=1+Math.floor(Math.min(s.combo,20)/5);s.merit+=pts;s.taps++;
+  try{playS(s.sndIdx)}catch(e2){}
+  nxtS();
+  var ci=document.getElementById('mainCircle');ci.classList.remove('hit');void ci.offsetWidth;ci.classList.add('hit');setTimeout(function(){ci.classList.remove('hit')},120);
+  var ct=document.getElementById('comboText');if(s.combo>=3){ct.textContent='🔥 \u00d7'+s.combo;ct.className='combo-text show';clearTimeout(ct._t);ct._t=setTimeout(function(){ct.className='combo-text'},500)}
+  var rect=ci.getBoundingClientRect();var cx=e.clientX||rect.left+rect.width/2,cy=e.clientY||rect.top+rect.height;
+  var fl=document.createElement('div');fl.className='floating';fl.textContent='+'+pts;fl.style.left=cx+'px';fl.style.top=cy+'px';document.body.appendChild(fl);setTimeout(function(){fl.remove()},800);
   chkA();upd();sv();
 }
-
-// ============ ACH ============
-function chkA(){ACH.forEach(a=>{if(!s.ach[a.id]&&a.c()){s.ach[a.id]=true;const p=document.getElementById('achPop');p.querySelector('.big').textContent=a.i;p.querySelector('.t').textContent=a.n;p.querySelector('.d').textContent=a.d;p.classList.add('show');setTimeout(()=>p.classList.remove('show'),2500)}})}
-
-// ============ SHARE ============
+function chkA(){ACH.forEach(function(a){if(!s.ach[a.id]&&a.c()){s.ach[a.id]=true;var p=document.getElementById('achPop');p.querySelector('.big').textContent=a.i;p.querySelector('.t').textContent=a.n;p.querySelector('.d').textContent=a.d;p.classList.add('show');setTimeout(function(){p.classList.remove('show')},2500)}})}
 function share(){
-  const url=window.location.href;
-  if(!s.shareSkin){s.shareSkin=true;if(!s.owned.includes(5))s.owned.push(5);toast('💝 获得「分享之心」法相')}
-  const td=new Date().toISOString().slice(0,10);
-  if(s.firstShare!==td){s.merit+=50;s.firstShare=td;toast('✨ 每日分享 +50')}
+  var url=window.location.href;
+  if(!s.shareSkin){s.shareSkin=true;if(s.owned.indexOf(5)<0)s.owned.push(5);toast('\\u{1f49d} 获得「分享之心」')}
+  var td=new Date().toISOString().slice(0,10);
+  if(s.firstShare!==td){s.merit+=50;s.firstShare=td;toast('\\u2728 每日分享 +50')}
   s.shareToday++;s.shareTotal++;chkA();upd();sv();
-  if(navigator.share)navigator.share({title:'清敲',text:'🪷 我在敲木鱼诵经静心，来试试～',url}).catch(()=>{});
-  else navigator.clipboard.writeText('🪷 我在「清敲」敲木鱼诵经，来感受静心的力量。 '+url).then(()=>toast('✅ 已复制')).catch(()=>{});
+  if(navigator.share)navigator.share({title:'清敲',text:'\\u{1faa6} 我在「清敲」轻叩静心，来试试放松一下～',url}).catch(function(){});
+  else navigator.clipboard.writeText('\\u{1faa6} 我在「清敲」轻叩静心放松心情，你也来试试吧。 '+url).then(function(){toast('\\u2705 已复制')}).catch(function(){});
 }
-function invSim(){s.merit+=30;s.invCnt++;if(!s.invSkin){s.invSkin=true;if(!s.owned.includes(6))s.owned.push(6);toast('🤝 获得「友谊之莲」')}chkA();upd();sv()}
-
-// ============ UI ============
+function invSim(){s.merit+=30;s.invCnt++;if(!s.invSkin){s.invSkin=true;if(s.owned.indexOf(6)<0)s.owned.push(6);toast('🤝 获得「好友之谊」')}chkA();upd();sv()}
 function upd(){
-  const td=new Date().toISOString().slice(0,10);
-  document.getElementById('hScore').textContent=s.merit;
-  document.getElementById('scoreNum').textContent=s.merit;
-  const r=REALM.filter(x=>s.merit>=x.m).pop()||REALM[0];
-  document.getElementById('realmLabel').textContent=r.n;
-  document.getElementById('hStreak').textContent=s.streak>0?`第${s.streak}天`:'未签到';
-  const sk=SKIN.find(x=>x.id===s.skin)||SKIN[0];
-  document.getElementById('skinEmoji').textContent=sk.e;
-  document.querySelectorAll('.snd-btn').forEach(el=>el.classList.toggle('active',parseInt(el.dataset.s)===s.sndIdx));
-  // Week
-  const rw=document.getElementById('weekRow');const n=new Date();const wd=n.getDay();const st=new Date(n);st.setDate(n.getDate()-wd);
-  const nm=['日','一','二','三','四','五','六'];rw.innerHTML='';
-  for(let i=0;i<7;i++){const d=new Date(st);d.setDate(st.getDate()+i);const str=d.toISOString().slice(0,10);const div=document.createElement('div');div.className='day-box';if(s.checkins.includes(str))div.className+=' done';else if(str===td)div.className+=' today';div.textContent=nm[i];rw.appendChild(div)}
-  const ck=s.checkins.includes(td);const btn=document.getElementById('btnCheck');btn.textContent=ck?'✅ 已签到':'📌 签到 · +50';btn.disabled=ck;
+  var td=new Date().toISOString().slice(0,10);
+  document.getElementById('hScore').textContent=s.merit;document.getElementById('scoreNum').textContent=s.merit;
+  var r=REALM.filter(function(x){return s.merit>=x.m}).pop()||REALM[0];
+  document.getElementById('realmLabel').textContent=r.n;document.getElementById('hStreak').textContent=s.streak>0?'第'+s.streak+'天':'未签到';
+  var sk=SKIN.filter(function(x){return x.id===s.skin})[0]||SKIN[0];
+  var btns=document.querySelectorAll('.snd-btn');for(var i=0;i<btns.length;i++){btns[i].className=btns[i].className.replace(/\bactive\b/,'');if(parseInt(btns[i].dataset.s)===s.sndIdx)btns[i].className+=' active'}
+  showSutraName();
+  var rw=document.getElementById('weekRow');var nd=new Date();var wd=nd.getDay();var st=new Date(nd);st.setDate(nd.getDate()-wd);var nm=['日','一','二','三','四','五','六'];rw.innerHTML='';for(var i=0;i<7;i++){var d=new Date(st);d.setDate(st.getDate()+i);var str=d.toISOString().slice(0,10);var div=document.createElement('div');div.className='day-box';if(s.checkins.indexOf(str)>=0)div.className+=' done';else if(str===td)div.className+=' today';div.textContent=nm[i];rw.appendChild(div)}
+  var ck=s.checkins.indexOf(td)>=0;var btn=document.getElementById('btnCheck');btn.textContent=ck?'已签到':'签到 · +50';btn.disabled=ck;
   document.getElementById('stToday').textContent=s.shareToday;document.getElementById('stTotal').textContent=s.shareTotal;document.getElementById('stInvite').textContent=s.invCnt;
-  // ACH grid
-  const ag=document.getElementById('achGrid');ag.innerHTML='';ACH.forEach(a=>{const u=!!s.ach[a.id];const d=document.createElement('div');d.className=`ach-item${u?' unlocked':''}`;d.innerHTML=`<div class="icon">${a.i}</div><div class="name">${a.n}</div><div class="desc">${a.d}</div>`;ag.appendChild(d)});
-  // Shop
-  const sg=document.getElementById('skinGrid');sg.innerHTML='';SKIN.forEach(sk=>{const owned=s.owned.includes(sk.id),eq=s.skin===sk.id;const div=document.createElement('div');div.className='skin-item';div.innerHTML=`<div class="preview" style="background:radial-gradient(circle at 35%35%,${sk.id===0?'#7c3aed':sk.id===1?'#8B4513':sk.id===2?'#B8860B':sk.id===3?'#E0E0FF':sk.id===4?'#DAA520':sk.id===5?'#FF69B4':'#F4A460'},transparent)">${sk.e}</div><div class="sname">${sk.n}</div><div class="sdesc">${sk.d||''}</div>`;const btn=document.createElement('button');btn.className='btn-s';if(eq){btn.textContent='✅ 已装备';btn.className='btn-s eq'}else if(owned){btn.textContent='👔 装备';btn.className='btn-s own';btn.onclick=()=>{s.skin=sk.id;upd();sv();upd()}}else if(sk.share&&!s.shareSkin){btn.textContent='📤 分享';btn.className='btn-s buy';btn.onclick=()=>toast('分享给好友即可解锁')}else if(sk.invite&&!s.invSkin){btn.textContent='👥 邀请';btn.className='btn-s buy';btn.onclick=()=>toast('邀请好友解锁')}else if(sk.p>0){btn.textContent=`✦${sk.p}`;btn.className='btn-s buy';btn.onclick=()=>{if(s.merit>=sk.p){s.merit-=sk.p;s.owned.push(sk.id);toast(`✅ 获得「${sk.n}」`);sv();upd()}else toast(`✦不足，还需${sk.p-s.merit}`)}}div.appendChild(btn);sg.appendChild(div)});
-  // Stats
+  var ag=document.getElementById('achGrid');ag.innerHTML='';ACH.forEach(function(a){var u=!!s.ach[a.id];var d=document.createElement('div');d.className='ach-item'+(u?' unlocked':'');d.innerHTML='<div class="icon">'+a.i+'</div><div class="name">'+a.n+'</div><div class="desc">'+a.d+'</div>';ag.appendChild(d)});
+  var sg=document.getElementById('skinGrid');sg.innerHTML='';SKIN.forEach(function(sk){var owned=s.owned.indexOf(sk.id)>=0,eq=s.skin===sk.id;var div=document.createElement('div');div.className='skin-item';div.innerHTML='<div class="preview" style="background:radial-gradient(circle at 35%35%,'+(sk.id===0?'rgba(109,77,168,.3)':sk.id===1?'#6B4C28':sk.id===2?'#B8860B':sk.id===3?'#E0E0FF':sk.id===4?'#DAA520':sk.id===5?'#FF69B4':'#F4A460')+',transparent)">'+sk.e+'</div><div class="sname">'+sk.n+'</div><div class="sdesc">'+(sk.d||'')+'</div>';var btn=document.createElement('button');btn.className='btn-s';if(eq){btn.textContent='已装备';btn.className='btn-s eq'}else if(owned){btn.textContent='装备';btn.className='btn-s own';btn.onclick=function(i){return function(){s.skin=i;upd();sv();upd()}}(sk.id)}else if(sk.share&&!s.shareSkin){btn.textContent='分享解锁';btn.className='btn-s buy';btn.onclick=function(){toast('分享给好友即可解锁')}}else if(sk.invite&&!s.invSkin){btn.textContent='邀请解锁';btn.className='btn-s buy';btn.onclick=function(){toast('邀请好友即可解锁')}}else if(sk.p>0){btn.textContent='✦'+sk.p;btn.className='btn-s buy';btn.onclick=function(i,p){return function(){if(s.merit>=p){s.merit-=p;s.owned.push(i);toast('获得「'+SKIN.filter(function(x){return x.id===i})[0].n+'」');sv();upd()}else toast('积分不足，还需'+(p-s.merit))}}(sk.id,sk.p)}div.appendChild(btn);sg.appendChild(div)});
   document.getElementById('sTap').textContent=s.taps;document.getElementById('sMer').textContent=s.merit;document.getElementById('sRea').textContent=r.n;document.getElementById('sStr').textContent=s.streak+'天';document.getElementById('sCom').textContent=s.maxCombo+'连';document.getElementById('sSki').textContent=s.owned.length+'/'+SKIN.length;document.getElementById('sAch').textContent=Object.keys(s.ach).length+'/'+ACH.length;
 }
-function toast(m,d=1500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d)}
+function toast(m,d){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},d||1500)}
+var tabs=document.querySelectorAll('.tab');for(var ti=0;ti<tabs.length;ti++){(function(t){t.addEventListener('click',function(){for(var j=0;j<tabs.length;j++)tabs[j].classList.remove('active');var ps=document.querySelectorAll('.panel');for(var j=0;j<ps.length;j++)ps[j].classList.remove('active');this.classList.add('active');var p=document.getElementById(this.dataset.tab);if(p)p.classList.add('active')})})(tabs[ti])}
 
-// ============ TABS ============
-document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));this.classList.add('active');const p=document.getElementById(this.dataset.tab);if(p)p.classList.add('active')})});
-
-// ============ INIT ============
-document.addEventListener('DOMContentLoaded',()=>{
-  nxtS();upd();s.lastVisit=new Date().toISOString();sv();
-  document.getElementById('circleWrap').addEventListener('click',function(e){const r=this.getBoundingClientRect();tap({clientX:e.clientX||r.left+r.width/2,clientY:e.clientY||r.top+r.height})});
-  // Touch support for mobile
-  document.getElementById('circleWrap').addEventListener('touchstart',function(e){const t=e.touches[0];const r=this.getBoundingClientRect();tap({clientX:t.clientX,clientY:t.clientY})},{passive:true});
-  document.querySelectorAll('.snd-btn').forEach(el=>{el.addEventListener('click',function(){s.sndIdx=parseInt(this.dataset.s);playS(s.sndIdx);upd();sv()})});
-  document.getElementById('btnCheck').addEventListener('click',()=>{const td=new Date().toISOString().slice(0,10);if(s.checkins.includes(td))return;s.checkins.push(td);s.merit+=50;let streak=0;const d=new Date();while(true){const str=d.toISOString().slice(0,10);if(s.checkins.includes(str)){streak++;d.setDate(d.getDate()-1)}else break}s.streak=streak;if(s.streak>s.maxStreak)s.maxStreak=s.streak;sv();chkA();upd();toast(`📌 签到成功！连续${streak}天`)});
+window.addEventListener('load',function(){
+  showSutraName();nxtS();upd();s.lastVisit=new Date().toISOString();sv();
+  function firstTouch(){initAudio();window.removeEventListener('touchstart',firstTouch);window.removeEventListener('click',firstTouch)}
+  window.addEventListener('touchstart',firstTouch,{once:true,passive:true});
+  window.addEventListener('click',firstTouch,{once:true});
+  /* Sutra nav */
+  document.getElementById('sutraPrev').addEventListener('click',function(){si=(si-1+SUT.length)%SUT.length;s.sutraIdx=si;li=0;sv();showSutraName();nxtS()});
+  document.getElementById('sutraNext').addEventListener('click',function(){si=(si+1)%SUT.length;s.sutraIdx=si;li=0;sv();showSutraName();nxtS()});
+  document.getElementById('sutraName').addEventListener('click',function(){si=(si+1)%SUT.length;s.sutraIdx=si;li=0;sv();showSutraName();nxtS()});
+  /* Tap */
+  var tapCircle=document.getElementById('tapCircle');var touchFired=false;
+  tapCircle.addEventListener('touchstart',function(e){touchFired=true;var t=e.touches[0];var r=this.getBoundingClientRect();tap({clientX:t.clientX,clientY:t.clientY})},{passive:true});
+  tapCircle.addEventListener('click',function(e){if(touchFired){touchFired=false;return}var r=this.getBoundingClientRect();tap({clientX:e.clientX||r.left+r.width/2,clientY:e.clientY||r.top+r.height})});
+  var sndBtns=document.querySelectorAll('.snd-btn');for(var i=0;i<sndBtns.length;i++){(function(i,el){el.addEventListener('click',function(){s.sndIdx=parseInt(this.dataset.s);playS(s.sndIdx);upd();sv()})})(i,sndBtns[i])}
+  document.getElementById('btnCheck').addEventListener('click',function(){var td=new Date().toISOString().slice(0,10);if(s.checkins.indexOf(td)>=0)return;s.checkins.push(td);s.merit+=50;var streak=0;var d=new Date();while(true){var str=d.toISOString().slice(0,10);if(s.checkins.indexOf(str)>=0){streak++;d.setDate(d.getDate()-1)}else break}s.streak=streak;if(s.streak>s.maxStreak)s.maxStreak=s.streak;sv();chkA();upd();toast('签到成功！连续'+streak+'天')});
   document.getElementById('btnShare').addEventListener('click',share);
-  document.getElementById('btnCopy').addEventListener('click',()=>{navigator.clipboard.writeText('🪷 我在「清敲」敲木鱼诵经，来试试～ '+window.location.href).then(()=>toast('✅ 已复制'))});
-  // Offline
-  if(s.lastVisit){const hrs=(Date.now()-new Date(s.lastVisit).getTime())/3600000;if(hrs>=1){const earn=Math.floor(Math.min(hrs,48)*120);if(earn>5){s.merit+=earn;setTimeout(()=>toast(`🌙 离线 +${earn} 功德`),800)}}}
-  // Double-tap invite sim
-  let dc=0;document.getElementById('circleWrap').addEventListener('dblclick',()=>{dc++;if(dc>=2){dc=0;invSim();toast('👥 模拟接引')}});
+  document.getElementById('btnCopy').addEventListener('click',function(){navigator.clipboard.writeText('\\u{1faa6} 我在「清敲」轻叩静心放松心情，你也来试试吧。 '+window.location.href).then(function(){toast('已复制')})});
+  if(s.lastVisit){var hrs=(Date.now()-new Date(s.lastVisit).getTime())/3600000;if(hrs>=1){var earn=Math.floor(Math.min(hrs,48)*120);if(earn>5){s.merit+=earn;setTimeout(function(){toast('离线积累 +'+earn+' 积分')},800)}}}
+  var dc=0;tapCircle.addEventListener('dblclick',function(){dc++;if(dc>=2){dc=0;invSim();toast('模拟邀请')}});
 });
 </script>
 </body>
