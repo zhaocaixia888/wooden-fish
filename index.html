@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>清敲 - 敲木鱼</title>
+<title>清敲 - 敲木鱼 · 修功德</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
 body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gradient(160deg,#0a0a0a,#1a0a2e,#0d0d0d);min-height:100vh;color:#d4c9a8;overflow-x:hidden}
@@ -16,31 +16,28 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
 .header .stats span{background:rgba(212,165,116,.08);padding:3px 10px;border-radius:10px;display:flex;align-items:center;gap:3px;color:#c4a882}
 
 /* Sutra scroll area */
-.sutra-area{position:relative;min-height:64px;display:flex;align-items:center;justify-content:center;margin:4px 0 6px;overflow:hidden;border-radius:6px;background:rgba(0,0,0,.25);border:1px solid rgba(212,165,116,.06)}
+.sutra-area{position:relative;min-height:60px;display:flex;align-items:center;justify-content:center;margin:4px 0 6px;overflow:hidden;border-radius:6px;background:rgba(0,0,0,.25);border:1px solid rgba(212,165,116,.06)}
 .sutra-text{font-size:15px;color:rgba(212,200,168,.75);line-height:1.7;text-align:center;padding:10px 14px;font-family:'Noto Serif SC','Songti SC',serif;letter-spacing:1px;transition:opacity .2s}
 .sutra-text .highlight{color:#d4a574}
 .sutra-label{position:absolute;top:4px;right:8px;font-size:10px;color:rgba(212,165,116,.3)}
 @keyframes sutraFade{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
 
 /* Wooden Fish Area */
-.fish-area{text-align:center;padding:10px 0 4px;position:relative}
+.fish-area{text-align:center;padding:12px 0 4px;position:relative}
 .fish-wrap{position:relative;display:inline-block;cursor:pointer}
-.fish{width:200px;height:200px;border-radius:50% 50% 48% 52%;background:radial-gradient(ellipse at 40% 35%,#8B6914,#5C4033,#2D1810);box-shadow:0 0 50px rgba(212,165,116,.12),0 8px 40px rgba(0,0,0,.6),inset 0 -15px 40px rgba(0,0,0,.5);transition:transform .06s;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;border:1px solid rgba(212,165,116,.15)}
-.fish:active{transform:scale(.94)}
-.fish .fish-emoji{font-size:52px;line-height:1;margin-bottom:2px;filter:drop-shadow(0 2px 8px rgba(212,165,116,.2))}
+.fish{width:210px;height:210px;border-radius:50% 50% 48% 52%;background:radial-gradient(ellipse at 40% 35%,#8B6914,#5C4033,#2D1810);box-shadow:0 0 50px rgba(212,165,116,.12),0 8px 40px rgba(0,0,0,.6),inset 0 -15px 40px rgba(0,0,0,.5);transition:transform .06s;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;border:1px solid rgba(212,165,116,.15);cursor:pointer}
+.fish:active{transform:scale(.93)}
+.fish .fish-emoji{font-size:56px;line-height:1;margin-bottom:2px;filter:drop-shadow(0 2px 8px rgba(212,165,116,.2))}
 .fish .fish-label{font-size:13px;color:rgba(212,200,168,.6);letter-spacing:3px;margin-top:2px}
-.fish .glow{position:absolute;width:100%;height:100%;border-radius:50%;box-shadow:0 0 0 transparent;transition:none;pointer-events:none}
 
 /* Hit circle ring */
-.hit-ring{position:absolute;top:-8px;left:-8px;width:216px;height:216px;border-radius:50%;border:1px solid rgba(212,165,116,.1);pointer-events:none;animation:ringPulse 3s ease-in-out infinite}
+.hit-ring{position:absolute;top:-8px;left:-8px;width:226px;height:226px;border-radius:50%;border:1px solid rgba(212,165,116,.1);pointer-events:none;animation:ringPulse 3s ease-in-out infinite}
 @keyframes ringPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.6;transform:scale(1.02)}}
 
 /* Merit */
 .merit-area{text-align:center;margin:4px 0 0}
-.merit-number{font-size:44px;font-weight:700;color:#d4a574;line-height:1;font-family:'Noto Serif SC',serif}
+.merit-number{font-size:48px;font-weight:700;color:#d4a574;line-height:1;font-family:'Noto Serif SC',serif}
 .merit-label{font-size:13px;color:rgba(212,200,168,.4);letter-spacing:6px;margin-bottom:2px}
-
-/* Realm */
 .realm-badge{display:inline-block;font-size:12px;background:linear-gradient(135deg,rgba(212,165,116,.15),rgba(139,105,20,.1));color:#d4a574;padding:3px 16px;border-radius:12px;border:1px solid rgba(212,165,116,.15);letter-spacing:2px}
 
 /* Sound Select */
@@ -70,7 +67,7 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
 .card{background:rgba(0,0,0,.3);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid rgba(212,165,116,.06)}
 .card h3{font-size:14px;margin-bottom:10px;color:#d4a574;display:flex;align-items:center;gap:6px;letter-spacing:1px}
 
-/* Check-in */
+/* Week row */
 .week-row{display:flex;gap:3px;justify-content:center;margin-bottom:10px}
 .day-box{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;background:rgba(255,255,255,.04);color:rgba(212,200,168,.2);font-family:serif}
 .day-box.done{background:rgba(212,165,116,.2);color:#d4a574;border:1px solid rgba(212,165,116,.15)}
@@ -78,7 +75,7 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
 .btn-c{width:100%;padding:9px;border:0;border-radius:8px;background:linear-gradient(135deg,rgba(212,165,116,.2),rgba(139,105,20,.15));color:#d4a574;font-size:14px;cursor:pointer;font-family:serif;letter-spacing:1px;border:1px solid rgba(212,165,116,.1)}
 .btn-c:disabled{opacity:.4;cursor:default}
 
-/* Achievements */
+/* Achievements grid */
 .ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .ach-item{background:rgba(0,0,0,.25);border-radius:10px;padding:10px 6px;text-align:center;border:1px solid rgba(212,165,116,.06);opacity:.35;transition:all .2s}
 .ach-item.unlocked{opacity:1;border-color:rgba(212,165,116,.2);background:rgba(212,165,116,.06)}
@@ -86,7 +83,7 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
 .ach-item .name{font-size:10px;color:rgba(212,200,168,.6)}
 .ach-item .desc{font-size:8px;color:rgba(212,200,168,.3);margin-top:1px}
 
-/* Skin Shop */
+/* Skin shop */
 .skin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .skin-item{background:rgba(0,0,0,.25);border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(212,165,116,.06)}
 .skin-item .preview{width:52px;height:52px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:26px;border:1px solid rgba(212,165,116,.1)}
@@ -99,8 +96,6 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
 .skin-item .btn-s:disabled{opacity:.3;cursor:default}
 
 /* Share */
-.share-section{text-align:center}
-.share-section p{font-size:12px;color:rgba(212,200,168,.4);margin-bottom:10px}
 .share-btn-row{display:flex;gap:8px;justify-content:center}
 .btn-share{padding:9px 18px;border:0;border-radius:8px;font-size:13px;cursor:pointer;font-family:serif}
 .btn-share.primary{background:linear-gradient(135deg,rgba(212,165,116,.25),rgba(139,105,20,.15));color:#d4a574;border:1px solid rgba(212,165,116,.15)}
@@ -113,11 +108,9 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
 .stat-row .sl{font-size:12px;color:rgba(212,200,168,.4)}
 .stat-row .sv{font-size:13px;color:#d4a574}
 
-/* Toast */
+/* Toast & Notif */
 .toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(10,10,10,.92);color:#d4c9a8;padding:16px 26px;border-radius:12px;font-size:14px;z-index:200;opacity:0;transition:opacity .25s;pointer-events:none;text-align:center;backdrop-filter:blur(8px);border:1px solid rgba(212,165,116,.1);font-family:serif}
 .toast.show{opacity:1}
-
-/* Notif */
 .notif-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:150;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .notif-overlay.show{display:flex}
 .notif-box{background:linear-gradient(135deg,#1a0a2e,#0d0d0d);border-radius:18px;padding:26px 22px;max-width:300px;width:90%;text-align:center;border:1px solid rgba(212,165,116,.15)}
@@ -135,27 +128,19 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
 .ripple-el{position:absolute;border-radius:50%;border:1px solid rgba(212,165,116,.15);animation:rippleOut .7s ease-out forwards}
 @keyframes rippleOut{0%{width:0;height:0;opacity:.6}100%{width:250px;height:250px;opacity:0;top:-125px;left:-125px}}
 
-/* Tap circle ring flash */
-@keyframes flashRing{0%{box-shadow:0 0 0 0 rgba(212,165,116,.3)}100%{box-shadow:0 0 30px 15px rgba(212,165,116,0)}}
-
-/* Scroll indicator */
-.scroll-indicator{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:9px;color:rgba(212,165,116,.15);animation:scrollPulse 2s infinite}
-@keyframes scrollPulse{0%,100%{opacity:.15}50%{opacity:.4}}
-
-/* Floaty character particles */
+/* Particles */
 .particle-c{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:45}
 .particle{position:absolute;font-size:13px;color:rgba(212,165,116,.08);animation:particleUp 3s ease-out forwards}
 @keyframes particleUp{0%{opacity:.3;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(-120px) rotate(180deg)}}
 
 @media(max-width:360px){
-  .fish{width:170px;height:170px}.fish .fish-emoji{font-size:44px}.merit-number{font-size:36px}
-  .hit-ring{width:186px;height:186px;top:-8px;left:-8px}
+  .fish{width:180px;height:180px}.fish .fish-emoji{font-size:46px}.merit-number{font-size:38px}
+  .hit-ring{width:196px;height:196px;top:-8px;left:-8px}
 }
 </style>
 </head>
 <body>
 <div class="container">
-  <!-- Header -->
   <div class="header">
     <h1>🪷 清敲</h1>
     <div class="stats">
@@ -164,9 +149,9 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
     </div>
   </div>
 
-  <!-- Sutra */
+  <!-- Sutra -->
   <div class="sutra-area">
-    <div class="sutra-text" id="sutraText">轻敲木鱼 · 静心养性</div>
+    <div class="sutra-text" id="sutraText">敲木鱼 · 念经文 · 修功德</div>
     <div class="sutra-label" id="sutraLabel">—</div>
   </div>
 
@@ -204,38 +189,26 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
 
   <!-- Tab Bar -->
   <div class="tab-bar">
-    <div class="tab active" data-tab="tpMain">
-      <span class="tab-icon">🪷</span>修行
-    </div>
-    <div class="tab" data-tab="tpShare">
-      <span class="tab-icon">📤</span>分享
-    </div>
-    <div class="tab" data-tab="tpCheckin">
-      <span class="tab-icon">📅</span>签到
-    </div>
-    <div class="tab" data-tab="tpAchieve">
-      <span class="tab-icon">🏆</span>成就
-    </div>
-    <div class="tab" data-tab="tpShop">
-      <span class="tab-icon">🎨</span>法相
-    </div>
-    <div class="tab" data-tab="tpStats">
-      <span class="tab-icon">📊</span>道果
-    </div>
+    <div class="tab active" data-tab="tpMain"><span class="tab-icon">🪷</span>修行</div>
+    <div class="tab" data-tab="tpShare"><span class="tab-icon">📤</span>分享</div>
+    <div class="tab" data-tab="tpCheckin"><span class="tab-icon">📅</span>签到</div>
+    <div class="tab" data-tab="tpAchieve"><span class="tab-icon">🏆</span>成就</div>
+    <div class="tab" data-tab="tpShop"><span class="tab-icon">🎨</span>法相</div>
+    <div class="tab" data-tab="tpStats"><span class="tab-icon">📊</span>道果</div>
   </div>
 
-  <!-- Panel: Main (empty, just placeholder) -->
+  <!-- Panel: Main -->
   <div class="panel active" id="tpMain">
     <div class="card" style="text-align:center">
-      <p style="font-size:13px;color:rgba(212,200,168,.4);line-height:1.6">👆 轻触木鱼<br>每敲一次积累一份功德<br>快速连击可获额外加成</p>
+      <p style="font-size:13px;color:rgba(212,200,168,.4);line-height:1.6">👆 轻敲木鱼 · 随缘修行<br>每敲一次积累功德<br>快速连击获额外加成<br>离线亦可持续增长</p>
     </div>
   </div>
 
   <!-- Panel: Share -->
   <div class="panel" id="tpShare">
-    <div class="card share-section">
+    <div class="card">
       <h3>📤 分享 · 法布施</h3>
-      <p>分享清敲给有缘人，双方皆获功德</p>
+      <p style="font-size:12px;color:rgba(212,200,168,.4);margin-bottom:10px">分享清敲给有缘人，双方皆获功德</p>
       <div class="share-btn-row">
         <button class="btn-share primary" id="btnShare">📲 分享好友</button>
         <button class="btn-share secondary" id="btnCopy">🔗 复制链接</button>
@@ -243,7 +216,7 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
       <div class="share-rewards">
         <span class="reward-tag">🎁 首次分享获「分享之心」法相</span>
         <span class="reward-tag">✨ 每日首次分享 +50功德</span>
-        <span class="reward-tag">👥 好友通过链接打开，双方各+30功德</span>
+        <span class="reward-tag">👥 好友通过链接 +30功德</span>
       </div>
     </div>
     <div class="card">
@@ -259,7 +232,7 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
     <div class="card">
       <h3>📅 每日签到</h3>
       <div class="week-row" id="weekRow"></div>
-      <button class="btn-c" id="btnCheckin">📌 签到 · 得功德 +50</button>
+      <button class="btn-c" id="btnCheckin">📌 签到 · 功德 +50</button>
     </div>
   </div>
 
@@ -271,7 +244,7 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
     </div>
   </div>
 
-  <!-- Panel: Shop (法相) -->
+  <!-- Panel: Shop -->
   <div class="panel" id="tpShop">
     <div class="card">
       <h3>🎨 法相 · 木鱼皮肤</h3>
@@ -293,10 +266,8 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Notif -->
 <div class="notif-overlay" id="notifOverlay">
   <div class="notif-box">
     <div class="big-icon" id="nIcon">🎉</div>
@@ -306,15 +277,12 @@ body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gr
   </div>
 </div>
 
-<!-- Ripples -->
 <div class="ripple-c" id="rippleC"></div>
-
-<!-- Particles -->
 <div class="particle-c" id="particleC"></div>
 
 <script>
 // ============ STATE ============
-const K = 'qq_soul_data';
+const K = 'qq_soul_data2';
 function def(){
   return {
     merit: 0, taps: 0, combo: 0, maxCombo: 0, skin: 0,
@@ -328,22 +296,15 @@ function load(){try{const d=localStorage.getItem(K);if(d)return JSON.parse(d)}ca
 function save(){localStorage.setItem(K,JSON.stringify(s))}
 let s = load();
 
-// ============ CONSTS ============
+// ============ SUTRA ============
 const SUTRA = [
-  // 心经 (split into verses)
-  {name:'心经', lines:['观自在菩萨 · 行深般若波罗蜜多时','照见五蕴皆空 · 度一切苦厄','舍利子 · 色不异空 · 空不异色','色即是空 · 空即是色','受想行识 · 亦复如是','舍利子 · 是诸法空相','不生不灭 · 不垢不净','不增不减 · 是故空中无色','无受想行识 · 无眼耳鼻舌身意','无色声香味触法','无眼界 · 乃至无意识界','无无明 · 亦无无明尽','乃至无老死 · 亦无老死尽','无苦集灭道 · 无智亦无得','以无所得故 · 菩提萨埵','依般若波罗蜜多故 · 心无挂碍','无挂碍故 · 无有恐怖','远离颠倒梦想 · 究竟涅槃','三世诸佛 · 依般若波罗蜜多故','得阿耨多罗三藐三菩提','故知般若波罗蜜多 · 是大神咒','是大明咒 · 是无上咒','能除一切苦 · 真实不虚','揭谛揭谛 · 波罗揭谛','波罗僧揭谛 · 菩提萨婆诃']},
-  // 金刚经
-  {name:'金刚经', lines:['如是我闻 · 一时佛在舍卫国','祇树给孤独园 · 与大比丘众','千二百五十人俱','凡所有相 · 皆是虚妄','若见诸相非相 · 即见如来','一切有为法 · 如梦幻泡影','如露亦如电 · 应作如是观','应无所住 · 而生其心','过去心不可得 · 现在心不可得','未来心不可得','若以色见我 · 以音声求我','是人行邪道 · 不能见如来','法尚应舍 · 何况非法','如来所说法 · 皆不可取','不可说 · 非法非非法']},
-  // 六字大明咒
-  {name:'六字大明咒', lines:['嗡 嘛 呢 叭 咪 吽','嗡 · 嘛 · 呢 · 叭 · 咪 · 吽','嗡嘛呢叭咪吽','ཨོཾ་མ་ཎི་པ་དྨེ་ཧཱུྃ']},
-  // 大悲咒
-  {name:'大悲咒', lines:['南无喝啰怛那 哆啰夜耶','南无阿唎耶 婆卢羯帝','烁钵啰耶 菩提萨埵婆耶','摩诃萨埵婆耶 摩诃迦卢尼迦耶','唵 萨皤啰罚曳 数怛那怛写','南无悉吉栗埵 伊蒙阿唎耶','婆卢吉帝 室佛啰愣驮婆','南无那啰谨墀 醯利摩诃','皤哆沙咩 萨婆阿他 豆输朋','阿逝孕 萨婆萨哆 那摩婆萨哆','那摩婆伽 摩罚特豆','怛姪他 唵 阿婆卢醯','卢迦帝 迦罗帝 夷醯唎','摩诃菩提萨埵']},
-  // 道德经
-  {name:'道德经', lines:['道可道 · 非常道','名可名 · 非常名','无名天地之始 · 有名万物之母','故常无欲以观其妙','常有欲以观其徼','此两者同出而异名','同谓之玄 · 玄之又玄','众妙之门','上善若水 · 水善利万物而不争','处众人之所恶 · 故几于道','居善地 · 心善渊 · 与善仁','言善信 · 正善治 · 事善能','动善时 · 夫唯不争','故无尤']},
-  // 清静经
-  {name:'清静经', lines:['大道无形 · 生育天地','大道无情 · 运行日月','大道无名 · 长养万物','清者浊之源 · 动者静之基','人能常清静 · 天地悉皆归','人心好静 · 而欲牵之','常能遣其欲 · 而心自静','澄其心 · 而神自清','自然六欲不生 · 三毒消灭','内观其心 · 心无其心','外观其形 · 形无其形','远观其物 · 物无其物','三者既悟 · 唯见于空','观空亦空 · 空无所空','所空既无 · 无无亦无']},
-  // 法华经
-  {name:'法华经', lines:['诸法从本来 · 常自寂灭相','是法住法位 · 世间相常住','诸法实相 · 如是相 · 如是性','如是体 · 如是力 · 如是作','如是因 · 如是缘 · 如是果','如是报 · 如是本末究竟等','开方便门 · 示真实相','诸佛世尊 · 唯以一大事因缘故','出现于世','佛种从缘起 · 是故说一乘','是法不可示 · 言辞相寂灭','诸余众生 · 亦复如是']},
+  {name:'心经', lines:['观自在菩萨 · 行深般若波罗蜜多时','照见五蕴皆空 · 度一切苦厄','舍利子 · 色不异空 · 空不异色','色即是空 · 空即是色','受想行识 · 亦复如是','舍利子 · 是诸法空相','不生不灭 · 不垢不净','不增不减 · 是故空中无色','无受想行识 · 无眼耳鼻舌身意','无色声香味触法','无眼界 · 乃至无意识界','无无明 · 亦无无明尽','无苦集灭道 · 无智亦无得','以无所得故 · 菩提萨埵','心无挂碍 · 无有恐怖','远离颠倒梦想 · 究竟涅槃','三世诸佛 · 依般若波罗蜜多故','得阿耨多罗三藐三菩提','是大神咒 · 是大明咒','能除一切苦 · 真实不虚','揭谛揭谛 · 波罗揭谛','波罗僧揭谛 · 菩提萨婆诃']},
+  {name:'金刚经', lines:['如是我闻 · 一时佛在舍卫国','凡所有相 · 皆是虚妄','若见诸相非相 · 即见如来','一切有为法 · 如梦幻泡影','如露亦如电 · 应作如是观','应无所住 · 而生其心','过去心不可得 · 现在心不可得','未来心不可得','若以色见我 · 以音声求我','是人行邪道 · 不能见如来','法尚应舍 · 何况非法']},
+  {name:'六字大明咒', lines:['嗡 嘛 呢 叭 咪 吽','嗡 嘛 呢 叭 咪 吽','嗡 嘛 呢 叭 咪 吽']},
+  {name:'大悲咒', lines:['南无喝啰怛那 哆啰夜耶','南无阿唎耶 婆卢羯帝','烁钵啰耶 菩提萨埵婆耶','唵 萨皤啰罚曳 数怛那怛写','婆卢吉帝 室佛啰愣驮婆','摩诃菩提萨埵']},
+  {name:'道德经', lines:['道可道 · 非常道','名可名 · 非常名','无名天地之始 · 有名万物之母','故常无欲以观其妙','玄之又玄 · 众妙之门','上善若水 · 水善利万物而不争','处众人之所恶 · 故几于道']},
+  {name:'清静经', lines:['大道无形 · 生育天地','大道无情 · 运行日月','大道无名 · 长养万物','人能常清静 · 天地悉皆归','常能遣其欲 · 而心自静','澄其心 · 而神自清','内观其心 · 心无其心','外观其形 · 形无其形']},
+  {name:'法华经', lines:['诸法从本来 · 常自寂灭相','是法住法位 · 世间相常住','诸法实相 · 如是相 · 如是性','如是体 · 如是力 · 如是作','开方便门 · 示真实相','佛种从缘起 · 是故说一乘']},
 ];
 const REALMS = [
   {name:'凡人', min:0},{name:'初学', min:100},{name:'修行者', min:300},{name:'入定', min:600},
@@ -377,90 +338,41 @@ const ACH = [
   {id:'15',name:'接引使者',icon:'👥',desc:'成功接引3人',chk:()=>s.inviteCount>=3},
 ];
 
-// ============ AUDIO ============
-let ac = null;
-function actx(){if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();return ac}
+// ============ AUDIO (Real WAV files) ============
+// Path resolution: try relative to HTML file, then subfolder
+const SOUND_FILES = ['sounds/muyu.wav','sounds/qing.wav','sounds/ling.wav','sounds/fengling.wav','sounds/yusheng.wav'];
+const SOUND_LABELS = ['木鱼','磬','铃','风铃','雨声'];
+let audioElements = [];
+let audioReady = false;
 
-// Realistic wooden fish sound
-function playWoodenFish(ctx, t){
-  // Hollow wood body resonance
-  const bodyFreqs = [380, 520, 690, 910];
-  bodyFreqs.forEach((f,i)=>{
-    const o=ctx.createOscillator();const g=ctx.createGain();
-    o.type='sine';o.frequency.value=f;
-    const vol=i===0?.5:i===1?.25:i===2?.12:.06;
-    g.gain.setValueAtTime(vol,t);
-    g.gain.exponentialRampToValueAtTime(.001,t+.35+i*.04);
-    o.connect(g);g.connect(ctx.destination);
-    o.start(t);o.stop(t+.45);
+function initAudio(){
+  audioElements = SOUND_FILES.map((f, i) => {
+    const a = new Audio(f);
+    a.preload = 'auto';
+    a.volume = 0.7;
+    // Preload
+    a.load();
+    return a;
   });
-  // Strike noise (wood texture)
-  const ns=ctx.sampleRate*.06;
-  const b=ctx.createBuffer(1,ns,ctx.sampleRate);
-  const d=b.getChannelData(0);
-  for(let i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(ns*.18));
-  const src=ctx.createBufferSource();src.buffer=b;
-  const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=750;bp.Q.value=1.5;
-  const ng=ctx.createGain();ng.gain.setValueAtTime(.35,t);ng.gain.exponentialRampToValueAtTime(.001,t+.15);
-  src.connect(bp);bp.connect(ng);ng.connect(ctx.destination);
-  src.start(t);src.stop(t+.18);
-}
-
-function playBowl(ctx,t){
-  [440,660,880,1100].forEach((f,i)=>{
-    const o=ctx.createOscillator();const g=ctx.createGain();
-    o.type='sine';o.frequency.value=f;
-    g.gain.setValueAtTime(.25-i*.05,t);
-    g.gain.exponentialRampToValueAtTime(.001,t+2.5+i*.1);
-    o.connect(g);g.connect(ctx.destination);
-    o.start(t);o.stop(t+3);
-  });
-}
-
-function playBell(ctx,t){
-  [1200,1600,2000,2400].forEach((f,i)=>{
-    const o=ctx.createOscillator();const g=ctx.createGain();
-    o.type='sine';o.frequency.value=f;
-    g.gain.setValueAtTime(.18-i*.03,t);
-    g.gain.exponentialRampToValueAtTime(.001,t+1.5+i*.1);
-    o.connect(g);g.connect(ctx.destination);
-    o.start(t);o.stop(t+2);
-  });
-}
-
-function playWind(ctx,t){
-  for(let i=0;i<6;i++){
-    const o=ctx.createOscillator();const g=ctx.createGain();
-    o.type='sine';
-    const ft=700+i*250+Math.random()*30;
-    o.frequency.setValueAtTime(ft,t+i*.08);
-    g.gain.setValueAtTime(.1,t+i*.08);
-    g.gain.linearRampToValueAtTime(0,t+i*.08+.4);
-    o.connect(g);g.connect(ctx.destination);
-    o.start(t+i*.08);o.stop(t+i*.08+.45);
-  }
-}
-
-function playRain(ctx,t){
-  const ns=ctx.sampleRate*.7;
-  const b=ctx.createBuffer(1,ns,ctx.sampleRate);
-  const d=b.getChannelData(0);
-  for(let i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/ns*7)*.18;
-  const src=ctx.createBufferSource();src.buffer=b;
-  const g=ctx.createGain();g.gain.setValueAtTime(.25,t);g.gain.exponentialRampToValueAtTime(.001,t+.5);
-  src.connect(g);g.connect(ctx.destination);
-  src.start(t);src.stop(t+.6);
+  audioReady = true;
 }
 
 function playSound(idx){
-  const ctx=actx();const t=ctx.currentTime;
-  switch(idx){
-    case 0:playWoodenFish(ctx,t);break;
-    case 1:playBowl(ctx,t);break;
-    case 2:playBell(ctx,t);break;
-    case 3:playWind(ctx,t);break;
-    case 4:playRain(ctx,t);break;
-  }
+  if(!audioReady || idx < 0 || idx >= audioElements.length) return;
+  const a = audioElements[idx];
+  // Reset and play
+  a.currentTime = 0;
+  a.play().catch(e => {
+    // Auto-play may be blocked, show a hint
+    console.log('Audio play blocked:', e);
+    // Try to resume AudioContext if needed
+    if(e.name === 'NotAllowedError'){
+      document.addEventListener('click', function handler(){
+        a.play().catch(()=>{});
+        document.removeEventListener('click', handler);
+      }, {once: true});
+    }
+  });
 }
 
 // ============ SUTRA SCROLL ============
@@ -479,63 +391,26 @@ function nextSutra(){
   if(lineIdx>=book.lines.length){lineIdx=0;sutraIdx=(sutraIdx+1)%SUTRA.length}
 }
 
-// ============ SPAWN PARTICLES ============
+// ============ PARTICLES ============
 function spawnParticles(x,y){
-  const chars = ['卍','☸','🪷','✦','·','~','°'];
+  const chars = ['卍','☸','🪷','✦','·','~'];
   const c=document.getElementById('particleC');
-  for(let i=0;i<4;i++){
-    const el=document.createElement('div');el.className='particle';
-    el.textContent=chars[Math.floor(Math.random()*chars.length)];
-    el.style.left=(x+Math.random()*60-30)+'px';el.style.top=(y+Math.random()*40-20)+'px';
-    el.style.animationDelay=(i*.08)+'s';
-    c.appendChild(el);setTimeout(()=>el.remove(),3200);
-  }
-}
-
-// ============ TAP ============
-function handleTap(e){
-  const now=Date.now();
-  const diff=now-s.lastTap;s.lastTap=now;
-  if(diff<600){s.combo++}else{s.combo=1}
-  if(s.combo>s.maxCombo)s.maxCombo=s.combo;
-
-  const bonus=Math.min(s.combo,20);
-  const addPts=1+Math.floor(bonus/5);
-  s.merit+=addPts;s.taps++;
-
-  playSound(s.soundIdx);
-  nextSutra();
-
-  // Combo
-  const ct=document.getElementById('comboText');
-  if(s.combo>=3){
-    ct.textContent=s.combo>=10?`🔥 连击 ×${s.combo} 功德 +${addPts}`:`🔥 ×${s.combo} +${addPts}`;
-    ct.className='combo-text show';
-    clearTimeout(ct._t);
+  for(let i=0;i=3)ct.textContent=`🔥 ×${s.combo} +${addPts}`;
+    ct.className='combo-text show';clearTimeout(ct._t);
     ct._t=setTimeout(()=>ct.className='combo-text',700);
   }
-
-  // Floating
   const rect=document.getElementById('fishMain').getBoundingClientRect();
   const cx=e.clientX||rect.left+rect.width/2;
   const cy=e.clientY||rect.top+rect.height/2;
   const fl=document.createElement('div');fl.className='floating';
-  fl.textContent=`+${addPts}功德`;
-  fl.style.left=cx+'px';fl.style.top=cy+'px';
+  fl.textContent=`+${addPts}功德`;fl.style.left=cx+'px';fl.style.top=cy+'px';
   document.body.appendChild(fl);setTimeout(()=>fl.remove(),1000);
-
-  // Ripple
   const r=document.createElement('div');r.className='ripple-el';
   r.style.left=cx+'px';r.style.top=cy+'px';
   document.getElementById('rippleC').appendChild(r);
   setTimeout(()=>r.remove(),700);
-
-  // Particles
   spawnParticles(cx,cy);
-
-  checkAch();
-  updateUI();
-  save();
+  checkAch();updateUI();save();
 }
 
 // ============ CHECK ACHIEVEMENTS ============
@@ -552,31 +427,25 @@ function checkAch(){
 function handleShare(){
   const url=window.location.href;
   const txt='🪷 我在「清敲」敲木鱼修功德，轻敲一下就能静心养性。来试试～';
-  
   if(!s.shareSkin){s.shareSkin=true;if(!s.owned.includes(5))s.owned.push(5);
-    setTimeout(()=>showNotif('💝','法相获得！','「分享之心」已加入你的法相'),500)}
-  
+    setTimeout(()=>showNotif('💝','法相获得！','「分享之心」已加入收藏'),500)}
   const td=new Date().toISOString().slice(0,10);
   if(s.firstShare!==td){s.merit+=50;s.firstShare=td;
     setTimeout(()=>showToast('✨ 每日首次分享 +50功德'),100)}
   s.shareToday++;s.shareTotal++;
   checkAch();
-
   if(navigator.share){navigator.share({title:'清敲',text:txt,url}).catch(()=>{})}
   else{navigator.clipboard.writeText(txt+' '+url).then(()=>showToast('✅ 链接已复制')).catch(()=>showToast(url))}
   updateUI();save();
 }
-
 function handleCopy(){
-  const url=window.location.href;
-  navigator.clipboard.writeText('🪷 我在「清敲」敲木鱼修功德，轻敲一下就能静心养性。来试试～ '+url)
+  navigator.clipboard.writeText('🪷 我在「清敲」敲木鱼修功德，轻敲一下就能静心养性。来试试～ '+window.location.href)
     .then(()=>showToast('✅ 链接已复制')).catch(()=>showToast('复制失败'));
 }
-
 function simulateInvite(){
   s.merit+=30;s.inviteCount++;
   if(!s.inviteSkin){s.inviteSkin=true;if(!s.owned.includes(6))s.owned.push(6);
-    setTimeout(()=>showNotif('🤝','法相获得！','「友谊之莲」已加入你的法相 — 接引有缘人成功！'),500)}
+    setTimeout(()=>showNotif('🤝','法相获得！','「友谊之莲」已加入收藏'),500)}
   checkAch();updateUI();save();
 }
 
@@ -597,7 +466,6 @@ function renderWeek(){
     div.textContent=names[i];r.appendChild(div);
   }
 }
-
 function doCheckin(){
   const td=new Date().toISOString().slice(0,10);
   if(s.checkins.includes(td)){showToast('今日已签到');return}
@@ -619,29 +487,22 @@ function renderShop(){
   SKINS.forEach(sk=>{
     const div=document.createElement('div');div.className='skin-item';
     const owned=s.owned.includes(sk.id);const eq=s.skin===sk.id;
-    div.innerHTML=`
-      <div class="preview" style="background:radial-gradient(circle at 35%35%,${sk.id===0?'#5C4033':sk.id===1?'#8B4513':sk.id===2?'#B8860B':sk.id===3?'#E0E0FF':sk.id===4?'#DAA520':sk.id===5?'#FF69B4':'#F4A460'},transparent)">${sk.emoji}</div>
+    div.innerHTML=`<div class="preview" style="background:radial-gradient(circle at 35%35%,${
+      sk.id===0?'#5C4033':sk.id===1?'#8B4513':sk.id===2?'#B8860B':sk.id===3?'#E0E0FF':sk.id===4?'#DAA520':sk.id===5?'#FF69B4':'#F4A460'},transparent)">${sk.emoji}</div>
       <div class="sname">${sk.name}</div>
-      <div class="sdesc">${sk.desc||''}</div>
-    `;
+      <div class="sdesc">${sk.desc||''}</div>`;
     const btn=document.createElement('button');btn.className='btn-s';
     if(eq){btn.textContent='✅ 已装备';btn.className='btn-s equipped'}
     else if(owned){btn.textContent='👔 装备';btn.className='btn-s own';
       btn.onclick=()=>{s.skin=sk.id;updateUI();save()}}
-    else if(sk.share&&!s.shareSkin){
-      btn.textContent='📤 分享解锁';btn.className='btn-s buy';
-      btn.onclick=()=>{showToast('📤 分享给好友即可解锁！')}
-    }
-    else if(sk.invite&&!s.inviteSkin){
-      btn.textContent='👥 邀请解锁';btn.className='btn-s buy';
-      btn.onclick=()=>{showToast('👥 接引有缘人即可解锁！')}
-    }
-    else if(sk.price>0){
-      btn.textContent=`✦ ${sk.price}`;btn.className='btn-s buy';
+    else if(sk.share&&!s.shareSkin){btn.textContent='📤 分享解锁';btn.className='btn-s buy';
+      btn.onclick=()=>{showToast('📤 分享给好友即可解锁！')}}
+    else if(sk.invite&&!s.inviteSkin){btn.textContent='👥 邀请解锁';btn.className='btn-s buy';
+      btn.onclick=()=>{showToast('👥 接引有缘人即可解锁！')}}
+    else if(sk.price>0){btn.textContent=`✦ ${sk.price}`;btn.className='btn-s buy';
       btn.onclick=()=>{
         if(s.merit>=sk.price){s.merit-=sk.price;s.owned.push(sk.id);showToast(`✅ 获得「${sk.name}」`);updateUI();save()}
-        else{showToast(`✦ 功德不足，还需 ${sk.price-s.merit}`)}
-      }
+        else{showToast(`✦ 功德不足，还需 ${sk.price-s.merit}`)}}
     }
     div.appendChild(btn);g.appendChild(div);
   });
@@ -664,32 +525,21 @@ function updateUI(){
   const td=new Date().toISOString().slice(0,10);
   document.getElementById('hMerit').textContent=s.merit;
   document.getElementById('meritNum').textContent=s.merit;
-  
   const realm=REALMS.filter(r=>s.merit>=r.min).pop()||REALMS[0];
   document.getElementById('realmBadge').textContent=realm.name;
   document.getElementById('hStreak').textContent=s.streak>0?`第${s.streak}天`:'未签到';
-  
   const sk=SKINS.find(x=>x.id===s.skin)||SKINS[0];
   document.getElementById('fishEmoji').textContent=sk.emoji;
-  
-  // Sound
   document.querySelectorAll('.snd-btn').forEach(el=>el.classList.toggle('active',parseInt(el.dataset.s)===s.soundIdx));
-  
-  // Checkin
   renderWeek();
   const cked=s.checkins.includes(td);
   const btn=document.getElementById('btnCheckin');
-  btn.textContent=cked?'✅ 今日已签到':'📌 签到 · 得功德 +50';
+  btn.textContent=cked?'✅ 今日已签到':'📌 签到 · 功德 +50';
   btn.disabled=cked;
-  
-  // Share
   document.getElementById('stToday').textContent=s.shareToday;
   document.getElementById('stTotal').textContent=s.shareTotal;
   document.getElementById('stInvite').textContent=s.inviteCount;
-  
   renderAch();renderShop();
-  
-  // Stats
   document.getElementById('sTaps').textContent=s.taps;
   document.getElementById('sMerit').textContent=s.merit;
   document.getElementById('sRealm').textContent=realm.name;
@@ -731,7 +581,7 @@ function checkInvite(){
   if(p.get('invited_by')){
     setTimeout(()=>{showToast('👥 有缘人接引！+30功德');s.merit+=30;s.inviteCount++;
       if(!s.inviteSkin){s.inviteSkin=true;if(!s.owned.includes(6))s.owned.push(6);
-        setTimeout(()=>showNotif('🤝','法相获得！','「友谊之莲」已加入你的法相'),1000)}
+        setTimeout(()=>showNotif('🤝','法相获得！','「友谊之莲」已加入收藏'),1000)}
       checkAch();updateUI();save();
     },600);
   }
@@ -749,19 +599,18 @@ document.querySelectorAll('.tab').forEach(tab=>{
 
 // ============ INIT ============
 document.addEventListener('DOMContentLoaded',()=>{
+  initAudio();
   calcOffline();checkInvite();updateUI();
   s.lastVisit=new Date().toISOString();save();
-  
-  // Set initial sutra
   nextSutra();
-
+  
+  // Tap handler
   document.getElementById('fishWrap').addEventListener('click',function(e){
     const rect=this.getBoundingClientRect();
-    const cx=e.clientX||rect.left+rect.width/2;
-    const cy=e.clientY||rect.top+rect.height/2;
-    handleTap({clientX:cx,clientY:cy});
+    handleTap({clientX:e.clientX||rect.left+rect.width/2,clientY:e.clientY||rect.top+rect.height/2});
   });
   
+  // Sound select
   document.querySelectorAll('.snd-btn').forEach(el=>{
     el.addEventListener('click',function(){
       s.soundIdx=parseInt(this.dataset.s);
@@ -774,7 +623,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('btnCopy').addEventListener('click',handleCopy);
   document.getElementById('btnCheckin').addEventListener('click',doCheckin);
 
-  // Double-tap test for invite simulation
+  // Double-tap for invite simulation (test)
   let dc=0;
   document.getElementById('fishWrap').addEventListener('dblclick',()=>{
     dc++;if(dc>=2){dc=0;simulateInvite();showToast('👥 模拟接引成功！')}
