@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>敲木鱼 · 电子功德</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+  body {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    overflow: hidden; position: relative;
+  }
+  /* Stars background */
+  .stars { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+  .star {
+    position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%;
+    animation: twinkle var(--d) ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 1; } }
+
+  .container {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    padding: 20px; position: relative; z-index: 1;
+  }
+
+  .title {
+    color: rgba(255,215,0,0.8); font-size: 14px; letter-spacing: 4px;
+    font-weight: 500; margin-bottom: 4px;
+  }
+  .subtitle { color: rgba(255,255,255,0.3); font-size: 11px; letter-spacing: 2px; }
+
+  .fish-wrapper {
+    position: relative; width: 240px; height: 240px;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .fish-wrapper:active .fish { transform: scale(0.92); }
+  .fish-wrapper:active .fish-shadow { transform: scale(0.92) translateY(4px); }
+
+  .fish {
+    width: 100%; height: 100%; position: relative; z-index: 2;
+    transition: transform 0.08s ease; will-change: transform;
+  }
+  .fish svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 8px 24px rgba(255,215,0,0.15)); }
+  .fish-shadow {
+    position: absolute; bottom: -8px; left: 10%; width: 80%; height: 20px;
+    background: radial-gradient(ellipse, rgba(255,215,0,0.08) 0%, transparent 70%);
+    transition: transform 0.08s ease; z-index: 1;
+  }
+
+  /* Tap ripple */
+  .ripple-container { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+  .ripple {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid rgba(255,215,0,0.5); animation: rippleAnim 0.6s ease-out forwards;
+  }
+  @keyframes rippleAnim { to { width: 220px; height: 220px; opacity: 0; border-width: 1px; } }
+
+  /* Floating +1 */
+  .float-text {
+    position: fixed; pointer-events: none; z-index: 10;
+    font-size: 24px; font-weight: 700; color: #ffd700;
+    text-shadow: 0 0 10px rgba(255,215,0,0.5);
+    animation: floatUp 1s ease-out forwards;
+  }
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0) scale(0.5); }
+    50% { opacity: 1; transform: translateY(-60px) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-120px) scale(0.8); }
+  }
+
+  /* Special combo effects */
+  .combo-text {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none; z-index: 20;
+    font-size: 48px; font-weight: 900; color: #ff6b6b;
+    text-shadow: 0 0 20px rgba(255,107,107,0.6), 0 0 40px rgba(255,107,107,0.3);
+    animation: comboPop 0.8s ease-out forwards;
+  }
+  @keyframes comboPop {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+    30% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+    100% { opacity: 0; transform: translate(-50%, -60%) scale(1); }
+  }
+
+  .counter-section { text-align: center; margin-top: 8px; }
+  .counter-label { color: rgba(255,255,255,0.4); font-size: 12px; letter-spacing: 3px; margin-bottom: 4px; }
+  .counter {
+    font-size: 52px; font-weight: 800;
+    background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1; transition: transform 0.1s ease;
+  }
+  .counter.pop { transform: scale(1.1); }
+
+  .stats {
+    display: flex; gap: 24px; margin-top: 8px;
+    color: rgba(255,255,255,0.3); font-size: 11px;
+  }
+  .stats span { display: flex; align-items: center; gap: 4px; }
+
+  .shop-btn {
+    margin-top: 20px; padding: 10px 28px; border-radius: 20px;
+    border: 1px solid rgba(255,215,0,0.3);
+    background: rgba(255,215,0,0.05); color: rgba(255,215,0,0.6);
+    font-size: 13px; cursor: pointer; letter-spacing: 2px;
+    transition: all 0.2s; -webkit-tap-highlight-color: transparent;
+  }
+  .shop-btn:active { background: rgba(255,215,0,0.15); }
+
+  /* Shop modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 50;
+    display: none; align-items: center; justify-content: center;
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  .modal-backdrop.show { display: flex; }
+  .modal {
+    background: linear-gradient(180deg, #1e2a4a, #16213e);
+    border: 1px solid rgba(255,215,0,0.15); border-radius: 20px;
+    padding: 24px; width: 300px; max-width: 90vw; text-align: center;
+  }
+  .modal h2 { color: #ffd700; font-size: 18px; margin-bottom: 16px; letter-spacing: 2px; }
+  .skin-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 16px; }
+  .skin-item {
+    width: 72px; height: 72px; border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; cursor: pointer; transition: all 0.2s; font-size: 10px; color: rgba(255,255,255,0.5);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .skin-item.active { border-color: #ffd700; background: rgba(255,215,0,0.08); }
+  .skin-item:active { transform: scale(0.92); }
+  .skin-item .emoji { font-size: 28px; }
+  .skin-item .price { color: #ffd700; font-size: 9px; }
+  .modal-close {
+    padding: 8px 24px; border-radius: 16px; border: none;
+    background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); font-size: 13px;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+
+  .hare-brain {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 30; pointer-events: none;
+    font-size: 11px; color: rgba(255,255,255,0.15); letter-spacing: 2px;
+  }
+
+  @media (max-width: 380px) {
+    .fish-wrapper { width: 180px; height: 180px; }
+    .counter { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+  <div class="title">⋆ 电 子 功 德 ⋆</div>
+  <div class="subtitle">轻敲积累福德</div>
+
+  <div class="fish-wrapper" id="fishWrapper">
+    <div class="fish" id="fish">
+      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" id="fishSvg">
+        <!-- Main body -->
+        <ellipse cx="120" cy="130" rx="72" ry="58" fill="#c4943a" stroke="#8b6914" stroke-width="2"/>
+        <ellipse cx="120" cy="130" rx="66" ry="52" fill="#d4a84a"/>
+        <!-- Highlight -->
+        <ellipse cx="108" cy="112" rx="36" ry="24" fill="#e0b85a" opacity="0.6"/>
+        <ellipse cx="100" cy="106" rx="20" ry="12" fill="#e8c86a" opacity="0.4"/>
+        <!-- Eye -->
+        <circle cx="155" cy="112" r="12" fill="#fff"/>
+        <circle cx="155" cy="112" r="7" fill="#2c1810"/>
+        <circle cx="158" cy="109" r="3" fill="#fff" opacity="0.8"/>
+        <!-- Mouth -->
+        <ellipse cx="180" cy="135" rx="8" ry="4" fill="#8b6914"/>
+        <!-- Fish scale texture -->
+        <path d="M75 130 Q90 115 105 130" fill="none" stroke="#b88a30" stroke-width="0.8" opacity="0.5"/>
+        <path d="M90 140 Q105 125 120 140" fill="none" stroke="#b88a30" stroke-width="0.8" opacity="0.5"/>
+        <path d="M105 120 Q120 105 135 120" fill="none" stroke="#b88a30" stroke-width="0.8" opacity="0.5"/>
+        <path d="M120 145 Q135 130 150 145" fill="none" stroke="#b88a30" stroke-width="0.8" opacity="0.5"/>
+        <!-- Bottom highlight -->
+        <ellipse cx="120" cy="155" rx="40" ry="10" fill="#b88a30" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="fish-shadow"></div>
+    <div class="ripple-container" id="rippleContainer"></div>
+  </div>
+
+  <div class="counter-section">
+    <div class="counter-label">功 德 值</div>
+    <div class="counter" id="counter">0</div>
+  </div>
+
+  <div class="stats">
+    <span>⚡ <span id="comboDisplay">0</span></span>
+    <span>🏆 <span id="totalDisplay">0</span></span>
+  </div>
+
+  <button class="shop-btn" id="shopBtn">🎨 功德皮肤</button>
+</div>
+
+<!-- Shop Modal -->
+<div class="modal-backdrop" id="shopModal">
+  <div class="modal">
+    <h2>🎨 功德皮肤</h2>
+    <div class="skin-grid" id="skinGrid"></div>
+    <button class="modal-close" id="closeShop">关闭</button>
+  </div>
+</div>
+
+<div class="hare-brain">❤️ 心中有佛，敲啥都是功德</div>
+
+<script>
+// ====== Audio Engine ======
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function playSound(pitch = 400) {
+  try {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const now = audioCtx.currentTime;
+    // Main tone
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(pitch, now);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(now); osc.stop(now + 0.15);
+
+    // Sub tone
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(pitch * 0.5, now);
+    gain2.gain.setValueAtTime(0.15, now);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    osc2.connect(gain2); gain2.connect(audioCtx.destination);
+    osc2.start(now); osc2.stop(now + 0.2);
+
+    // Click
+    const clickGain = audioCtx.createGain();
+    clickGain.gain.setValueAtTime(0.08, now);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+    const clickOsc = audioCtx.createOscillator();
+    clickOsc.type = 'square';
+    clickOsc.frequency.setValueAtTime(2000, now);
+    clickOsc.connect(clickGain); clickGain.connect(audioCtx.destination);
+    clickOsc.start(now); clickOsc.stop(now + 0.02);
+
+    // Delay (echo)
+    const delay = audioCtx.createDelay(0.3);
+    delay.delayTime.setValueAtTime(0.08, now);
+    const delayGain = audioCtx.createGain();
+    delayGain.gain.setValueAtTime(0.08, now);
+    delayGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    osc.connect(delay); delay.connect(delayGain); delayGain.connect(audioCtx.destination);
+  } catch(e) { /* silent fallback */ }
+}
+
+// ====== Game State ======
+const SKINS = [
+  { id: 'default', emoji: '🪵', name: '原木', pitch: 400, unlocked: true },
+  { id: 'gold', emoji: '🥇', name: '金木鱼', pitch: 520, price: '❤️ 赞赏' },
+  { id: 'jade', emoji: '💎', name: '玉木鱼', pitch: 640, price: '❤️ 赞赏' },
+  { id: 'crystal', emoji: '🔮', name: '水晶鱼', pitch: 780, price: '❤️ 赞赏' },
+  { id: 'fire', emoji: '🔥', name: '火焰鱼', pitch: 300, price: '❤️ 赞赏' },
+];
+
+let state = {
+  merit: parseInt(localStorage.getItem('mf_merit') || '0'),
+  total: parseInt(localStorage.getItem('mf_total') || '0'),
+  combo: 0,
+  maxCombo: parseInt(localStorage.getItem('mf_maxCombo') || '0'),
+  skin: localStorage.getItem('mf_skin') || 'default',
+  unlocked: JSON.parse(localStorage.getItem('mf_unlocked') || '["default"]'),
+};
+let lastTap = 0;
+
+// ====== Stars ======
+(function initStars() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div'); s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.setProperty('--d', (1 + Math.random() * 3) + 's');
+    s.style.animationDelay = Math.random() * 3 + 's';
+    s.style.width = s.style.height = (1 + Math.random() * 2) + 'px';
+    c.appendChild(s);
+  }
+})();
+
+// ====== Core ======
+const fishEl = document.getElementById('fish');
+const fishWrapper = document.getElementById('fishWrapper');
+const counterEl = document.getElementById('counter');
+const comboEl = document.getElementById('comboDisplay');
+const totalEl = document.getElementById('totalDisplay');
+
+function updateUI() {
+  counterEl.textContent = state.merit.toLocaleString();
+  totalEl.textContent = state.total.toLocaleString();
+  comboEl.textContent = state.combo;
+  localStorage.setItem('mf_merit', state.merit);
+  localStorage.setItem('mf_total', state.total);
+  localStorage.setItem('mf_skin', state.skin);
+  localStorage.setItem('mf_maxCombo', Math.max(state.maxCombo, state.combo));
+}
+
+function tap() {
+  const now = Date.now();
+  if (now - lastTap < 100) return; // Debounce
+  lastTap = now;
+
+  const s = SKINS.find(x => x.id === state.skin) || SKINS[0];
+  playSound(s.pitch);
+
+  // Merit
+  const comboBonus = Math.min(Math.floor(state.combo / 10) + 1, 5);
+  state.merit += comboBonus;
+  state.total += 1;
+  state.combo += 1;
+  updateUI();
+
+  // Animation: counter pop
+  counterEl.classList.remove('pop');
+  void counterEl.offsetWidth;
+  counterEl.classList.add('pop');
+
+  // Floating +1 (or +N)
+  const floatText = document.createElement('div');
+  floatText.className = 'float-text';
+  floatText.textContent = comboBonus > 1 ? `+${comboBonus}` : '+1';
+  const rect = fishWrapper.getBoundingClientRect();
+  floatText.style.left = (rect.left + rect.width / 2 - 15) + 'px';
+  floatText.style.top = (rect.top - 10) + 'px';
+  floatText.style.color = comboBonus > 1 ? '#ff6b6b' : '#ffd700';
+  document.body.appendChild(floatText);
+  setTimeout(() => floatText.remove(), 1000);
+
+  // Ripple
+  const ripple = document.createElement('div');
+  ripple.className = 'ripple';
+  document.getElementById('rippleContainer').appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+
+  // Combo effects
+  if (state.combo === 10) showComboText('🔥 十连击！', '#ff6b6b');
+  if (state.combo === 20) showComboText('💥 二十连击！', '#ff4500');
+  if (state.combo === 50) showComboText('⚡ 五十连击！大师！', '#ffd700');
+  if (state.combo === 100) showComboText('🏆 百连击！功德无量！', '#ff0000');
+
+  // Haptic feedback
+  if (navigator.vibrate) navigator.vibrate(15);
+}
+
+function showComboText(text, color) {
+  const el = document.createElement('div');
+  el.className = 'combo-text';
+  el.textContent = text;
+  el.style.color = color;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 800);
+}
+
+// Reset combo on idle
+let comboTimeout;
+function resetCombo() {
+  clearTimeout(comboTimeout);
+  comboTimeout = setTimeout(() => {
+    state.combo = 0;
+    updateUI();
+  }, 2000);
+}
+
+// ====== Events ======
+fishWrapper.addEventListener('pointerdown', (e) => {
+  e.preventDefault();
+  tap();
+  resetCombo();
+});
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault();
+    tap();
+    resetCombo();
+  }
+});
+
+// ====== Skins ======
+const skinGrid = document.getElementById('skinGrid');
+
+function renderSkins() {
+  skinGrid.innerHTML = '';
+  SKINS.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'skin-item' + (state.skin === s.id ? ' active' : '');
+    el.innerHTML = `<span class="emoji">${s.emoji}</span><span>${s.name}</span>${!s.unlocked && !state.unlocked.includes(s.id) ? `<span class="price">${s.price}</span>` : ''}`;
+    el.addEventListener('click', () => {
+      if (state.unlocked.includes(s.id) || s.unlocked) {
+        state.skin = s.id;
+        localStorage.setItem('mf_skin', s.id);
+        renderSkins();
+      }
+    });
+    skinGrid.appendChild(el);
+  });
+}
+renderSkins();
+
+// Shop
+document.getElementById('shopBtn').addEventListener('click', () => {
+  document.getElementById('shopModal').classList.add('show');
+});
+document.getElementById('closeShop').addEventListener('click', () => {
+  document.getElementById('shopModal').classList.remove('show');
+});
+document.getElementById('shopModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) document.getElementById('shopModal').classList.remove('show');
+});
+
+// ====== Prevent scroll/zoom on long press ======
+document.addEventListener('touchstart', (e) => {
+  if (e.target.closest('.fish-wrapper')) e.preventDefault();
+}, { passive: false });
+
+// Init
+updateUI();
+</script>
+</body>
+</html>
