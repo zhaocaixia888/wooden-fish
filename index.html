@@ -3,129 +3,154 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>清敲 - 正念减压互动</title>
+<title>清敲 - 敲木鱼</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;color:#eee;overflow-x:hidden}
-.container{max-width:420px;margin:0 auto;padding:16px;position:relative}
+body{font-family:'Noto Serif SC','Songti SC','STSong',serif;background:linear-gradient(160deg,#0a0a0a,#1a0a2e,#0d0d0d);min-height:100vh;color:#d4c9a8;overflow-x:hidden}
+.container{max-width:420px;margin:0 auto;padding:14px;position:relative}
 
 /* Header */
-.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 12px}
-.header h1{font-size:22px;font-weight:700;background:linear-gradient(135deg,#f0e6ff,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.header .stats{display:flex;gap:12px;font-size:13px}
-.header .stats span{background:rgba(255,255,255,.08);padding:4px 10px;border-radius:12px;display:flex;align-items:center;gap:4px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:6px 0 8px}
+.header h1{font-size:20px;font-weight:700;color:#d4a574;letter-spacing:3px}
+.header .stats{display:flex;gap:8px;font-size:12px}
+.header .stats span{background:rgba(212,165,116,.08);padding:3px 10px;border-radius:10px;display:flex;align-items:center;gap:3px;color:#c4a882}
 
-/* Tap Circle */
-.tap-area{text-align:center;padding:20px 0 10px}
-.circle-wrap{position:relative;display:inline-block;cursor:pointer}
-.circle{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#7c3aed,#4f46e5,#1e1b4b);box-shadow:0 0 60px rgba(124,58,237,.4),0 0 120px rgba(79,70,229,.2),inset 0 -20px 60px rgba(0,0,0,.4);transition:transform .08s;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:pulse 4s ease-in-out infinite}
-.circle:active{transform:scale(.92)}
-@keyframes pulse{0%,100%{box-shadow:0 0 60px rgba(124,58,237,.4),0 0 120px rgba(79,70,229,.2)}50%{box-shadow:0 0 80px rgba(124,58,237,.5),0 0 160px rgba(79,70,229,.3)}}
-.circle .emoji{font-size:60px;line-height:1;margin-bottom:4px}
-.circle .label{font-size:14px;color:rgba(255,255,255,.7);letter-spacing:4px}
-.score-big{font-size:48px;font-weight:800;color:#f0e6ff;margin:8px 0 4px}
-.score-label{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:12px}
-.tap-hint{font-size:13px;color:rgba(255,255,255,.4);animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:.4}50%{opacity:.8}}
+/* Sutra scroll area */
+.sutra-area{position:relative;min-height:64px;display:flex;align-items:center;justify-content:center;margin:4px 0 6px;overflow:hidden;border-radius:6px;background:rgba(0,0,0,.25);border:1px solid rgba(212,165,116,.06)}
+.sutra-text{font-size:15px;color:rgba(212,200,168,.75);line-height:1.7;text-align:center;padding:10px 14px;font-family:'Noto Serif SC','Songti SC',serif;letter-spacing:1px;transition:opacity .2s}
+.sutra-text .highlight{color:#d4a574}
+.sutra-label{position:absolute;top:4px;right:8px;font-size:10px;color:rgba(212,165,116,.3)}
+@keyframes sutraFade{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
 
-/* Floating +score */
-.floating{position:fixed;pointer-events:none;font-size:24px;font-weight:700;color:#a78bfa;animation:floatUp 1s ease-out forwards;z-index:100}
-@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(.5)}}
+/* Wooden Fish Area */
+.fish-area{text-align:center;padding:10px 0 4px;position:relative}
+.fish-wrap{position:relative;display:inline-block;cursor:pointer}
+.fish{width:200px;height:200px;border-radius:50% 50% 48% 52%;background:radial-gradient(ellipse at 40% 35%,#8B6914,#5C4033,#2D1810);box-shadow:0 0 50px rgba(212,165,116,.12),0 8px 40px rgba(0,0,0,.6),inset 0 -15px 40px rgba(0,0,0,.5);transition:transform .06s;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;border:1px solid rgba(212,165,116,.15)}
+.fish:active{transform:scale(.94)}
+.fish .fish-emoji{font-size:52px;line-height:1;margin-bottom:2px;filter:drop-shadow(0 2px 8px rgba(212,165,116,.2))}
+.fish .fish-label{font-size:13px;color:rgba(212,200,168,.6);letter-spacing:3px;margin-top:2px}
+.fish .glow{position:absolute;width:100%;height:100%;border-radius:50%;box-shadow:0 0 0 transparent;transition:none;pointer-events:none}
+
+/* Hit circle ring */
+.hit-ring{position:absolute;top:-8px;left:-8px;width:216px;height:216px;border-radius:50%;border:1px solid rgba(212,165,116,.1);pointer-events:none;animation:ringPulse 3s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.6;transform:scale(1.02)}}
+
+/* Merit */
+.merit-area{text-align:center;margin:4px 0 0}
+.merit-number{font-size:44px;font-weight:700;color:#d4a574;line-height:1;font-family:'Noto Serif SC',serif}
+.merit-label{font-size:13px;color:rgba(212,200,168,.4);letter-spacing:6px;margin-bottom:2px}
+
+/* Realm */
+.realm-badge{display:inline-block;font-size:12px;background:linear-gradient(135deg,rgba(212,165,116,.15),rgba(139,105,20,.1));color:#d4a574;padding:3px 16px;border-radius:12px;border:1px solid rgba(212,165,116,.15);letter-spacing:2px}
+
+/* Sound Select */
+.sound-bar{display:flex;gap:5px;margin:6px 0;overflow-x:auto;padding:2px 0;justify-content:center;flex-wrap:wrap}
+.snd-btn{padding:5px 14px;border-radius:14px;border:1px solid rgba(212,165,116,.12);background:rgba(0,0,0,.3);color:rgba(212,200,168,.4);font-size:12px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:serif;flex-shrink:0}
+.snd-btn.active{background:rgba(212,165,116,.15);border-color:rgba(212,165,116,.3);color:#d4a574;box-shadow:0 0 15px rgba(212,165,116,.08)}
+.snd-btn .snd-icon{font-size:16px;display:block}
 
 /* Combo */
-.combo-bar{text-align:center;margin:4px 0 12px;min-height:24px}
-.combo-text{font-size:18px;font-weight:700;color:#f59e0b;display:none}
-.combo-text.show{display:inline-block;animation:comboPop .3s ease-out}
+.combo-area{text-align:center;min-height:22px;margin:0}
+.combo-text{font-size:16px;color:#e8b84c;display:none;font-family:serif;letter-spacing:2px}
+.combo-text.show{display:block;animation:comboPop .25s ease-out}
 @keyframes comboPop{0%{transform:scale(1.5);opacity:.5}100%{transform:scale(1);opacity:1}}
 
 /* Tab Bar */
-.tab-bar{display:flex;gap:6px;margin:12px 0;padding:4px;background:rgba(255,255,255,.06);border-radius:12px}
-.tab{flex:1;text-align:center;padding:8px 0;border-radius:8px;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s}
-.tab.active{background:rgba(124,58,237,.4);color:#fff}
+.tab-bar{display:flex;gap:4px;margin:8px 0;padding:3px;background:rgba(0,0,0,.25);border-radius:10px;border:1px solid rgba(212,165,116,.06)}
+.tab{flex:1;text-align:center;padding:7px 0;border-radius:7px;font-size:12px;color:rgba(212,200,168,.35);cursor:pointer;transition:all .2s;font-family:serif}
+.tab.active{background:rgba(212,165,116,.12);color:#d4a574}
+.tab .tab-icon{display:block;font-size:18px;margin-bottom:1px}
 
 /* Panels */
-.panel{display:none;animation:fadeIn .3s ease}
+.panel{display:none;animation:fadeIn .25s}
 .panel.active{display:block}
-@keyframes fadeIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
 
-/* Daily Check-in */
-.checkin-card{background:rgba(255,255,255,.06);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,.06)}
-.checkin-card h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.week-row{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
-.day-box{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.3)}
-.day-box.done{background:#7c3aed;color:#fff}
-.day-box.today{background:rgba(124,58,237,.3);color:#c084fc;border:1px solid #7c3aed}
-.btn-checkin{width:100%;padding:10px;border:0;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
-.btn-checkin:disabled{background:#555;color:#888;cursor:default}
+/* Card */
+.card{background:rgba(0,0,0,.3);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid rgba(212,165,116,.06)}
+.card h3{font-size:14px;margin-bottom:10px;color:#d4a574;display:flex;align-items:center;gap:6px;letter-spacing:1px}
+
+/* Check-in */
+.week-row{display:flex;gap:3px;justify-content:center;margin-bottom:10px}
+.day-box{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;background:rgba(255,255,255,.04);color:rgba(212,200,168,.2);font-family:serif}
+.day-box.done{background:rgba(212,165,116,.2);color:#d4a574;border:1px solid rgba(212,165,116,.15)}
+.day-box.today{background:rgba(212,165,116,.08);color:#e8b84c;border:1px solid rgba(212,165,116,.2)}
+.btn-c{width:100%;padding:9px;border:0;border-radius:8px;background:linear-gradient(135deg,rgba(212,165,116,.2),rgba(139,105,20,.15));color:#d4a574;font-size:14px;cursor:pointer;font-family:serif;letter-spacing:1px;border:1px solid rgba(212,165,116,.1)}
+.btn-c:disabled{opacity:.4;cursor:default}
 
 /* Achievements */
-.achieve-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.achieve-item{background:rgba(255,255,255,.06);border-radius:12px;padding:12px 8px;text-align:center;border:1px solid rgba(255,255,255,.06);opacity:.4;transition:all .2s}
-.achieve-item.unlocked{opacity:1;border-color:#7c3aed;background:rgba(124,58,237,.1)}
-.achieve-item .icon{font-size:28px;margin-bottom:4px}
-.achieve-item .name{font-size:11px;color:rgba(255,255,255,.7)}
-.achieve-item .desc{font-size:9px;color:rgba(255,255,255,.35);margin-top:2px}
+.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ach-item{background:rgba(0,0,0,.25);border-radius:10px;padding:10px 6px;text-align:center;border:1px solid rgba(212,165,116,.06);opacity:.35;transition:all .2s}
+.ach-item.unlocked{opacity:1;border-color:rgba(212,165,116,.2);background:rgba(212,165,116,.06)}
+.ach-item .icon{font-size:24px;margin-bottom:3px}
+.ach-item .name{font-size:10px;color:rgba(212,200,168,.6)}
+.ach-item .desc{font-size:8px;color:rgba(212,200,168,.3);margin-top:1px}
 
 /* Skin Shop */
-.skin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.skin-item{background:rgba(255,255,255,.06);border-radius:14px;padding:16px;text-align:center;border:1px solid rgba(255,255,255,.06);transition:all .2s}
-.skin-item .preview{width:60px;height:60px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:28px}
-.skin-item .sname{font-size:13px;color:#ddd;margin-bottom:2px}
-.skin-item .sdesc{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:8px}
-.skin-item .btn-skin{width:100%;padding:7px 0;border:0;border-radius:8px;font-size:12px;cursor:pointer;transition:all .2s}
-.skin-item .btn-skin.equipped{background:rgba(34,197,94,.2);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
-.skin-item .btn-skin.own{background:rgba(124,58,237,.2);color:#c084fc;border:1px solid rgba(124,58,237,.3)}
-.skin-item .btn-skin.buy{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff}
-.skin-item .btn-skin:disabled{background:#444;color:#666;cursor:default}
-.skin-item .share-unlock{background:rgba(245,158,11,.1);color:#f59e0b;border:1px solid rgba(245,158,11,.3);font-size:11px;padding:6px;border-radius:8px;margin-top:4px}
+.skin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.skin-item{background:rgba(0,0,0,.25);border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(212,165,116,.06)}
+.skin-item .preview{width:52px;height:52px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:26px;border:1px solid rgba(212,165,116,.1)}
+.skin-item .sname{font-size:12px;color:#d4c9a8;margin-bottom:1px}
+.skin-item .sdesc{font-size:9px;color:rgba(212,200,168,.3);margin-bottom:6px}
+.skin-item .btn-s{width:100%;padding:6px 0;border:0;border-radius:6px;font-size:11px;cursor:pointer;font-family:serif}
+.skin-item .btn-s.equipped{background:rgba(76,175,80,.15);color:#81c784;border:1px solid rgba(76,175,80,.2)}
+.skin-item .btn-s.own{background:rgba(212,165,116,.1);color:#d4a574;border:1px solid rgba(212,165,116,.15)}
+.skin-item .btn-s.buy{background:linear-gradient(135deg,rgba(212,165,116,.2),rgba(139,105,20,.1));color:#d4a574;border:1px solid rgba(212,165,116,.1)}
+.skin-item .btn-s:disabled{opacity:.3;cursor:default}
 
-/* Share Section */
-.share-section{background:rgba(255,255,255,.06);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,.06);text-align:center}
-.share-section h3{font-size:15px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:6px}
-.share-section p{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:10px}
+/* Share */
+.share-section{text-align:center}
+.share-section p{font-size:12px;color:rgba(212,200,168,.4);margin-bottom:10px}
 .share-btn-row{display:flex;gap:8px;justify-content:center}
-.btn-share{padding:10px 20px;border:0;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-share.primary{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
-.btn-share.secondary{background:rgba(255,255,255,.1);color:#ddd;border:1px solid rgba(255,255,255,.15)}
-.share-rewards{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center}
-.reward-tag{font-size:11px;background:rgba(245,158,11,.1);color:#fbbf24;padding:3px 8px;border-radius:6px}
+.btn-share{padding:9px 18px;border:0;border-radius:8px;font-size:13px;cursor:pointer;font-family:serif}
+.btn-share.primary{background:linear-gradient(135deg,rgba(212,165,116,.25),rgba(139,105,20,.15));color:#d4a574;border:1px solid rgba(212,165,116,.15)}
+.btn-share.secondary{background:rgba(255,255,255,.04);color:rgba(212,200,168,.4);border:1px solid rgba(212,165,116,.1)}
+.share-rewards{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;justify-content:center}
+.reward-tag{font-size:10px;background:rgba(212,165,116,.06);color:rgba(212,200,168,.5);padding:3px 8px;border-radius:5px}
 
-/* Classic Section */
-.classic-list{display:flex;flex-direction:column;gap:8px}
-.classic-item{background:rgba(255,255,255,.06);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,.06)}
-.classic-item .title{font-size:14px;color:#c084fc;margin-bottom:4px}
-.classic-item .content{font-size:12px;color:rgba(255,255,255,.5);line-height:1.8}
-
-/* Sound Select */
-.sound-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding:4px 0}
-.sound-btn{padding:6px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);font-size:12px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
-.sound-btn.active{background:rgba(124,58,237,.3);border-color:#7c3aed;color:#c084fc}
-
-/* Ripples */
-.ripple-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50}
-.ripple{position:absolute;border-radius:50%;border:2px solid rgba(124,58,237,.3);animation:rippleOut .8s ease-out forwards}
-@keyframes rippleOut{0%{width:0;height:0;opacity:.8}100%{width:300px;height:300px;opacity:0;top:-150px;left:-150px}}
+/* Stat rows */
+.stat-row{display:flex;justify-content:space-between;background:rgba(0,0,0,.15);padding:10px 12px;border-radius:8px;margin-bottom:4px}
+.stat-row .sl{font-size:12px;color:rgba(212,200,168,.4)}
+.stat-row .sv{font-size:13px;color:#d4a574}
 
 /* Toast */
-.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.85);color:#fff;padding:16px 28px;border-radius:14px;font-size:15px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none;text-align:center;backdrop-filter:blur(8px)}
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(10,10,10,.92);color:#d4c9a8;padding:16px 26px;border-radius:12px;font-size:14px;z-index:200;opacity:0;transition:opacity .25s;pointer-events:none;text-align:center;backdrop-filter:blur(8px);border:1px solid rgba(212,165,116,.1);font-family:serif}
 .toast.show{opacity:1}
 
-/* Notification panel */
-.notif-panel{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:150;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.notif-panel.show{display:flex}
-.notif-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:20px;padding:28px 24px;max-width:320px;width:90%;text-align:center;border:1px solid rgba(124,58,237,.3)}
-.notif-box .big-icon{font-size:48px;margin-bottom:10px}
-.notif-box h2{font-size:18px;color:#f0e6ff;margin-bottom:6px}
-.notif-box p{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:16px;line-height:1.5}
-.notif-box .btn-ok{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:0;padding:10px 32px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer}
+/* Notif */
+.notif-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:150;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.notif-overlay.show{display:flex}
+.notif-box{background:linear-gradient(135deg,#1a0a2e,#0d0d0d);border-radius:18px;padding:26px 22px;max-width:300px;width:90%;text-align:center;border:1px solid rgba(212,165,116,.15)}
+.notif-box .big-icon{font-size:44px;margin-bottom:8px}
+.notif-box h2{font-size:17px;color:#d4a574;margin-bottom:5px}
+.notif-box .ndesc{font-size:12px;color:rgba(212,200,168,.5);margin-bottom:14px;line-height:1.5}
+.notif-box .btn-ok{background:rgba(212,165,116,.15);color:#d4a574;border:1px solid rgba(212,165,116,.15);padding:9px 30px;border-radius:8px;font-size:14px;cursor:pointer;font-family:serif}
 
-/* Stats tab */
-.stat-row{display:flex;justify-content:space-between;background:rgba(255,255,255,.04);padding:12px 14px;border-radius:10px;margin-bottom:6px}
-.stat-row .label{font-size:13px;color:rgba(255,255,255,.5)}
-.stat-row .value{font-size:14px;font-weight:600;color:#c084fc}
+/* Floating */
+.floating{position:fixed;pointer-events:none;font-size:22px;font-weight:700;color:#d4a574;z-index:100;font-family:serif;animation:floatUp 1s ease-out forwards}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-70px) scale(.4)}}
 
-/* Responsive */
-@media(max-width:360px){.circle{width:160px;height:160px}.circle .emoji{font-size:48px}.score-big{font-size:36px}}
+/* Ripple */
+.ripple-c{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50}
+.ripple-el{position:absolute;border-radius:50%;border:1px solid rgba(212,165,116,.15);animation:rippleOut .7s ease-out forwards}
+@keyframes rippleOut{0%{width:0;height:0;opacity:.6}100%{width:250px;height:250px;opacity:0;top:-125px;left:-125px}}
+
+/* Tap circle ring flash */
+@keyframes flashRing{0%{box-shadow:0 0 0 0 rgba(212,165,116,.3)}100%{box-shadow:0 0 30px 15px rgba(212,165,116,0)}}
+
+/* Scroll indicator */
+.scroll-indicator{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:9px;color:rgba(212,165,116,.15);animation:scrollPulse 2s infinite}
+@keyframes scrollPulse{0%,100%{opacity:.15}50%{opacity:.4}}
+
+/* Floaty character particles */
+.particle-c{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:45}
+.particle{position:absolute;font-size:13px;color:rgba(212,165,116,.08);animation:particleUp 3s ease-out forwards}
+@keyframes particleUp{0%{opacity:.3;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(-120px) rotate(180deg)}}
+
+@media(max-width:360px){
+  .fish{width:170px;height:170px}.fish .fish-emoji{font-size:44px}.merit-number{font-size:36px}
+  .hit-ring{width:186px;height:186px;top:-8px;left:-8px}
+}
 </style>
 </head>
 <body>
@@ -134,100 +159,136 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="header">
     <h1>🪷 清敲</h1>
     <div class="stats">
-      <span>✦ <span id="statScore">0</span></span>
-      <span>🔥 <span id="statDay">第0天</span></span>
+      <span>✦ <span id="hMerit">0</span></span>
+      <span>🔥 <span id="hStreak">未签到</span></span>
     </div>
+  </div>
+
+  <!-- Sutra */
+  <div class="sutra-area">
+    <div class="sutra-text" id="sutraText">轻敲木鱼 · 静心养性</div>
+    <div class="sutra-label" id="sutraLabel">—</div>
   </div>
 
   <!-- Sound Select -->
-  <div class="sound-row" id="soundRow">
-    <div class="sound-btn active" data-s="0">🪵 清音</div>
-    <div class="sound-btn" data-s="1">🔔 磬音</div>
-    <div class="sound-btn" data-s="2">🛎️ 铃音</div>
-    <div class="sound-btn" data-s="3">🎐 风铃</div>
-    <div class="sound-btn" data-s="4">🌧️ 雨声</div>
+  <div class="sound-bar">
+    <div class="snd-btn active" data-s="0"><span class="snd-icon">🥁</span>木鱼</div>
+    <div class="snd-btn" data-s="1"><span class="snd-icon">🔔</span>磬</div>
+    <div class="snd-btn" data-s="2"><span class="snd-icon">🛎️</span>铃</div>
+    <div class="snd-btn" data-s="3"><span class="snd-icon">🎐</span>风铃</div>
+    <div class="snd-btn" data-s="4"><span class="snd-icon">🌧️</span>雨声</div>
   </div>
 
-  <!-- Tap Area -->
-  <div class="tap-area">
-    <div class="circle-wrap" id="tapCircle">
-      <div class="circle" id="mainCircle">
-        <div class="emoji" id="skinEmoji">🪷</div>
-        <div class="label">轻敲一下</div>
+  <!-- Wooden Fish -->
+  <div class="fish-area">
+    <div class="hit-ring" id="hitRing"></div>
+    <div class="fish-wrap" id="fishWrap">
+      <div class="fish" id="fishMain">
+        <div class="fish-emoji" id="fishEmoji">🥁</div>
+        <div class="fish-label">敲 木 鱼</div>
       </div>
     </div>
-    <div class="combo-bar"><span class="combo-text" id="comboText">🔥 连击 ×5</span></div>
-    <div class="score-big" id="tapScore">0</div>
-    <div class="score-label">正念分</div>
-    <div class="tap-hint" id="tapHint">轻触圆盘 · 静下心来</div>
+  </div>
+
+  <!-- Merit + Realm -->
+  <div class="merit-area">
+    <div class="merit-label">功 德</div>
+    <div class="merit-number" id="meritNum">0</div>
+    <div class="realm-badge" id="realmBadge">凡 人</div>
+  </div>
+
+  <!-- Combo -->
+  <div class="combo-area">
+    <span class="combo-text" id="comboText">🔥 连击 ×5</span>
   </div>
 
   <!-- Tab Bar -->
   <div class="tab-bar">
-    <div class="tab active" data-tab="tabShare">📤 分享</div>
-    <div class="tab" data-tab="tabCheckin">📅 签到</div>
-    <div class="tab" data-tab="tabAchieve">🏆 成就</div>
-    <div class="tab" data-tab="tabShop">🎨 商城</div>
-    <div class="tab" data-tab="tabClassic">📜 名篇</div>
-    <div class="tab" data-tab="tabStats">📊 统计</div>
+    <div class="tab active" data-tab="tpMain">
+      <span class="tab-icon">🪷</span>修行
+    </div>
+    <div class="tab" data-tab="tpShare">
+      <span class="tab-icon">📤</span>分享
+    </div>
+    <div class="tab" data-tab="tpCheckin">
+      <span class="tab-icon">📅</span>签到
+    </div>
+    <div class="tab" data-tab="tpAchieve">
+      <span class="tab-icon">🏆</span>成就
+    </div>
+    <div class="tab" data-tab="tpShop">
+      <span class="tab-icon">🎨</span>法相
+    </div>
+    <div class="tab" data-tab="tpStats">
+      <span class="tab-icon">📊</span>道果
+    </div>
+  </div>
+
+  <!-- Panel: Main (empty, just placeholder) -->
+  <div class="panel active" id="tpMain">
+    <div class="card" style="text-align:center">
+      <p style="font-size:13px;color:rgba(212,200,168,.4);line-height:1.6">👆 轻触木鱼<br>每敲一次积累一份功德<br>快速连击可获额外加成</p>
+    </div>
   </div>
 
   <!-- Panel: Share -->
-  <div class="panel active" id="tabShare">
-    <div class="share-section">
-      <h3>📤 分享清敲 · 一起静心</h3>
-      <p>分享给朋友，双方都能获得奖励！</p>
+  <div class="panel" id="tpShare">
+    <div class="card share-section">
+      <h3>📤 分享 · 法布施</h3>
+      <p>分享清敲给有缘人，双方皆获功德</p>
       <div class="share-btn-row">
-        <button class="btn-share primary" id="btnShare">📲 分享给好友</button>
-        <button class="btn-share secondary" id="btnCopyLink">🔗 复制链接</button>
+        <button class="btn-share primary" id="btnShare">📲 分享好友</button>
+        <button class="btn-share secondary" id="btnCopy">🔗 复制链接</button>
       </div>
-      <div class="share-rewards" id="shareRewards">
-        <span class="reward-tag">🎁 首次分享解锁「分享之心」皮肤</span>
-        <span class="reward-tag">✨ 每日首次分享 +50分</span>
-        <span class="reward-tag">👥 好友通过分享打开，双方各+30分</span>
+      <div class="share-rewards">
+        <span class="reward-tag">🎁 首次分享获「分享之心」法相</span>
+        <span class="reward-tag">✨ 每日首次分享 +50功德</span>
+        <span class="reward-tag">👥 好友通过链接打开，双方各+30功德</span>
       </div>
     </div>
-    <div class="checkin-card">
+    <div class="card">
       <h3>📤 分享进度</h3>
-      <div class="stat-row"><span class="label">今日已分享</span><span class="value"><span id="shareToday">0</span> 次</span></div>
-      <div class="stat-row"><span class="label">累计分享</span><span class="value"><span id="shareTotal">0</span> 次</span></div>
-      <div class="stat-row"><span class="label">成功邀请</span><span class="value"><span id="shareInvite">0</span> 人</span></div>
+      <div class="stat-row"><span class="sl">今日分享</span><span class="sv"><span id="stToday">0</span> 次</span></div>
+      <div class="stat-row"><span class="sl">累计分享</span><span class="sv"><span id="stTotal">0</span> 次</span></div>
+      <div class="stat-row"><span class="sl">成功接引</span><span class="sv"><span id="stInvite">0</span> 人</span></div>
     </div>
   </div>
 
-  <!-- Panel: Check-in -->
-  <div class="panel" id="tabCheckin">
-    <div class="checkin-card">
+  <!-- Panel: Checkin -->
+  <div class="panel" id="tpCheckin">
+    <div class="card">
       <h3>📅 每日签到</h3>
       <div class="week-row" id="weekRow"></div>
-      <button class="btn-checkin" id="btnCheckin">📌 签到 +50 分</button>
+      <button class="btn-c" id="btnCheckin">📌 签到 · 得功德 +50</button>
     </div>
   </div>
 
   <!-- Panel: Achievements -->
-  <div class="panel" id="tabAchieve">
-    <div class="achieve-grid" id="achieveGrid"></div>
+  <div class="panel" id="tpAchieve">
+    <div class="card">
+      <h3>🏆 修行成就</h3>
+      <div class="ach-grid" id="achGrid"></div>
+    </div>
   </div>
 
-  <!-- Panel: Shop -->
-  <div class="panel" id="tabShop">
-    <div class="skin-grid" id="skinGrid"></div>
-  </div>
-
-  <!-- Panel: Classics -->
-  <div class="panel" id="tabClassic">
-    <div class="classic-list" id="classicList"></div>
+  <!-- Panel: Shop (法相) -->
+  <div class="panel" id="tpShop">
+    <div class="card">
+      <h3>🎨 法相 · 木鱼皮肤</h3>
+      <div class="skin-grid" id="skinGrid"></div>
+    </div>
   </div>
 
   <!-- Panel: Stats -->
-  <div class="panel" id="tabStats">
-    <div class="checkin-card">
-      <h3>📊 练习统计</h3>
-      <div class="stat-row"><span class="label">总敲击次数</span><span class="value" id="sTotalTap">0</span></div>
-      <div class="stat-row"><span class="label">总正念分</span><span class="value" id="sTotalScore">0</span></div>
-      <div class="stat-row"><span class="label">连续签到</span><span class="value" id="sStreak">0 天</span></div>
-      <div class="stat-row"><span class="label">已解锁皮肤</span><span class="value" id="sSkins">0</span></div>
-      <div class="stat-row"><span class="label">已获得成就</span><span class="value" id="sAchieves">0</span></div>
+  <div class="panel" id="tpStats">
+    <div class="card">
+      <h3>📊 道果 · 修行统计</h3>
+      <div class="stat-row"><span class="sl">总敲击次数</span><span class="sv" id="sTaps">0</span></div>
+      <div class="stat-row"><span class="sl">总功德</span><span class="sv" id="sMerit">0</span></div>
+      <div class="stat-row"><span class="sl">当前境界</span><span class="sv" id="sRealm">凡人</span></div>
+      <div class="stat-row"><span class="sl">连续签到</span><span class="sv" id="sStreak">0 天</span></div>
+      <div class="stat-row"><span class="sl">已得法相</span><span class="sv" id="sSkins">0/0</span></div>
+      <div class="stat-row"><span class="sl">已证成就</span><span class="sv" id="sAch">0/0</span></div>
     </div>
   </div>
 </div>
@@ -235,596 +296,490 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Notification Panel -->
-<div class="notif-panel" id="notifPanel">
+<!-- Notif -->
+<div class="notif-overlay" id="notifOverlay">
   <div class="notif-box">
-    <div class="big-icon" id="notifIcon">🎉</div>
-    <h2 id="notifTitle">恭喜！</h2>
-    <p id="notifDesc">你获得了新成就</p>
-    <button class="btn-ok" id="notifOk">太好了！</button>
+    <div class="big-icon" id="nIcon">🎉</div>
+    <h2 id="nTitle">恭喜！</h2>
+    <div class="ndesc" id="nDesc">你获得了新成就</div>
+    <button class="btn-ok" id="nOk">善哉！</button>
   </div>
 </div>
 
-<!-- Ripple Container -->
-<div class="ripple-container" id="rippleContainer"></div>
+<!-- Ripples -->
+<div class="ripple-c" id="rippleC"></div>
+
+<!-- Particles -->
+<div class="particle-c" id="particleC"></div>
 
 <script>
-// =================== STATE ===================
-const STATE_KEY = 'qingqiao_h5_data';
-function getDefaultState() {
+// ============ STATE ============
+const K = 'qq_soul_data';
+function def(){
   return {
-    score: 0,
-    totalTaps: 0,
-    combo: 0,
-    maxCombo: 0,
-    skin: 0,
-    ownedSkins: [0],
-    soundIdx: 0,
-    checkinDays: [], // ['2026-05-27', ...]
-    checkedInToday: false,
-    streak: 0,
-    maxStreak: 0,
-    shareToday: 0,
-    shareTotal: 0,
-    shareInvite: 0,
-    sharedSkinUnlocked: false,
-    inviteSkinUnlocked: false,
-    achievements: {},
-    lastTapTime: 0,
-    lastCheckinDate: '',
-    firstShareDate: '',
-    lastVisitDate: '',
-    offlineScore: 0,
+    merit: 0, taps: 0, combo: 0, maxCombo: 0, skin: 0,
+    owned: [0], soundIdx: 0, checkins: [], streak: 0, maxStreak: 0,
+    shareToday: 0, shareTotal: 0, inviteCount: 0,
+    shareSkin: false, inviteSkin: false,
+    ach: {}, lastTap: 0, firstShare: '', lastVisit: ''
   };
 }
-function loadState(){
-  try{
-    const raw = localStorage.getItem(STATE_KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){}
-  return getDefaultState();
-}
-function saveState(){
-  localStorage.setItem(STATE_KEY, JSON.stringify(state));
-}
+function load(){try{const d=localStorage.getItem(K);if(d)return JSON.parse(d)}catch(e){}return def()}
+function save(){localStorage.setItem(K,JSON.stringify(s))}
+let s = load();
 
-let state = loadState();
-
-// =================== CONSTANTS ===================
+// ============ CONSTS ============
+const SUTRA = [
+  // 心经 (split into verses)
+  {name:'心经', lines:['观自在菩萨 · 行深般若波罗蜜多时','照见五蕴皆空 · 度一切苦厄','舍利子 · 色不异空 · 空不异色','色即是空 · 空即是色','受想行识 · 亦复如是','舍利子 · 是诸法空相','不生不灭 · 不垢不净','不增不减 · 是故空中无色','无受想行识 · 无眼耳鼻舌身意','无色声香味触法','无眼界 · 乃至无意识界','无无明 · 亦无无明尽','乃至无老死 · 亦无老死尽','无苦集灭道 · 无智亦无得','以无所得故 · 菩提萨埵','依般若波罗蜜多故 · 心无挂碍','无挂碍故 · 无有恐怖','远离颠倒梦想 · 究竟涅槃','三世诸佛 · 依般若波罗蜜多故','得阿耨多罗三藐三菩提','故知般若波罗蜜多 · 是大神咒','是大明咒 · 是无上咒','能除一切苦 · 真实不虚','揭谛揭谛 · 波罗揭谛','波罗僧揭谛 · 菩提萨婆诃']},
+  // 金刚经
+  {name:'金刚经', lines:['如是我闻 · 一时佛在舍卫国','祇树给孤独园 · 与大比丘众','千二百五十人俱','凡所有相 · 皆是虚妄','若见诸相非相 · 即见如来','一切有为法 · 如梦幻泡影','如露亦如电 · 应作如是观','应无所住 · 而生其心','过去心不可得 · 现在心不可得','未来心不可得','若以色见我 · 以音声求我','是人行邪道 · 不能见如来','法尚应舍 · 何况非法','如来所说法 · 皆不可取','不可说 · 非法非非法']},
+  // 六字大明咒
+  {name:'六字大明咒', lines:['嗡 嘛 呢 叭 咪 吽','嗡 · 嘛 · 呢 · 叭 · 咪 · 吽','嗡嘛呢叭咪吽','ཨོཾ་མ་ཎི་པ་དྨེ་ཧཱུྃ']},
+  // 大悲咒
+  {name:'大悲咒', lines:['南无喝啰怛那 哆啰夜耶','南无阿唎耶 婆卢羯帝','烁钵啰耶 菩提萨埵婆耶','摩诃萨埵婆耶 摩诃迦卢尼迦耶','唵 萨皤啰罚曳 数怛那怛写','南无悉吉栗埵 伊蒙阿唎耶','婆卢吉帝 室佛啰愣驮婆','南无那啰谨墀 醯利摩诃','皤哆沙咩 萨婆阿他 豆输朋','阿逝孕 萨婆萨哆 那摩婆萨哆','那摩婆伽 摩罚特豆','怛姪他 唵 阿婆卢醯','卢迦帝 迦罗帝 夷醯唎','摩诃菩提萨埵']},
+  // 道德经
+  {name:'道德经', lines:['道可道 · 非常道','名可名 · 非常名','无名天地之始 · 有名万物之母','故常无欲以观其妙','常有欲以观其徼','此两者同出而异名','同谓之玄 · 玄之又玄','众妙之门','上善若水 · 水善利万物而不争','处众人之所恶 · 故几于道','居善地 · 心善渊 · 与善仁','言善信 · 正善治 · 事善能','动善时 · 夫唯不争','故无尤']},
+  // 清静经
+  {name:'清静经', lines:['大道无形 · 生育天地','大道无情 · 运行日月','大道无名 · 长养万物','清者浊之源 · 动者静之基','人能常清静 · 天地悉皆归','人心好静 · 而欲牵之','常能遣其欲 · 而心自静','澄其心 · 而神自清','自然六欲不生 · 三毒消灭','内观其心 · 心无其心','外观其形 · 形无其形','远观其物 · 物无其物','三者既悟 · 唯见于空','观空亦空 · 空无所空','所空既无 · 无无亦无']},
+  // 法华经
+  {name:'法华经', lines:['诸法从本来 · 常自寂灭相','是法住法位 · 世间相常住','诸法实相 · 如是相 · 如是性','如是体 · 如是力 · 如是作','如是因 · 如是缘 · 如是果','如是报 · 如是本末究竟等','开方便门 · 示真实相','诸佛世尊 · 唯以一大事因缘故','出现于世','佛种从缘起 · 是故说一乘','是法不可示 · 言辞相寂灭','诸余众生 · 亦复如是']},
+];
+const REALMS = [
+  {name:'凡人', min:0},{name:'初学', min:100},{name:'修行者', min:300},{name:'入定', min:600},
+  {name:'禅定', min:1200},{name:'明心', min:2500},{name:'见性', min:5000},{name:'开悟', min:10000},
+  {name:'大觉', min:20000},{name:'菩提', min:40000},{name:'金刚', min:80000},{name:'涅槃', min:150000}
+];
 const SKINS = [
-  {id:0, name:'初入清心', emoji:'🪷', desc:'初始皮肤', price:0, shareUnlock:false, inviteUnlock:false},
-  {id:1, name:'竹林清风', emoji:'🎋', desc:'翠竹心境', price:200, shareUnlock:false, inviteUnlock:false},
-  {id:2, name:'月华如水', emoji:'🌙', desc:'月光如水', price:500, shareUnlock:false, inviteUnlock:false},
-  {id:3, name:'雪山禅韵', emoji:'🏔️', desc:'雪山之巅', price:1000, shareUnlock:false, inviteUnlock:false},
-  {id:4, name:'星辰大海', emoji:'🌌', desc:'璀璨星河', price:2000, shareUnlock:false, inviteUnlock:false},
-  {id:5, name:'分享之心', emoji:'💝', desc:'首次分享解锁', price:0, shareUnlock:true, inviteUnlock:false},
-  {id:6, name:'友情之约', emoji:'🤝', desc:'邀请好友解锁', price:0, shareUnlock:false, inviteUnlock:true},
+  {id:0,name:'普通木鱼',emoji:'🥁',price:0},
+  {id:1,name:'紫檀木鱼',emoji:'🪵',price:200,desc:'紫檀木制 · 音色温润'},
+  {id:2,name:'青铜磬',emoji:'🔔',price:500,desc:'古铜铸就 · 声闻十方'},
+  {id:3,name:'玉磬',emoji:'💎',price:1000,desc:'白玉雕琢 · 清音彻空'},
+  {id:4,name:'金钵',emoji:'🏆',price:2000,desc:'鎏金法钵 · 功德无量'},
+  {id:5,name:'分享之心',emoji:'💝',price:0,share:true,desc:'分享即得'},
+  {id:6,name:'友谊之莲',emoji:'🤝',price:0,invite:true,desc:'接引有缘人'},
 ];
-const ACHIEVEMENTS = [
-  {id:'first_tap', name:'初次静心', icon:'👶', desc:'第一次敲击', check:()=>state.totalTaps>=1},
-  {id:'hundred', name:'百敲百练', icon:'💪', desc:'累计敲击100次', check:()=>state.totalTaps>=100},
-  {id:'thousand', name:'千锤百炼', icon:'⚔️', desc:'累计敲击1000次', check:()=>state.totalTaps>=1000},
-  {id:'five_streak', name:'连续5天', icon:'📅', desc:'连续签到5天', check:()=>state.streak>=5},
-  {id:'fifteen_streak', name:'半月坚持', icon:'🗓️', desc:'连续签到15天', check:()=>state.streak>=15},
-  {id:'thirty_streak', name:'月满清心', icon:'🌕', desc:'连续签到30天', check:()=>state.streak>=30},
-  {id:'combo5', name:'五连击', icon:'⚡', desc:'达到5连击', check:()=>state.maxCombo>=5},
-  {id:'combo20', name:'二十连击', icon:'🔥', desc:'达到20连击', check:()=>state.maxCombo>=20},
-  {id:'combo50', name:'五十连击', icon:'💫', desc:'达到50连击', check:()=>state.maxCombo>=50},
-  {id:'collect_all', name:'收集达人', icon:'🎨', desc:'拥有6个皮肤', check:()=>state.ownedSkins.length>=6},
-  {id:'share_10', name:'分享达人', icon:'📤', desc:'累计分享10次', check:()=>state.shareTotal>=10},
-  {id:'share_50', name:'清敲大使', icon:'🌟', desc:'累计分享50次', check:()=>state.shareTotal>=50},
+const ACH = [
+  {id:'1',name:'初叩佛门',icon:'👶',desc:'第一次敲击',chk:()=>s.taps>=1},
+  {id:'2',name:'百敲百悟',icon:'🙏',desc:'敲击100次',chk:()=>s.taps>=100},
+  {id:'3',name:'千锤百炼',icon:'⚔️',desc:'敲击1000次',chk:()=>s.taps>=1000},
+  {id:'4',name:'万法归宗',icon:'☸️',desc:'敲击10000次',chk:()=>s.taps>=10000},
+  {id:'5',name:'五日禅',icon:'📅',desc:'连续签到5天',chk:()=>s.streak>=5},
+  {id:'6',name:'半月修',icon:'🗓️',desc:'连续签到15天',chk:()=>s.streak>=15},
+  {id:'7',name:'一月圆满',icon:'🌕',desc:'连续签到30天',chk:()=>s.streak>=30},
+  {id:'8',name:'五连击',icon:'⚡',desc:'达到5连击',chk:()=>s.maxCombo>=5},
+  {id:'9',name:'二十连',icon:'🔥',desc:'达到20连击',chk:()=>s.maxCombo>=20},
+  {id:'10',name:'五十连',icon:'💫',desc:'达到50连击',chk:()=>s.maxCombo>=50},
+  {id:'11',name:'百连至尊',icon:'👑',desc:'达到100连击',chk:()=>s.maxCombo>=100},
+  {id:'12',name:'法相庄严',icon:'🎨',desc:'拥有6款法相',chk:()=>s.owned.length>=6},
+  {id:'13',name:'法布施',icon:'📤',desc:'累计分享10次',chk:()=>s.shareTotal>=10},
+  {id:'14',name:'大布施',icon:'🌟',desc:'累计分享50次',chk:()=>s.shareTotal>=50},
+  {id:'15',name:'接引使者',icon:'👥',desc:'成功接引3人',chk:()=>s.inviteCount>=3},
 ];
-const CLASSICS = [
-  {title:'《心经》节选', content:'观自在菩萨，行深般若波罗蜜多时，照见五蕴皆空，度一切苦厄。舍利子，色不异空，空不异色，色即是空，空即是色，受想行识，亦复如是。'},
-  {title:'《金刚经》节选', content:'凡所有相，皆是虚妄。若见诸相非相，即见如来。一切有为法，如梦幻泡影，如露亦如电，应作如是观。'},
-  {title:'《道德经》节选', content:'道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲，以观其妙；常有欲，以观其徼。'},
-  {title:'《大学》节选', content:'大学之道，在明明德，在亲民，在止于至善。知止而后有定，定而后能静，静而后能安，安而后能虑，虑而后能得。'},
-  {title:'《论语》节选', content:'学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？'},
-  {title:'《中庸》节选', content:'喜怒哀乐之未发，谓之中；发而皆中节，谓之和。中也者，天下之大本也；和也者，天下之达道也。'},
-];
-const SOUND_NAMES = ['清音·木', '磬音·金', '铃音·铜', '风铃·竹', '雨声·水'];
 
-// =================== AUDIO (Web Audio API) ===================
-let audioCtx = null;
-function getAudioCtx(){
-  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return audioCtx;
+// ============ AUDIO ============
+let ac = null;
+function actx(){if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();return ac}
+
+// Realistic wooden fish sound
+function playWoodenFish(ctx, t){
+  // Hollow wood body resonance
+  const bodyFreqs = [380, 520, 690, 910];
+  bodyFreqs.forEach((f,i)=>{
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.type='sine';o.frequency.value=f;
+    const vol=i===0?.5:i===1?.25:i===2?.12:.06;
+    g.gain.setValueAtTime(vol,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+.35+i*.04);
+    o.connect(g);g.connect(ctx.destination);
+    o.start(t);o.stop(t+.45);
+  });
+  // Strike noise (wood texture)
+  const ns=ctx.sampleRate*.06;
+  const b=ctx.createBuffer(1,ns,ctx.sampleRate);
+  const d=b.getChannelData(0);
+  for(let i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/(ns*.18));
+  const src=ctx.createBufferSource();src.buffer=b;
+  const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=750;bp.Q.value=1.5;
+  const ng=ctx.createGain();ng.gain.setValueAtTime(.35,t);ng.gain.exponentialRampToValueAtTime(.001,t+.15);
+  src.connect(bp);bp.connect(ng);ng.connect(ctx.destination);
+  src.start(t);src.stop(t+.18);
 }
-function playSound(idx){
-  const ctx = getAudioCtx();
-  function noop(){}
-  switch(idx){
-    case 0:{ // wooden
-      const osc = ctx.createOscillator(); const gain = ctx.createGain();
-      osc.type='triangle'; osc.frequency.setValueAtTime(400,ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(200,ctx.currentTime+.05);
-      gain.gain.setValueAtTime(.4,ctx.currentTime); gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.3);
-      osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+.3);
-      break;
-    }
-    case 1:{ // bowl
-      const osc = ctx.createOscillator(); const gain = ctx.createGain();
-      osc.type='sine'; osc.frequency.setValueAtTime(880,ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+.5);
-      gain.gain.setValueAtTime(.3,ctx.currentTime); gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1.5);
-      const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain();
-      osc2.type='sine'; osc2.frequency.setValueAtTime(1320,ctx.currentTime); osc2.frequency.exponentialRampToValueAtTime(660,ctx.currentTime+.5);
-      gain2.gain.setValueAtTime(.15,ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1);
-      osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+1.5);
-      osc2.connect(gain2); gain2.connect(ctx.destination); osc2.start(); osc2.stop(ctx.currentTime+1);
-      break;
-    }
-    case 2:{ // bell
-      const osc = ctx.createOscillator(); const gain = ctx.createGain();
-      osc.type='sine'; osc.frequency.setValueAtTime(1200,ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(600,ctx.currentTime+.8);
-      gain.gain.setValueAtTime(.25,ctx.currentTime); gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+2);
-      const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain();
-      osc2.type='sine'; osc2.frequency.setValueAtTime(1800,ctx.currentTime);
-      gain2.gain.setValueAtTime(.1,ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1.5);
-      osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+2);
-      osc2.connect(gain2); gain2.connect(ctx.destination); osc2.start(); osc2.stop(ctx.currentTime+1.5);
-      break;
-    }
-    case 3:{ // wind chime
-      for(let i=0;i<5;i++){
-        const osc = ctx.createOscillator(); const gain = ctx.createGain();
-        osc.type='sine'; const freq = 800 + i*300 + Math.random()*50;
-        osc.frequency.setValueAtTime(freq,ctx.currentTime + i*.1);
-        gain.gain.setValueAtTime(.12,ctx.currentTime + i*.1); gain.gain.linearRampToValueAtTime(0,ctx.currentTime + i*.1 + .5);
-        osc.connect(gain); gain.connect(ctx.destination); osc.start(ctx.currentTime + i*.1); osc.stop(ctx.currentTime + i*.1 + .5);
-      }
-      break;
-    }
-    case 4:{ // rain
-      const bufferSize = ctx.sampleRate * .8;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for(let i=0;i<bufferSize;i++) data[i] = (Math.random()*2-1) * Math.exp(-i/bufferSize*8) * .15;
-      const source = ctx.createBufferSource();
-      source.buffer = buffer;
-      const gain = ctx.createGain(); gain.gain.setValueAtTime(.3,ctx.currentTime); gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.6);
-      source.connect(gain); gain.connect(ctx.destination); source.start();
-      break;
-    }
+
+function playBowl(ctx,t){
+  [440,660,880,1100].forEach((f,i)=>{
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.type='sine';o.frequency.value=f;
+    g.gain.setValueAtTime(.25-i*.05,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+2.5+i*.1);
+    o.connect(g);g.connect(ctx.destination);
+    o.start(t);o.stop(t+3);
+  });
+}
+
+function playBell(ctx,t){
+  [1200,1600,2000,2400].forEach((f,i)=>{
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.type='sine';o.frequency.value=f;
+    g.gain.setValueAtTime(.18-i*.03,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+1.5+i*.1);
+    o.connect(g);g.connect(ctx.destination);
+    o.start(t);o.stop(t+2);
+  });
+}
+
+function playWind(ctx,t){
+  for(let i=0;i<6;i++){
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.type='sine';
+    const ft=700+i*250+Math.random()*30;
+    o.frequency.setValueAtTime(ft,t+i*.08);
+    g.gain.setValueAtTime(.1,t+i*.08);
+    g.gain.linearRampToValueAtTime(0,t+i*.08+.4);
+    o.connect(g);g.connect(ctx.destination);
+    o.start(t+i*.08);o.stop(t+i*.08+.45);
   }
 }
 
-// =================== UI HELPERS ===================
-function showToast(msg, duration=1500){
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), duration);
+function playRain(ctx,t){
+  const ns=ctx.sampleRate*.7;
+  const b=ctx.createBuffer(1,ns,ctx.sampleRate);
+  const d=b.getChannelData(0);
+  for(let i=0;i<ns;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/ns*7)*.18;
+  const src=ctx.createBufferSource();src.buffer=b;
+  const g=ctx.createGain();g.gain.setValueAtTime(.25,t);g.gain.exponentialRampToValueAtTime(.001,t+.5);
+  src.connect(g);g.connect(ctx.destination);
+  src.start(t);src.stop(t+.6);
 }
-function showNotif(icon, title, desc, cb){
-  document.getElementById('notifIcon').textContent = icon;
-  document.getElementById('notifTitle').textContent = title;
-  document.getElementById('notifDesc').textContent = desc;
-  document.getElementById('notifPanel').classList.add('show');
-  document.getElementById('notifOk').onclick = ()=>{
-    document.getElementById('notifPanel').classList.remove('show');
-    if(cb) cb();
+
+function playSound(idx){
+  const ctx=actx();const t=ctx.currentTime;
+  switch(idx){
+    case 0:playWoodenFish(ctx,t);break;
+    case 1:playBowl(ctx,t);break;
+    case 2:playBell(ctx,t);break;
+    case 3:playWind(ctx,t);break;
+    case 4:playRain(ctx,t);break;
+  }
+}
+
+// ============ SUTRA SCROLL ============
+let sutraIdx=0, lineIdx=0;
+function nextSutra(){
+  const book=SUTRA[sutraIdx];
+  const line=book.lines[lineIdx];
+  const el=document.getElementById('sutraText');
+  el.style.opacity='0';
+  setTimeout(()=>{
+    el.innerHTML=`<span class="highlight">${line}</span>`;
+    el.style.opacity='1';
+  },50);
+  document.getElementById('sutraLabel').textContent=book.name;
+  lineIdx++;
+  if(lineIdx>=book.lines.length){lineIdx=0;sutraIdx=(sutraIdx+1)%SUTRA.length}
+}
+
+// ============ SPAWN PARTICLES ============
+function spawnParticles(x,y){
+  const chars = ['卍','☸','🪷','✦','·','~','°'];
+  const c=document.getElementById('particleC');
+  for(let i=0;i<4;i++){
+    const el=document.createElement('div');el.className='particle';
+    el.textContent=chars[Math.floor(Math.random()*chars.length)];
+    el.style.left=(x+Math.random()*60-30)+'px';el.style.top=(y+Math.random()*40-20)+'px';
+    el.style.animationDelay=(i*.08)+'s';
+    c.appendChild(el);setTimeout(()=>el.remove(),3200);
+  }
+}
+
+// ============ TAP ============
+function handleTap(e){
+  const now=Date.now();
+  const diff=now-s.lastTap;s.lastTap=now;
+  if(diff<600){s.combo++}else{s.combo=1}
+  if(s.combo>s.maxCombo)s.maxCombo=s.combo;
+
+  const bonus=Math.min(s.combo,20);
+  const addPts=1+Math.floor(bonus/5);
+  s.merit+=addPts;s.taps++;
+
+  playSound(s.soundIdx);
+  nextSutra();
+
+  // Combo
+  const ct=document.getElementById('comboText');
+  if(s.combo>=3){
+    ct.textContent=s.combo>=10?`🔥 连击 ×${s.combo} 功德 +${addPts}`:`🔥 ×${s.combo} +${addPts}`;
+    ct.className='combo-text show';
+    clearTimeout(ct._t);
+    ct._t=setTimeout(()=>ct.className='combo-text',700);
+  }
+
+  // Floating
+  const rect=document.getElementById('fishMain').getBoundingClientRect();
+  const cx=e.clientX||rect.left+rect.width/2;
+  const cy=e.clientY||rect.top+rect.height/2;
+  const fl=document.createElement('div');fl.className='floating';
+  fl.textContent=`+${addPts}功德`;
+  fl.style.left=cx+'px';fl.style.top=cy+'px';
+  document.body.appendChild(fl);setTimeout(()=>fl.remove(),1000);
+
+  // Ripple
+  const r=document.createElement('div');r.className='ripple-el';
+  r.style.left=cx+'px';r.style.top=cy+'px';
+  document.getElementById('rippleC').appendChild(r);
+  setTimeout(()=>r.remove(),700);
+
+  // Particles
+  spawnParticles(cx,cy);
+
+  checkAch();
+  updateUI();
+  save();
+}
+
+// ============ CHECK ACHIEVEMENTS ============
+function checkAch(){
+  ACH.forEach(a=>{
+    if(!s.ach[a.id]&&a.chk()){
+      s.ach[a.id]=true;
+      setTimeout(()=>showNotif('🏆','成就获得！','「'+a.name+'」 — '+a.desc),300);
+    }
+  });
+}
+
+// ============ SHARE ============
+function handleShare(){
+  const url=window.location.href;
+  const txt='🪷 我在「清敲」敲木鱼修功德，轻敲一下就能静心养性。来试试～';
+  
+  if(!s.shareSkin){s.shareSkin=true;if(!s.owned.includes(5))s.owned.push(5);
+    setTimeout(()=>showNotif('💝','法相获得！','「分享之心」已加入你的法相'),500)}
+  
+  const td=new Date().toISOString().slice(0,10);
+  if(s.firstShare!==td){s.merit+=50;s.firstShare=td;
+    setTimeout(()=>showToast('✨ 每日首次分享 +50功德'),100)}
+  s.shareToday++;s.shareTotal++;
+  checkAch();
+
+  if(navigator.share){navigator.share({title:'清敲',text:txt,url}).catch(()=>{})}
+  else{navigator.clipboard.writeText(txt+' '+url).then(()=>showToast('✅ 链接已复制')).catch(()=>showToast(url))}
+  updateUI();save();
+}
+
+function handleCopy(){
+  const url=window.location.href;
+  navigator.clipboard.writeText('🪷 我在「清敲」敲木鱼修功德，轻敲一下就能静心养性。来试试～ '+url)
+    .then(()=>showToast('✅ 链接已复制')).catch(()=>showToast('复制失败'));
+}
+
+function simulateInvite(){
+  s.merit+=30;s.inviteCount++;
+  if(!s.inviteSkin){s.inviteSkin=true;if(!s.owned.includes(6))s.owned.push(6);
+    setTimeout(()=>showNotif('🤝','法相获得！','「友谊之莲」已加入你的法相 — 接引有缘人成功！'),500)}
+  checkAch();updateUI();save();
+}
+
+// ============ CHECK-IN ============
+function renderWeek(){
+  const r=document.getElementById('weekRow');
+  const td=new Date();const ts=td.toISOString().slice(0,10);
+  const wd=td.getDay();const st=new Date(td);st.setDate(td.getDate()-wd);
+  const names=['日','一','二','三','四','五','六'];
+  r.innerHTML='';
+  for(let i=0;i<7;i++){
+    const d=new Date(st);d.setDate(st.getDate()+i);
+    const str=d.toISOString().slice(0,10);
+    const div=document.createElement('div');
+    div.className='day-box';
+    if(s.checkins.includes(str))div.className+=' done';
+    else if(str===ts)div.className+=' today';
+    div.textContent=names[i];r.appendChild(div);
+  }
+}
+
+function doCheckin(){
+  const td=new Date().toISOString().slice(0,10);
+  if(s.checkins.includes(td)){showToast('今日已签到');return}
+  s.checkins.push(td);s.merit+=50;
+  let streak=0;const d=new Date();
+  while(true){
+    const str=d.toISOString().slice(0,10);
+    if(s.checkins.includes(str)){streak++;d.setDate(d.getDate()-1)}
+    else break;
+  }
+  s.streak=streak;if(s.streak>s.maxStreak)s.maxStreak=s.streak;
+  showToast(`📌 签到成功 +50功德！连续 ${streak} 天`);
+  checkAch();updateUI();save();
+}
+
+// ============ SHOP ============
+function renderShop(){
+  const g=document.getElementById('skinGrid');g.innerHTML='';
+  SKINS.forEach(sk=>{
+    const div=document.createElement('div');div.className='skin-item';
+    const owned=s.owned.includes(sk.id);const eq=s.skin===sk.id;
+    div.innerHTML=`
+      <div class="preview" style="background:radial-gradient(circle at 35%35%,${sk.id===0?'#5C4033':sk.id===1?'#8B4513':sk.id===2?'#B8860B':sk.id===3?'#E0E0FF':sk.id===4?'#DAA520':sk.id===5?'#FF69B4':'#F4A460'},transparent)">${sk.emoji}</div>
+      <div class="sname">${sk.name}</div>
+      <div class="sdesc">${sk.desc||''}</div>
+    `;
+    const btn=document.createElement('button');btn.className='btn-s';
+    if(eq){btn.textContent='✅ 已装备';btn.className='btn-s equipped'}
+    else if(owned){btn.textContent='👔 装备';btn.className='btn-s own';
+      btn.onclick=()=>{s.skin=sk.id;updateUI();save()}}
+    else if(sk.share&&!s.shareSkin){
+      btn.textContent='📤 分享解锁';btn.className='btn-s buy';
+      btn.onclick=()=>{showToast('📤 分享给好友即可解锁！')}
+    }
+    else if(sk.invite&&!s.inviteSkin){
+      btn.textContent='👥 邀请解锁';btn.className='btn-s buy';
+      btn.onclick=()=>{showToast('👥 接引有缘人即可解锁！')}
+    }
+    else if(sk.price>0){
+      btn.textContent=`✦ ${sk.price}`;btn.className='btn-s buy';
+      btn.onclick=()=>{
+        if(s.merit>=sk.price){s.merit-=sk.price;s.owned.push(sk.id);showToast(`✅ 获得「${sk.name}」`);updateUI();save()}
+        else{showToast(`✦ 功德不足，还需 ${sk.price-s.merit}`)}
+      }
+    }
+    div.appendChild(btn);g.appendChild(div);
+  });
+}
+
+// ============ ACHIEVEMENTS UI ============
+function renderAch(){
+  const g=document.getElementById('achGrid');g.innerHTML='';
+  ACH.forEach(a=>{
+    const u=!!s.ach[a.id];
+    const d=document.createElement('div');
+    d.className=`ach-item${u?' unlocked':''}`;
+    d.innerHTML=`<div class="icon">${a.icon}</div><div class="name">${a.name}</div><div class="desc">${a.desc}</div>`;
+    g.appendChild(d);
+  });
+}
+
+// ============ UPDATE UI ============
+function updateUI(){
+  const td=new Date().toISOString().slice(0,10);
+  document.getElementById('hMerit').textContent=s.merit;
+  document.getElementById('meritNum').textContent=s.merit;
+  
+  const realm=REALMS.filter(r=>s.merit>=r.min).pop()||REALMS[0];
+  document.getElementById('realmBadge').textContent=realm.name;
+  document.getElementById('hStreak').textContent=s.streak>0?`第${s.streak}天`:'未签到';
+  
+  const sk=SKINS.find(x=>x.id===s.skin)||SKINS[0];
+  document.getElementById('fishEmoji').textContent=sk.emoji;
+  
+  // Sound
+  document.querySelectorAll('.snd-btn').forEach(el=>el.classList.toggle('active',parseInt(el.dataset.s)===s.soundIdx));
+  
+  // Checkin
+  renderWeek();
+  const cked=s.checkins.includes(td);
+  const btn=document.getElementById('btnCheckin');
+  btn.textContent=cked?'✅ 今日已签到':'📌 签到 · 得功德 +50';
+  btn.disabled=cked;
+  
+  // Share
+  document.getElementById('stToday').textContent=s.shareToday;
+  document.getElementById('stTotal').textContent=s.shareTotal;
+  document.getElementById('stInvite').textContent=s.inviteCount;
+  
+  renderAch();renderShop();
+  
+  // Stats
+  document.getElementById('sTaps').textContent=s.taps;
+  document.getElementById('sMerit').textContent=s.merit;
+  document.getElementById('sRealm').textContent=realm.name;
+  document.getElementById('sStreak').textContent=s.streak+'天';
+  document.getElementById('sSkins').textContent=s.owned.length+'/'+SKINS.length;
+  document.getElementById('sAch').textContent=Object.keys(s.ach).length+'/'+ACH.length;
+}
+
+// ============ OFFLINE ============
+function calcOffline(){
+  if(!s.lastVisit)return;
+  const now=new Date();const last=new Date(s.lastVisit);
+  const hrs=(now-last)/(1000*3600);
+  if(hrs<1)return;
+  const eff=Math.min(hrs,48);
+  const earn=Math.floor(eff*120);
+  if(earn>5){s.merit+=earn;setTimeout(()=>showToast(`🌙 离线修行 +${earn}功德（${Math.floor(hrs)}小时）`),500)}
+}
+
+// ============ TOAST/NOTIF ============
+function showToast(msg,dur=1500){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+function showNotif(ic,title,desc,cb){
+  document.getElementById('nIcon').textContent=ic;
+  document.getElementById('nTitle').textContent=title;
+  document.getElementById('nDesc').textContent=desc;
+  document.getElementById('notifOverlay').classList.add('show');
+  document.getElementById('nOk').onclick=()=>{
+    document.getElementById('notifOverlay').classList.remove('show');
+    if(cb)cb();
   };
 }
-function addFloatingScore(x, y, text){
-  const el = document.createElement('div');
-  el.className = 'floating'; el.textContent = text;
-  el.style.left = x+'px'; el.style.top = y+'px';
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(), 1000);
-}
-function addRipple(x, y){
-  const el = document.createElement('div');
-  el.className = 'ripple'; el.style.left=x+'px'; el.style.top=y+'px';
-  document.getElementById('rippleContainer').appendChild(el);
-  setTimeout(()=>el.remove(), 800);
-}
 
-// =================== CHECK ACHIEVEMENTS ===================
-function checkAchievements(){
-  let newOne = false;
-  ACHIEVEMENTS.forEach(a=>{
-    if(!state.achievements[a.id] && a.check()){
-      state.achievements[a.id]=true;
-      newOne=true;
-      setTimeout(()=>showNotif('🏆','成就解锁！',`「${a.name}」- ${a.desc}`), 300);
-    }
-  });
-  return newOne;
-}
-
-// =================== TAP ===================
-function handleTap(e){
-  const now = Date.now();
-  const diff = now - state.lastTapTime;
-  state.lastTapTime = now;
-  if(diff < 600){
-    state.combo++;
-    if(state.combo>state.maxCombo) state.maxCombo=state.combo;
-  } else {
-    state.combo=1;
-  }
-
-  const bonus = Math.min(state.combo, 20);
-  const pts = 1 + Math.floor(bonus/5);
-  state.score += pts;
-  state.totalTaps++;
-
-  // Generate sound
-  playSound(state.soundIdx);
-
-  // Combo display
-  const ct = document.getElementById('comboText');
-  if(state.combo>=3){
-    ct.textContent = `🔥 连击 ×${state.combo}`;
-    ct.className = 'combo-text show';
-    clearTimeout(ct._t);
-    ct._t = setTimeout(()=>ct.className='combo-text', 800);
-  }
-
-  // Visual feedback
-  const rect = document.getElementById('mainCircle').getBoundingClientRect();
-  const cx = rect.left+rect.width/2;
-  const cy = rect.top+rect.height/2;
-  addFloatingScore(cx, cy-10, `+${pts}`);
-  addRipple(e.clientX, e.clientY);
-  checkAchievements();
-  updateUI();
-  saveState();
-}
-
-// =================== SHARE ===================
-function handleShare(){
-  const url = window.location.href;
-  const text = '🪷 我正在用「清敲」练习正念减压，轻敲一下就能静下心来！来试试吧～';
-
-  // First share unlock
-  if(!state.sharedSkinUnlocked){
-    state.sharedSkinUnlocked = true;
-    if(!state.ownedSkins.includes(5)) state.ownedSkins.push(5);
-    setTimeout(()=>showNotif('💝','解锁皮肤！','「分享之心」已加入你的收藏'), 500);
-  }
-
-  // Daily first share bonus
-  const today = new Date().toISOString().slice(0,10);
-  if(state.firstShareDate !== today){
-    state.score += 50;
-    state.firstShareDate = today;
-    setTimeout(()=>showToast('✨ 每日首次分享 +50 分！'), 100);
-  }
-
-  state.shareToday++;
-  state.shareTotal++;
-
-  checkAchievements();
-
-  // Try Web Share API
-  if(navigator.share){
-    navigator.share({title:'清敲', text, url}).catch(()=>{});
-  } else {
-    // Fallback: copy to clipboard
-    navigator.clipboard.writeText(text + ' ' + url).then(()=>{
-      showToast('✅ 链接已复制，快去分享给好友吧！');
-    }).catch(()=>{
-      showToast('📤 分享链接：' + url);
-    });
-  }
-
-  updateUI();
-  saveState();
-}
-
-function handleCopyLink(){
-  const url = window.location.href;
-  navigator.clipboard.writeText('🪷 我正在用「清敲」练习正念减压，轻敲一下就能静下心来！来试试吧～ ' + url).then(()=>{
-    showToast('✅ 链接已复制到剪贴板！');
-  }).catch(()=>{
-    showToast('📤 复制失败，请手动复制：' + url);
-  });
-}
-
-// Simulate invite reward (for testing purposes)
-// In real app, this would come from URL params when friend opens the link
-function simulateInvite(){
-  state.score += 30;
-  state.shareInvite++;
-  if(!state.inviteSkinUnlocked){
-    state.inviteSkinUnlocked = true;
-    if(!state.ownedSkins.includes(6)) state.ownedSkins.push(6);
-    setTimeout(()=>showNotif('🤝','解锁皮肤！','「友情之约」已加入你的收藏 — 邀请好友成功！'), 500);
-  }
-  checkAchievements();
-  updateUI();
-  saveState();
-}
-
-// =================== CHECK-IN ===================
-const DAY_NAMES = ['日','一','二','三','四','五','六'];
-function renderWeek(){
-  const row = document.getElementById('weekRow');
-  const today = new Date();
-  const todayStr = today.toISOString().slice(0,10);
-  const weekday = today.getDay();
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() - weekday);
-
-  row.innerHTML = '';
-  for(let i=0;i<7;i++){
-    const d = new Date(startDate);
-    d.setDate(startDate.getDate()+i);
-    const str = d.toISOString().slice(0,10);
-    const div = document.createElement('div');
-    div.className = 'day-box';
-    if(state.checkinDays.includes(str)) div.className='day-box done';
-    else if(str===todayStr) div.className='day-box today';
-    div.textContent = DAY_NAMES[i];
-    row.appendChild(div);
+// ============ INVITE CHECK ============
+function checkInvite(){
+  const p=new URLSearchParams(window.location.search);
+  if(p.get('invited_by')){
+    setTimeout(()=>{showToast('👥 有缘人接引！+30功德');s.merit+=30;s.inviteCount++;
+      if(!s.inviteSkin){s.inviteSkin=true;if(!s.owned.includes(6))s.owned.push(6);
+        setTimeout(()=>showNotif('🤝','法相获得！','「友谊之莲」已加入你的法相'),1000)}
+      checkAch();updateUI();save();
+    },600);
   }
 }
-function handleCheckin(){
-  const today = new Date().toISOString().slice(0,10);
-  if(state.checkinDays.includes(today)){
-    showToast('今天已签到～');
-    return;
-  }
-  state.checkinDays.push(today);
-  state.checkedInToday = true;
-  state.score += 50;
 
-  // Calculate streak
-  let streak = 0;
-  const d = new Date();
-  while(true){
-    const str = d.toISOString().slice(0,10);
-    if(state.checkinDays.includes(str)){
-      streak++; d.setDate(d.getDate()-1);
-    } else break;
-  }
-  state.streak = streak;
-  if(state.streak > state.maxStreak) state.maxStreak = state.streak;
-
-  showToast('📌 签到成功 +50 分！连续 ' + streak + ' 天');
-  checkAchievements();
-  updateUI();
-  saveState();
-}
-
-// =================== SKIN SHOP ===================
-function renderShop(){
-  const grid = document.getElementById('skinGrid');
-  grid.innerHTML = '';
-  SKINS.forEach(s=>{
-    const div = document.createElement('div');
-    div.className = 'skin-item';
-    const owned = state.ownedSkins.includes(s.id);
-    const equipped = state.skin === s.id;
-    div.innerHTML = `
-      <div class="preview" style="background:radial-gradient(circle at 35% 35%,${s.id===0?'#7c3aed':s.id===1?'#22c55e':s.id===2?'#eab308':s.id===3?'#fff':s.id===4?'#06b6d4':s.id===5?'#ec4899':'#f59e0b'},transparent)">${s.emoji}</div>
-      <div class="sname">${s.name}</div>
-      <div class="sdesc">${s.desc}</div>
-    `;
-    const btn = document.createElement('button');
-    btn.className = 'btn-skin';
-    if(equipped){
-      btn.textContent = '✅ 已装备';
-      btn.className = 'btn-skin equipped';
-    } else if(owned){
-      btn.textContent = '👔 装备';
-      btn.className = 'btn-skin own';
-      btn.onclick = ()=>{ state.skin = s.id; updateUI(); saveState(); };
-    } else if(s.shareUnlock && !state.sharedSkinUnlocked){
-      btn.textContent = '📤 分享解锁';
-      btn.className = 'btn-skin buy';
-      btn.onclick = ()=>{
-        document.querySelector('[data-tab="tabShare"]').click();
-        showToast('📤 分享给好友即可解锁！');
-      };
-    } else if(s.inviteUnlock && !state.inviteSkinUnlocked){
-      btn.textContent = '👥 邀请好友解锁';
-      btn.className = 'btn-skin buy';
-      btn.onclick = ()=>{
-        document.querySelector('[data-tab="tabShare"]').click();
-        showToast('👥 好友通过分享打开页面即可解锁！');
-      };
-    } else if(s.price > 0){
-      btn.textContent = `✦ ${s.price} 购买`;
-      btn.className = 'btn-skin buy';
-      btn.onclick = ()=>{
-        if(state.score >= s.price){
-          state.score -= s.price;
-          state.ownedSkins.push(s.id);
-          showToast(`✅ 已购买「${s.name}」！`);
-          updateUI(); saveState();
-        } else {
-          showToast(`✦ 不足，还需 ${s.price - state.score} 分`);
-        }
-      };
-    } else {
-      btn.textContent = '🔒 不可用';
-      btn.disabled = true;
-    }
-    div.appendChild(btn);
-
-    // Special badge for share/invite skins
-    if(s.id!==0 && s.shareUnlock && !state.sharedSkinUnlocked){
-      const badge = document.createElement('div');
-      badge.className = 'share-unlock';
-      badge.textContent = '🎁 分享即可免费获得';
-      div.appendChild(badge);
-    }
-    if(s.id!==0 && s.inviteUnlock && !state.inviteSkinUnlocked){
-      const badge = document.createElement('div');
-      badge.className = 'share-unlock';
-      badge.textContent = '👥 邀请1位好友即可获得';
-      div.appendChild(badge);
-    }
-
-    grid.appendChild(div);
-  });
-}
-
-// =================== ACHIEVEMENTS UI ===================
-function renderAchieves(){
-  const grid = document.getElementById('achieveGrid');
-  grid.innerHTML = '';
-  ACHIEVEMENTS.forEach(a=>{
-    const unlocked = !!state.achievements[a.id];
-    const div = document.createElement('div');
-    div.className = `achieve-item${unlocked?' unlocked':''}`;
-    div.innerHTML = `
-      <div class="icon">${a.icon}</div>
-      <div class="name">${a.name}</div>
-      <div class="desc">${a.desc}</div>
-    `;
-    grid.appendChild(div);
-  });
-}
-
-// =================== CLASSICS ===================
-function renderClassics(){
-  const list = document.getElementById('classicList');
-  list.innerHTML = '';
-  CLASSICS.forEach(c=>{
-    const div = document.createElement('div');
-    div.className = 'classic-item';
-    div.innerHTML = `<div class="title">📜 ${c.title}</div><div class="content">${c.content}</div>`;
-    list.appendChild(div);
-  });
-}
-
-// =================== TAB SWITCH ===================
+// ============ TABS ============
 document.querySelectorAll('.tab').forEach(tab=>{
-  tab.addEventListener('click', function(){
+  tab.addEventListener('click',function(){
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
     this.classList.add('active');
-    const target = document.getElementById(this.dataset.tab);
-    if(target) target.classList.add('active');
+    const t=document.getElementById(this.dataset.tab);if(t)t.classList.add('active');
   });
 });
 
-// =================== UPDATE UI ===================
-function updateUI(){
-  const today = new Date().toISOString().slice(0,10);
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded',()=>{
+  calcOffline();checkInvite();updateUI();
+  s.lastVisit=new Date().toISOString();save();
+  
+  // Set initial sutra
+  nextSutra();
 
-  // Score
-  document.getElementById('statScore').textContent = state.score;
-  document.getElementById('tapScore').textContent = state.score;
-
-  // Day streak
-  document.getElementById('statDay').textContent = state.streak>0 ? `第${state.streak}天` : '未签到';
-
-  // Skin emoji
-  const currentSkin = SKINS.find(s=>s.id===state.skin) || SKINS[0];
-  document.getElementById('skinEmoji').textContent = currentSkin.emoji;
-
-  // Check-in
-  renderWeek();
-  const checkedIn = state.checkinDays.includes(today);
-  const btn = document.getElementById('btnCheckin');
-  btn.textContent = checkedIn ? '✅ 今日已签到' : '📌 签到 +50 分';
-  btn.disabled = checkedIn;
-
-  // Share
-  document.getElementById('shareToday').textContent = state.shareToday;
-  document.getElementById('shareTotal').textContent = state.shareTotal;
-  document.getElementById('shareInvite').textContent = state.shareInvite;
-
-  // Sound
-  document.querySelectorAll('.sound-btn').forEach(el=>{
-    el.classList.toggle('active', parseInt(el.dataset.s)===state.soundIdx);
+  document.getElementById('fishWrap').addEventListener('click',function(e){
+    const rect=this.getBoundingClientRect();
+    const cx=e.clientX||rect.left+rect.width/2;
+    const cy=e.clientY||rect.top+rect.height/2;
+    handleTap({clientX:cx,clientY:cy});
   });
-
-  // Achievements
-  renderAchieves();
-
-  // Shop
-  renderShop();
-
-  // Stats
-  document.getElementById('sTotalTap').textContent = state.totalTaps;
-  document.getElementById('sTotalScore').textContent = state.score;
-  document.getElementById('sStreak').textContent = state.streak + ' 天';
-  document.getElementById('sSkins').textContent = state.ownedSkins.length + '/' + SKINS.length;
-  document.getElementById('sAchieves').textContent = Object.keys(state.achievements).length + '/' + ACHIEVEMENTS.length;
-}
-
-// =================== OFFLINE SCORE ===================
-function calcOfflineScore(){
-  if(!state.lastVisitDate) return;
-  const now = new Date();
-  const last = new Date(state.lastVisitDate);
-  const hoursDiff = (now - last) / (1000*60*60);
-  if(hoursDiff < 1) return;
-  const maxHours = 48;
-  const effective = Math.min(hoursDiff, maxHours);
-  const earned = Math.floor(effective * 120); // 120 per hour = 2 per minute = 1 per 30s
-  if(earned > 5){
-    state.score += earned;
-    state.offlineScore = earned;
-    setTimeout(()=>showToast(`🌙 离线收益 +${earned} 正念分（离开 ${Math.floor(hoursDiff)} 小时）`), 500);
-  }
-}
-
-// =================== GUEST INVITE (simulate friend opening) ===================
-// Check URL params for invite
-function checkInviteParam(){
-  const params = new URLSearchParams(window.location.search);
-  if(params.get('invited_by')){
-    // Simulate being invited
-    setTimeout(()=>{
-      showToast('👥 好友邀请！+30 正念分');
-      state.score += 30;
-      if(!state.inviteSkinUnlocked){
-        state.inviteSkinUnlocked = true;
-        if(!state.ownedSkins.includes(6)) state.ownedSkins.push(6);
-        setTimeout(()=>showNotif('🤝','解锁皮肤！','「友情之约」已加入你的收藏 — 通过好友邀请开启！'), 1000);
-      }
-      updateUI();
-      saveState();
-    }, 500);
-  }
-}
-
-// =================== INIT ===================
-function init(){
-  calcOfflineScore();
-  checkInviteParam();
-  updateUI();
-  state.lastVisitDate = new Date().toISOString();
-  saveState();
-
-  // Tap handler
-  document.getElementById('tapCircle').addEventListener('click', function(e){
-    handleTap({clientX: e.clientX, clientY: e.clientY});
-  });
-
-  // Sound select
-  document.querySelectorAll('.sound-btn').forEach(el=>{
-    el.addEventListener('click', function(){
-      state.soundIdx = parseInt(this.dataset.s);
-      playSound(state.soundIdx);
-      updateUI();
-      saveState();
+  
+  document.querySelectorAll('.snd-btn').forEach(el=>{
+    el.addEventListener('click',function(){
+      s.soundIdx=parseInt(this.dataset.s);
+      playSound(s.soundIdx);
+      updateUI();save();
     });
   });
+  
+  document.getElementById('btnShare').addEventListener('click',handleShare);
+  document.getElementById('btnCopy').addEventListener('click',handleCopy);
+  document.getElementById('btnCheckin').addEventListener('click',doCheckin);
 
-  // Share
-  document.getElementById('btnShare').addEventListener('click', handleShare);
-  document.getElementById('btnCopyLink').addEventListener('click', handleCopyLink);
-
-  // Checkin
-  document.getElementById('btnCheckin').addEventListener('click', handleCheckin);
-
-  // Quick test: click 5 times quickly to simulate invite (for testing)
-  let debugClicks = 0;
-  document.getElementById('tapCircle').addEventListener('dblclick', function(){
-    debugClicks++;
-    if(debugClicks >= 3){
-      debugClicks = 0;
-      simulateInvite();
-    }
+  // Double-tap test for invite simulation
+  let dc=0;
+  document.getElementById('fishWrap').addEventListener('dblclick',()=>{
+    dc++;if(dc>=2){dc=0;simulateInvite();showToast('👥 模拟接引成功！')}
   });
-}
-
-document.addEventListener('DOMContentLoaded', init);
+});
 </script>
 </body>
 </html>
